@@ -4,6 +4,8 @@ Resources :
 
 https://www.codequoi.com/en/creating-and-killing-child-processes-in-c/
 
+https://www.codequoi.com/en/handling-a-file-by-its-descriptor-in-c/
+
 https://www.codequoi.com/en/pipe-an-inter-process-communication-method/
 
 https://www.codequoi.com/en/handling-a-file-by-its-descriptor-in-c/
