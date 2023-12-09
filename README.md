@@ -57,6 +57,7 @@ tgetnum, tgetstr, tgoto, tputs
 
 # General idea
 
+```yaml
 string -> data structure -> action
 
 lexer : string -> [tokens] 
@@ -64,6 +65,7 @@ parser : [tokens] -> data
 
 expander : data -> expanded_data
 executor : expanded_data -> action
+```
 
 # What is the data?
 
