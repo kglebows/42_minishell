@@ -95,11 +95,13 @@ struct Redirection
 };
 ```
 
+```
 data: [command]
 command: {arguments, [redirection]}
 arguments: char**
 redirection: { type, char *}
 type: enum
+```
 
 ## tips
 
