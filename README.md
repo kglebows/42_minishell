@@ -95,7 +95,7 @@ struct Redirection
 };
 ```
 
-```
+```yaml
 data: [command]
 command: {arguments, [redirection]}
 arguments: char**
