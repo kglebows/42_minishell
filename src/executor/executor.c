@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "minishell.h"
 
 static int	execute_child(t_cmd_list *list, int fd_in, char *envp[]);
 static void	execute(t_cmd_list *list, char *envp[]);

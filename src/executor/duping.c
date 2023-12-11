@@ -1,5 +1,4 @@
-#include "../include/minishell.h"
-
+#include "minishell.h"
 
 /**
  * @brief Duplicates the output of the current command to the next command

@@ -6,7 +6,7 @@
 #    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/11 19:31:38 by kglebows         ###   ########.fr        #
+#    Updated: 2023/12/11 20:11:10 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,17 +22,18 @@ SRCDIR = ./src
 
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
-		pharse/token.c 
+		parse/token.c 
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 
 LIBFTNAME = bin/libft/libft.a
 LIBFTDIR = lib/libft
 LIBFT_PATH = ./lib/libft
+INCLUDE_PATH = ./include
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
-	@OUTPUT=$$($(CC) $(CFLAGS) -I $(LIBFT_PATH) -Isrc -c $< -o $@ 2>&1); \
+	@OUTPUT=$$($(CC) $(CFLAGS) -I $(LIBFT_PATH) -I $(INCLUDE_PATH) -Isrc -c $< -o $@ 2>&1); \
 	if [ $$? -eq 0 ]; then \
 		echo "\033[0;32m$< OK!\033[0m"; \
 	else \
@@ -40,7 +41,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	fi
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -I $(LIBFT_PATH) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	@$(CC) $(CFLAGS) -I $(LIBFT_PATH) -I $(INCLUDE_PATH) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 all: init-submodules makelibft $(NAME)
 
@@ -59,7 +60,7 @@ makelibft:
 	fi
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) -I $(LIBFT_PATH)  -lreadline -o $(NAME) $(OBJS) -L$(OBJDIR)/libft -lft
+	@$(CC) $(CFLAGS) -I $(LIBFT_PATH) -I $(INCLUDE_PATH) -lreadline -o $(NAME) $(OBJS) -L$(OBJDIR)/libft -lft
 
 clean-empty-dirs:
 	@if [ -d $(OBJDIR) ]; then find $(OBJDIR) -type d -empty -exec rmdir {} +; fi

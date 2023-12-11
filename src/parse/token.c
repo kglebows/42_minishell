@@ -6,11 +6,11 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 17:18:30 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/11 19:50:16 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:11:39 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /**
  * @brief Tokenization - Turning input into tokens

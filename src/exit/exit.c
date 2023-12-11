@@ -6,11 +6,11 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 15:06:09 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/11 19:50:22 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/11 20:12:11 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /**
  * @brief Creates static variable for exit code

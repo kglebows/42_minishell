@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "minishell.h"
 
 char	*find_cmd_path(char *envp[], char *argv)
 {

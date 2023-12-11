@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	set_outfile(t_cmd_list *list)
 {
