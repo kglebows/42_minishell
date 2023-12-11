@@ -1,0 +1,3 @@
+[submodule "PARSING_workinprogress/lib/libft"]
+	path = PARSING_workinprogress/lib/libft
+	url = https://github.com/kglebows/42_libft.git
