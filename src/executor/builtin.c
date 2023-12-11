@@ -36,7 +36,7 @@ int	execute_builtin(t_cmd_list *list, char *envp[])
 	else if (ft_strncmp(list->str[0], "env", 3) == 0)
 		return (ft_env(list, envp));
 	else if (ft_strncmp(list->str[0], "exit", 4) == 0)
-		return (ft_exit(list));
+		return (ft_exit_changename(list));
 	else
 		return (EXIT_SUCCESS);
 }

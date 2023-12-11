@@ -21,6 +21,9 @@
 // # include "builtin.h"
 # include "executor.h"
 
+void	ft_executor(t_dt *dt);
+void	ft_parse(t_dt *dt);
+void	ft_lexer(t_dt *dt);
 
 # define FALSE 0
 # define TRUE 1
