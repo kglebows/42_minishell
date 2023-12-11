@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 
-static void init_signal_handler(void)
+static void	init_signal_handler(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);

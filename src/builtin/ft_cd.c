@@ -33,7 +33,7 @@ void	update_envp(char *envp[], char *variable, char *value)
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(envp[i], variable, strlen(variable)) != 0)
+	while (ft_strncmp(envp[i], variable, ft_strlen(variable)) != 0)
 		i++;
 	free(envp[i]);
 	envp[i] = ft_strjoin(variable, value);

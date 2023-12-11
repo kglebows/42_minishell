@@ -8,9 +8,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
-# include "executor.h"
+# include <string.h>
 # include "../libft/libft.h"
+# include "executor.h"
 # include "signal.h"
+# include "builtin.h"
 
 
 # define FALSE 0
