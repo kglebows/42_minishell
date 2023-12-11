@@ -1,13 +1,17 @@
 #include "../../includes/minishell.h"
 #include "../../includes/executor.h"
 
-int	create_heredoc(t_cmd_list *list, char *delimiter)
+/**
+ * @brief	creates a heredoc file
+ * @param delimiter The delimiter of the heredoc (f.e. EOF)
+ * @return File descriptor to the heredoc file
+ */
+*/
+int	create_heredoc(char *delimiter)
 {
 	int		fd;
 	char	*line;
 
-	if(!list)
-		return (-1);
 	fd = open("heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 		return (-1);
@@ -28,4 +32,3 @@ int	create_heredoc(t_cmd_list *list, char *delimiter)
 		return (-1);
 	return (fd);
 }
-

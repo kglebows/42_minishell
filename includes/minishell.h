@@ -10,9 +10,6 @@
 # include <fcntl.h>
 # include "executor.h"
 # include "../libft/libft.h"
-# include "msg.h"
-# include "color_define.h"
-# include "parser.h"
 # include "signal.h"
 
 
