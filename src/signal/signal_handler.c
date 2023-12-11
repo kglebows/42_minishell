@@ -1,5 +1,4 @@
-#include "../includes/minishell.h"
-
+#include "../include/minishell.h"
 
 static void	init_signal_handler(void)
 {

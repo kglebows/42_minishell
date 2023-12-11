@@ -1,6 +1,4 @@
-#include "../../includes/minishell.h"
-#include "../../includes/executor.h"
-#include "../../includes/parser.h"
+#include "../include/minishell.h"
 
 static int	execute_child(t_cmd_list *list, int fd_in, char *envp[]);
 static void	execute(t_cmd_list *list, char *envp[]);

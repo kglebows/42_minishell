@@ -1,5 +1,4 @@
-#include "../../includes/minishell.h"
-#include "../../includes/executor.h"
+#include "../include/minishell.h"
 
 int	cmd_is_builtin(char *cmd)
 {

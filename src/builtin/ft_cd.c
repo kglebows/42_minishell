@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "../include/minishell.h"
 
 char	*get_path(t_cmd_list *list, char *envp[])
 {

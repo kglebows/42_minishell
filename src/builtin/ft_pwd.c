@@ -1,5 +1,4 @@
-#include "../../includes/minishell.h"
-#include "../../includes/executor.h"
+#include "../include/minishell.h"
 
 int	ft_pwd(t_cmd_list *list, char *envp[])
 {

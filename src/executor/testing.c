@@ -1,5 +1,4 @@
-#include "../../includes/minishell.h"
-#include "../../includes/executor.h"
+#include "../include/minishell.h"
 
 int	main(int argc, char *argv[], char *envp[])
 {
