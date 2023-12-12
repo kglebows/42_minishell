@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
+#    By: fmarquar <fmarquar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/11 23:56:51 by kglebows         ###   ########.fr        #
+#    Updated: 2023/12/12 14:58:51 by fmarquar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra
 
 # CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
 
@@ -23,7 +23,8 @@ SRCDIR = ./src
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
 		parse/token.c parse/token_utils.c parse/lexer.c parse/parse.c\
-		executor/ft_executor.c
+		executor/ft_executor.c \
+		signal/signal_handler.c \
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 
@@ -66,7 +67,7 @@ $(NAME): $(OBJS)
 clean-empty-dirs:
 	@if [ -d $(OBJDIR) ]; then find $(OBJDIR) -type d -empty -exec rmdir {} +; fi
 
-clean: 
+clean:
 	@for obj in $(OBJS); do \
 		if [ -f "$$obj" ]; then \
 			rm -f $$obj && echo "\033[0;33m$$obj deleted\033[0m"; \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fmarquar <fmarquar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/11 20:26:45 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/12 14:37:39 by fmarquar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ t_dt *ini_dt(int argc, char *argv[], char *envp[])
 /**
  * @brief Minishell loop
  * @param dt main data structure
- * @return 
+ * @return
 */
 void ini_minishell(t_dt *dt)
 {
 	while (42)
 	{
+		init_signal_handler();
 		dt->input = readline("Mini$hell ];> ");
 		if (!dt->input)
 			break ;

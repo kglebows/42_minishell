@@ -20,10 +20,15 @@
 # include "parse.h"
 // # include "builtin.h"
 # include "executor.h"
+# include "utils.h"
+
 
 void	ft_executor(t_dt *dt);
 void	ft_parse(t_dt *dt);
 void	ft_lexer(t_dt *dt);
+
+//signal_handler
+void	init_signal_handler(void);
 
 # define FALSE 0
 # define TRUE 1
