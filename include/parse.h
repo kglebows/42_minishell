@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/11 20:04:03 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/12 03:49:34 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,15 @@ typedef struct s_token
 }			t_token;
 
 /**
+ * @brief Command Table for Executor
+ * @param cmdrow One row of commands
+ */
+typedef struct t_cmdtable
+{
+	char				**cmdrow;
+}			t_cmdtable;
+
+/**
  * @brief Main data structure that holds all information needed for the program.
  * @param exit exit code of main process
  * @param envp ENVironment Pointer. String with environment information.
@@ -66,6 +75,7 @@ typedef struct s_dt
 	char				**envp;
 	char				*input;
 	t_token				*token;
+	t_cmdtable			**cmdtable;
 }						t_dt;
 
 void		ft_error(int code, t_dt *dt);
@@ -73,5 +83,31 @@ void		ft_exit(t_dt *dt);
 int			*ini_exit(void);
 void		exit_code(int code);
 void		ft_token(t_dt *dt);
+
+/**
+ * @brief Tokenization - Turning input into tokens
+ * @param dt main data structure
+ * @return 
+*/
+void	ft_token(t_dt *dt);
+
+/**
+ * @brief Calculate the lenght of string for token
+ * @param str Pointer to first character in input for token
+ * @param stop Stop character that closes token
+ * @param dt main data structure
+ * @return lenght of data
+*/
+int	lenght(char *str, char stop, t_dt *dt);
+
+/**
+ * @brief Create a new token and add it at the end of the token list
+ * @param type Type of a token
+ * @param lenght lenght of data
+ * @param data content of input assosiated with token
+ * @param dt main data structure
+ * @return lenght of data
+*/
+int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
 
 #endif

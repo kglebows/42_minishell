@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 19:29:04 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/11 20:12:06 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/12 02:29:01 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void	error_(int code)
 {
 	if (code == -10)
-		printf("Error! \n");
+		printf("Error! Memory allocation failed!\n");
 	else if (code == -11)
-		printf("Error! \n");
+		printf("Error! Quotes not closed!\n");
 	else if (code == -12)
-		printf("Error! \n");
+		printf("Error! U start with a pipe?!\n");
 	else if (code == -13)
-		printf("Error! \n");
+		printf("Error! U end with this token?!\n");
 	else if (code == -14)
-		printf("Error! \n");
+		printf("Error! U want to redirect what?!\n");
 	else if (code == -15)
 		printf("Error! \n");
 	else if (code == -16)

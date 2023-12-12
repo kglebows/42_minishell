@@ -6,7 +6,7 @@
 #    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/11 23:29:39 by kglebows         ###   ########.fr        #
+#    Updated: 2023/12/11 23:56:51 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCDIR = ./src
 
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
-		parse/token.c parse/lexer.c parse/parse.c\
+		parse/token.c parse/token_utils.c parse/lexer.c parse/parse.c\
 		executor/ft_executor.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
