@@ -6,12 +6,12 @@
  * @param	envp The environment variables
  * @return	EXIT_SUCCESS or EXIT_FAILURE
  */
-int	ft_env(t_cmd_list *list, char *envp[])
+int	ft_env(t_cmdtable *list, char *envp[])
 {
 	int	i;
 
 	i = 0;
-	if (!list->str[1])
+	if (!list->cmd[1])
 	{
 		while (envp[i])
 		{
@@ -22,7 +22,7 @@ int	ft_env(t_cmd_list *list, char *envp[])
 	}
 	else
 	{
-		printf("env: %s: No such file or directory\n", list->str[1]);
+		printf("env: %s: No such file or directory\n", list->cmd[1]);
 		return (EXIT_FAILURE);
 	}
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
+#    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/13 16:49:27 by kglebows         ###   ########.fr        #
+#    Updated: 2023/12/13 19:46:25 by ekordi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ SRCDIR = ./src
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
 		parse/token.c parse/token_utils.c parse/lexer.c parse/parse.c\
-		executor/ft_executor.c \
-		utils/signal_handler.c \
+		executor/ft_executor.c executor/executor.c executor/builtin.c\
+		utils/signal_handler.c builtin/ft_env.c\
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 

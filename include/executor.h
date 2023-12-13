@@ -42,7 +42,7 @@ typedef struct s_cmd_list
 }	t_cmd_list;
 
 //executor.c
-void		executor(t_cmd_list *list, char *envp[]);
+//void		executor(t_cmd_list *list, char *envp[]);
 
 //duping.c
 void		dup_output(int outpipe, t_cmd_list *list);
@@ -76,14 +76,14 @@ void		free_cmd_list(t_cmd_list *cmd_list);
 //void		ft_print_doublechar(char **double);
 
 //builtin.c
-int	execute_builtin(t_cmd_list *list, char *envp[]);
+int	execute_builtin(t_cmdtable *list, char *envp[]);
 int	cmd_is_builtin(char *cmd);
 int	ft_echo(char *message[]);
-int	ft_env(t_cmd_list *list, char *envp[]);
-int	ft_exit_changename(t_cmd_list *list);
-int	ft_export(t_cmd_list *list, char *envp[]);
-int	ft_pwd(t_cmd_list *list, char *envp[]);
-int	ft_unset(t_cmd_list *list, char *envp[]);
+int	ft_env(t_cmdtable *list, char *envp[]);
+// int	ft_exit_changename(t_cmd_list *list);
+// int	ft_export(t_cmd_list *list, char *envp[]);
+// int	ft_pwd(t_cmd_list *list, char *envp[]);
+// int	ft_unset(t_cmd_list *list, char *envp[]);
 int	ft_unsetenv(char *str, char *envp[]);
 
 #endif
