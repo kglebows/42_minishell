@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 14:11:05 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 14:53:52 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	how_many(t_token_type token, t_token *start)
 	{
 		if ((token == TEXT || token == TEXT_SQUOTE || token == TEXT_DQUOTE)
 			&& temp->type < 4)
-			break ;
-		if (temp->type == token)
+			temp = temp->next;
+		else if (temp->type == token)
 			i++;
 		temp = temp->next;
 	}
@@ -66,6 +66,24 @@ void	create_cmdtable(t_dt *dt)
 	}
 }
 
+void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+{
+	t_token			*temp;
+	int				i;
+	int				j;
+
+	cmdtable->cmd = (char **) ft_calloc(cmdtable->cmd_nb + 1, sizeof(char *));
+	cmdtable->rdr = (t_rdr **) ft_calloc(cmdtable->rdr_nb + 1, sizeof(char *));;
+	temp = token;
+	while (temp->type != PIPE)
+	{
+		if (temp->type > 4)
+			cmdtable->cmd
+		
+		temp = temp->next;
+	}
+}
+
 void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
 	cmdtable = ft_calloc(1, sizeof(t_cmdtable));
@@ -74,12 +92,11 @@ void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 	cmdtable->cmd_nb = how_many(TEXT, token)
 						+ how_many(TEXT_SQUOTE, token)
 						+ how_many(TEXT_DQUOTE, token);
-	cmdtable->cmd = NULL;
 	cmdtable->rdr_nb = how_many(REDIRECTION_IN, token)
 						+ how_many(REDIRECTION_OUT, token)
 						+ how_many(REDIRECTION_IN_HEREDOC, token)
 						+ how_many(REDIRECTION_OUT_APPEND, token);
-	cmdtable->rdr = 
+	fill_cmd(cmdtable, token, dt);
 	cmdtable->fd_in =
 	cmdtable->fd_out =
 }
