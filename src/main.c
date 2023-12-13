@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmarquar <fmarquar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/12 14:37:39 by fmarquar         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:58:25 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ t_dt *ini_dt(int argc, char *argv[], char *envp[])
 		.exit = ini_exit(),
 		.envp = envp,
 		.input = NULL,
-		.token = NULL
+		.token = NULL,
+		.nrofpipes = 0
 	};
 	return (&dt);
 }

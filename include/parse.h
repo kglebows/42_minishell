@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/12 03:49:34 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 13:19:58 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,39 @@ typedef struct s_token
 }			t_token;
 
 /**
+ * @brief Redirection information
+ * @param type Type of redirection
+ * @param data Redirection destination or deliminator for heredoc
+ */
+typedef struct s_rdr
+{
+	t_token_type		type;
+	char				*data;
+}			t_rdr;
+
+
+// the files are created to the point of reaching in-file that does not exist
+// heredocs are executed first
+
+
+/**
  * @brief Command Table for Executor
- * @param cmdrow One row of commands
+ * @param cmd Array of command with options
+ * @param cmd_nb Number of command elements (cmd + options)
+ * @param rdr Array of redirections
+ * @param rdr_nb Number of redirections (in and out)
+ * @param fd_in input file, default - standard input
+ * @param fd_out output file, default - standard output
  */
 typedef struct t_cmdtable
 {
-	char				**cmdrow;
+	char				**cmd;
+	int					cmd_nb;
+	t_rdr				**rdr;
+	int					rdr_nb;
+	int					fd_in;
+	int					fd_out;
+	
 }			t_cmdtable;
 
 /**
@@ -68,6 +95,7 @@ typedef struct t_cmdtable
  * @param envp ENVironment Pointer. String with environment information.
  * @param input pointer to minishells input
  * @param token linked list of tokens header
+ * @param nrofpipes number of pipes
  */
 typedef struct s_dt
 {
@@ -76,6 +104,7 @@ typedef struct s_dt
 	char				*input;
 	t_token				*token;
 	t_cmdtable			**cmdtable;
+	int					nrofpipes;
 }						t_dt;
 
 void		ft_error(int code, t_dt *dt);
