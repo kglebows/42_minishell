@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 13:52:42 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 14:11:05 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,52 +41,47 @@ int	how_many(t_token_type token, t_token *start)
 }
 
 /**
- * @brief Create an empty cmd table of height depending on number of pipes
+ * @brief Create an command table of height of number of pipes.
  * @param dt main data structure
  * @return 
 */
 void	create_cmdtable(t_dt *dt)
 {
 	int			i;
+	t_token		*temp;
 
-	dt->nrofpipes = how_many(PIPE, dt->token);
+	temp = dt->token;
+	dt->nrofpipes = how_many(PIPE, temp);
 	dt->cmdtable = (t_cmdtable **)ft_calloc(dt->nrofpipes + 2, sizeof(t_cmdtable *));
 	if (!dt->cmdtable)
 		ft_error(-10, dt);
 	i = 0;
-	while (i <= dt->nrofpipes)
+	while (temp && i <= dt->nrofpipes)
 	{
-		dt->cmdtable[i] = ft_calloc(1, sizeof(t_cmdtable));
-		if (!dt->cmdtable[i])
-			ft_error(-10, dt);
-		dt->cmdtable[i]->cmd_nb = how_many(TEXT, dt->token)
-			+ how_many(TEXT_SQUOTE, dt->token) + how_many(TEXT_DQUOTE, dt->token);
-		dt->cmdtable[i]->cmd = NULL;
-		dt->cmdtable[i]->rdr_nb = how_many(REDIRECTION_IN, dt->token) + how_many()
-			+ how_many(TEXT_SQUOTE, dt->token) + how_many(TEXT_DQUOTE, dt->token);
-		dt->cmdtable[i]->rdr = 
-		dt->cmdtable[i]->fd_in =
-		dt->cmdtable[i]->fd_out =
+		fill_cmdtable(dt->cmdtable[i], temp, dt);
+		while (temp && temp->type != PIPE)
+			temp = temp->next;
+		temp = temp->next;
 		i++;
 	}
 }
 
-void	fill_cmdtable(t_dt *dt)
+void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
-	int				y;
-	t_token			*temp;
-
-	temp = dt->token;
-	y = 0;
-	while (temp)
-	{
-		while (temp && temp->type != PIPE)
-		{
-			
-			y++;
-			temp = temp->next;
-		}
-	}
+	cmdtable = ft_calloc(1, sizeof(t_cmdtable));
+	if (!cmdtable)
+		ft_error(-10, dt);
+	cmdtable->cmd_nb = how_many(TEXT, token)
+						+ how_many(TEXT_SQUOTE, token)
+						+ how_many(TEXT_DQUOTE, token);
+	cmdtable->cmd = NULL;
+	cmdtable->rdr_nb = how_many(REDIRECTION_IN, token)
+						+ how_many(REDIRECTION_OUT, token)
+						+ how_many(REDIRECTION_IN_HEREDOC, token)
+						+ how_many(REDIRECTION_OUT_APPEND, token);
+	cmdtable->rdr = 
+	cmdtable->fd_in =
+	cmdtable->fd_out =
 }
 
 void	ft_parse(t_dt *dt)
