@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 17:18:30 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/12 01:52:38 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:59:57 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt)
 	t_token	*temp;
 	t_token	*last;
 
-	last = dt->token;
 	temp = ft_calloc(1, sizeof(t_token));
 	if (!temp)
 		ft_error(-10, dt);
@@ -99,12 +98,18 @@ int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt)
 	temp->lenght = lenght;
 	temp->type = type;
 	temp->next = NULL;
-	while (last)
-		last = last->next;
-	last = temp;
+	if (!dt->token)
+		dt->token = temp;
+	else
+	{
+		last = dt->token;
+		while (last->next)
+			last = last->next;
+		last->next = temp;
+	}
 	// DEBUG 
-	write(1, data, lenght);
-	ft_printf(" :: %d\n", lenght);
+	// write(1, data, lenght);
+	// ft_printf(" type:%d len:%d\n", type, lenght);
 	// DEBUG
 	return (lenght);
 }

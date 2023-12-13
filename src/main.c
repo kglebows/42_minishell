@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 11:58:25 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:01:45 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,17 @@ void ini_minishell(t_dt *dt)
 	{
 		init_signal_handler();
 		dt->input = readline("Mini$hell ];> ");
+		// printf("Wpisany INPUT: %s\n", dt->input);
 		if (!dt->input)
 			break ;
 		if (dt->input[0] != '\0')
 			add_history(dt->input);
 		ft_token(dt);
-		ft_lexer(dt);
+		// ft_lexer(dt);
 		ft_parse(dt);
-		ft_executor(dt);
+		// ft_executor(dt);
 		free(dt->input);
+		dt->token = NULL;
 	}
 }
 

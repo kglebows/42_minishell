@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 13:19:58 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:22:26 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "minishell.h"
 
 /**
- * @brief Type of a token
+ * @brief Type of a token 0-3 Redirection, 4 pipe, 5-7 text
  * @param REDIRECTION_IN <
  * @param REDIRECTION_IN_HEREDOC <<
  * @param REDIRECTION_OUT >
@@ -64,10 +64,13 @@ typedef struct s_rdr
 	char				*data;
 }			t_rdr;
 
+// ! //
 
+// notes for Execution :
 // the files are created to the point of reaching in-file that does not exist
 // heredocs are executed first
 
+// ^ //
 
 /**
  * @brief Command Table for Executor
@@ -82,7 +85,7 @@ typedef struct t_cmdtable
 {
 	char				**cmd;
 	int					cmd_nb;
-	t_rdr				**rdr;
+	t_rdr				*rdr;
 	int					rdr_nb;
 	int					fd_in;
 	int					fd_out;
@@ -139,4 +142,8 @@ int	lenght(char *str, char stop, t_dt *dt);
 */
 int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
 
+
+void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+void print_cmdtable(t_dt *dt);
+void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
 #endif

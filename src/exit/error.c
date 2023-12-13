@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 19:29:04 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/12 02:29:01 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:15:24 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	error_(int code)
 	else if (code == -14)
 		printf("Error! U want to redirect what?!\n");
 	else if (code == -15)
-		printf("Error! \n");
+		printf("Error! cmdtable creation failed! fix your code!\n");
 	else if (code == -16)
-		printf("Error! \n");
+		printf("Error! cmdtable smthng wrong with element count!\n");
 	else if (code == -17)
 		printf("Error! \n");
 	else if (code == -18)
