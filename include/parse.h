@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
 /*   Updated: 2023/12/14 19:06:56 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:45:32 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +96,7 @@ typedef struct t_cmdtable
 	int					rdr_nb;
 	int					fd_in;
 	int					fd_out;
+	int					fd;
 }			t_cmdtable;
 
 
@@ -135,7 +137,7 @@ void		ft_token(t_dt *dt);
 /**
  * @brief Tokenization - Turning input into tokens
  * @param dt main data structure
- * @return 
+ * @return
 */
 void	ft_token(t_dt *dt);
 

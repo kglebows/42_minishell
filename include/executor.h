@@ -52,7 +52,7 @@ void execute_echo(char **args);
 int execute_cd(char **args);
 int	execute_pwd(void);
 void print_env_var_list(char **env);
-
+int set_env(char ***env,const char *key_val_str);
 
 
 
