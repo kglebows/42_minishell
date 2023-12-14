@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 19:29:04 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 17:15:24 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:46:58 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	error_(int code)
 		printf("Error! Unknown error code %d!\n", code);
 }
 
-void	ft_error(int code, t_dt *dt)
+t_return	ft_error(int code, t_dt *dt)
 {
 	if (code == -1)
 		printf("Error! Minishell takes no arguments!\n");
@@ -60,9 +60,11 @@ void	ft_error(int code, t_dt *dt)
 		printf("Error! \n");
 	else
 		error_(code);
-	if (code < -9)
-		ft_exit(dt);
-	else
-		exit(*dt->exit);
+	(void)dt;
+	// if (code < -9)
+	// 	ft_exit(dt);
+	// else
+	// 	exit(*dt->exit);
+	return (KO);
 }
 	

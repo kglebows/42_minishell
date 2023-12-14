@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 19:27:48 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/14 19:07:46 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,29 @@ t_dt *ini_dt(int argc, char *argv[], char *envp[])
 	dt = (t_dt){
 		.exit = ini_exit(),
 		.envp = envp,
+		.envp_lst = init_env_var(envp),
 		.input = NULL,
 		.token = NULL,
+		.fd_in = dup(STDIN_FILENO),
+		.fd_out = dup(STDOUT_FILENO),
 		.nrofpipes = 0
 	};
 	return (&dt);
+}
+
+t_return check_input(t_dt *dt)
+{
+	char		*temp;
+	int			i;
+
+	i = 0;
+	temp = dt->input;
+	while (ft_isspace(temp[i]) == 1)
+		i++;
+	if (temp[i] == '\0')
+		return (KO);
+	else
+		return (OK);
 }
 
 /**
@@ -47,17 +65,19 @@ void ini_minishell(t_dt *dt)
 	{
 		init_signal_handler();
 		dt->input = readline("Mini$hell ];> ");
-		// printf("Wpisany INPUT: %s\n", dt->input);
 		if (!dt->input)
 			break ;
-		if (dt->input[0] != '\0')
+		// printf("Wpisany INPUT: %s\n", dt->input);
+		if (check_input(dt) == OK)
+		{
 			add_history(dt->input);
-		ft_token(dt);
-		// ft_lexer(dt);
-		ft_parse(dt);
-		ft_executor(dt);
+			ft_token(dt);
+			// ft_lexer(dt);
+			if (ft_parse(dt) == OK)
+				ft_executor(dt);
+		}
 		free(dt->input);
-		dt->token = NULL;
+		dt->token = NULL; // Leeks : i need to free token and cmdtable
 	}
 }
 
