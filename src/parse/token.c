@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 17:18:30 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/13 18:59:57 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:51:04 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	lenght(char *str, char stop, t_dt *dt)
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == stop || str[i] == '<' || str[i] == '>')
+		if (str[i] == stop || str[i] == '<' || str[i] == '>' || str[i] == '|')
 			break ;
 	}
 	if (stop == '\'' || stop == '\"')

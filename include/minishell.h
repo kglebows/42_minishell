@@ -24,7 +24,7 @@
 
 
 void	ft_executor(t_dt *dt);
-void	ft_parse(t_dt *dt);
+t_return	ft_parse(t_dt *dt);
 void	ft_lexer(t_dt *dt);
 
 //signal_handler

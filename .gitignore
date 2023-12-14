@@ -1,5 +1,6 @@
 *.o
 *.sh
 *.txt
+*.a
 Minishell
 minishell

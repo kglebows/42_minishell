@@ -6,6 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
+/*   Updated: 2023/12/14 19:06:56 by kglebows         ###   ########.fr       */
 /*   Updated: 2023/12/14 18:45:32 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -37,6 +38,12 @@ typedef enum e_token_type
 	TEXT_SQUOTE,
 	TEXT_DQUOTE
 }				t_token_type;
+
+typedef enum e_return
+{
+	OK,
+	KO
+}			t_return;
 
 /**
  * @brief Token list structure
@@ -92,6 +99,14 @@ typedef struct t_cmdtable
 	int					fd;
 }			t_cmdtable;
 
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
 /**
  * @brief Main data structure that holds all information needed for the program.
  * @param exit exit code of main process
@@ -104,13 +119,16 @@ typedef struct s_dt
 {
 	int					*exit;
 	char				**envp;
+	t_env				*envp_lst;
 	char				*input;
 	t_token				*token;
 	t_cmdtable			**cmdtable;
 	int					nrofpipes;
+	int					fd_in;
+	int					fd_out;
 }						t_dt;
 
-void		ft_error(int code, t_dt *dt);
+t_return		ft_error(int code, t_dt *dt);
 void		ft_exit(t_dt *dt);
 int			*ini_exit(void);
 void		exit_code(int code);
@@ -142,6 +160,7 @@ int	lenght(char *str, char stop, t_dt *dt);
 */
 int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
 
+t_env	*init_env_var(char *envp[]);
 
 void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
 void print_cmdtable(t_dt *dt);
