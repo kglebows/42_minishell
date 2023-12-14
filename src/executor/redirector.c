@@ -30,9 +30,7 @@ int	set_infile(t_cmd_list *list)
 	printf("Infile: %s\n", file);
 	fd = open (file, O_RDWR, 0644);
 	if (fd < 0)
-	{
 		exit (1);
-	}
 	else
 	{
 		//list->in = fd;

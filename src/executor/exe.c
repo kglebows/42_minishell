@@ -6,20 +6,35 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:55:02 by ekordi            #+#    #+#             */
-/*   Updated: 2023/12/14 13:40:46 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/14 19:05:12 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+int	ft_open(char *argv)
+{
+	int	fd;
 
+	fd = open(argv, O_RDONLY);
+	if (fd == -1)
+	{
+		if (errno == EACCES)
+			ft_putstr_fd("zsh: permission denied: ", 2);
+		else if (errno == ENOENT)
+			ft_putstr_fd("zsh: no such file or directory: ", 2);
+		else
+			ft_putstr_fd("zsh: error opening the file: ", 2);
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd("\n", 2);
+	}
+	return (fd);
+}
 int	prepare_and_execute(t_dt *minishell)
 {
 	int		i;
-	char	*path;
-	int		pid1;
 	int		original_std_fd[2];
 	int		nb_cmd;
-	int		r;
+	bool	last_cmd;
 
 	original_std_fd[0] = dup(STDOUT_FILENO);
 	original_std_fd[1] = dup(STDIN_FILENO);
@@ -27,42 +42,22 @@ int	prepare_and_execute(t_dt *minishell)
 	nb_cmd = 0;
 	while (minishell->cmdtable[nb_cmd])
 		nb_cmd++;
-	if (nb_cmd == 1)
+
+	while (i < nb_cmd)
 	{
-		r = exe_built_in_cmds(minishell->cmdtable[0]->cmd, minishell->envp);
-		if (r == 1)
-			return (1); // execution was succsesful
-		else if (r == 0)
-		{
-			path = cmd_path(minishell->cmdtable[0]->cmd[0], minishell->envp);
-			if (path == NULL)
-				return (0);
-			pid1 = fork();
-			if (pid1 < 0)
-			{
-				perror("fork");
-				exit(1);
-			}
-			if (pid1 == 0)
-			{
-				if (execve(path, minishell->cmdtable[0]->cmd,
-						minishell->envp) == -1)
-					ft_putstr_fd("Exec Error", 2);
-			}
-			waitpid(pid1, 0, 0);
-		}
-	}
-	else
-	{
-		while (i < nb_cmd - 1)
-		{
-			execute(minishell->cmdtable[i]->cmd, minishell->envp, false,
-				original_std_fd);
-			i++;
-		}
-		execute(minishell->cmdtable[i]->cmd, minishell->envp, true,
+		if (i + 1 == nb_cmd)
+			last_cmd = true;
+		execute(minishell->cmdtable[i]->cmd, minishell->envp, last_cmd,
 			original_std_fd);
+		i++;
 	}
+
+	// int status;
+	// waitpid(pid, &status, 0);
+	// if (WIFEXITED(status))
+	// 	//upodate exit code
+	// if (WIFSIGNALED(status))
+	// 	exit_code(status);
 	return (1);
 }
 
@@ -138,6 +133,7 @@ void	execute(char **args, char **env, bool last_cmd, int *original_std_fd)
 		ft_putstr_fd("Path Error\n", 2);
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
+
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -146,6 +142,7 @@ void	execute(char **args, char **env, bool last_cmd, int *original_std_fd)
 	}
 	if (pid1 == 0)
 	{
+
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		if (last_cmd)
@@ -192,7 +189,7 @@ int	exe_built_in_cmds(char **args, char **env)
 	}
 	// else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
 	// {
-	// 	if (args[1] && cmd->is_param && !set_env(&env, cmd->value))
+	// 	if (args[1] && !set_env(&env, args[1]))
 	// 		return (-2);
 	// 	else
 	// 		return (1);
