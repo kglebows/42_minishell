@@ -41,8 +41,21 @@ typedef struct s_cmd_list
 	struct s_cmd_list	*prev;
 }	t_cmd_list;
 
-//executor.c
-//void		executor(t_cmd_list *list, char *envp[]);
+//exe.c
+int 	prepare_and_execute(t_dt *minishell);
+int 	exe_built_in_cmds(char **args, char **env);
+char	*cmd_path(char *cmd, char **env);
+void	execute(char **args, char **env, bool last_cmd, int *original_std_fd);
+
+//builtin.c
+void execute_echo(char **args);
+int execute_cd(char **args);
+int	execute_pwd(void);
+void print_env_var_list(char **env);
+
+
+
+
 
 //duping.c
 void		dup_output(int outpipe, t_cmd_list *list);

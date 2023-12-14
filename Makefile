@@ -6,7 +6,7 @@
 #    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/13 19:46:25 by ekordi           ###   ########.fr        #
+#    Updated: 2023/12/14 13:25:12 by ekordi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ SRCDIR = ./src
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
 		parse/token.c parse/token_utils.c parse/lexer.c parse/parse.c\
-		executor/ft_executor.c executor/executor.c executor/builtin.c\
-		utils/signal_handler.c builtin/ft_env.c\
+		executor/ft_executor.c executor/exe.c \
+		utils/signal_handler.c executor/built_in_cmds.c\
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 
