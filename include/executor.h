@@ -45,7 +45,8 @@ typedef struct s_cmd_list
 int 	prepare_and_execute(t_dt *minishell);
 int 	exe_built_in_cmds(char **args, char **env);
 char	*cmd_path(char *cmd, char **env);
-void	execute(char **args, char **env, bool last_cmd, int *original_std_fd);
+void	execute(t_cmdtable *table, char **args, char **env, bool last_cmd);
+int	ft_open(char *argv);
 
 //builtin.c
 void execute_echo(char **args);
@@ -75,9 +76,9 @@ void		ft_close_fd(int fd);
 int			create_heredoc(t_cmd_list *list, char *delimiter);
 
 //redirector.c
-void		check_redirections(t_cmd_list *list);
-int			set_outfile(t_cmd_list *list);
-int			set_infile(t_cmd_list *list);
+void	check_redirections(t_cmdtable *table);
+int	set_outfile(t_cmdtable *table, char *file);
+int	set_infile(t_cmdtable *table, char *file);
 int			append_file(char *file);
 
 //testing.c

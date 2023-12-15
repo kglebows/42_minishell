@@ -6,10 +6,10 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/14 19:06:56 by kglebows         ###   ########.fr       */
-/*   Updated: 2023/12/14 18:45:32 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/15 14:22:26 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef PARSE_H
 # define PARSE_H
@@ -96,7 +96,8 @@ typedef struct t_cmdtable
 	int					rdr_nb;
 	int					fd_in;
 	int					fd_out;
-	int					fd;
+	int					fd_rdr_in;
+	int					fd_rdr_out;
 }			t_cmdtable;
 
 
