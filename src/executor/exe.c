@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:55:02 by ekordi            #+#    #+#             */
-/*   Updated: 2023/12/15 16:45:44 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/15 17:03:28 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,7 @@ void	execute(t_cmdtable *table, char **args, char **env, bool last_cmd)
 	}
 	if (pid1 == 0)
 	{
-
 		close(fd[0]);
-
 		dup2(fd[1], STDOUT_FILENO);
 		if (table->fd_rdr_out)
 				dup2(table->fd_rdr_out, STDOUT_FILENO);
@@ -146,8 +144,8 @@ void	execute(t_cmdtable *table, char **args, char **env, bool last_cmd)
 		table->fd_rdr_out = 0;
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
-		// if (last_cmd)
-		// 	dup2(table->fd_in, STDIN_FILENO);
+		if (last_cmd)
+			dup2(table->fd_in, STDIN_FILENO);
 		waitpid(pid1, NULL, 0);
 	}
 }
