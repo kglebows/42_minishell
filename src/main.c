@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/14 19:07:46 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/15 15:39:03 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void ini_minishell(t_dt *dt)
 		{
 			add_history(dt->input);
 			ft_token(dt);
-			// ft_lexer(dt);
+			// ft_expander(dt);
 			if (ft_parse(dt) == OK)
 				ft_executor(dt);
 		}

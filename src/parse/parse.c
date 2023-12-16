@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/14 18:44:34 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:07:46 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 	{
 		if (temp->type > 4)
 		{
-			cmdtable->cmd[i] = ft_strslice(temp->data, temp->lenght, dt);
+			cmdtable->cmd[i] = ft_expander(temp->data, temp->lenght, dt);
 			i++;
 		}
 		else
@@ -112,7 +112,7 @@ void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 			temp = temp->next;
 			if (temp->type < 5)
 				ft_error(-16, dt);
-			cmdtable->rdr[j].data = ft_strslice(temp->data, temp->lenght, dt);
+			cmdtable->rdr[j].data = ft_expander(temp->data, temp->lenght, dt);
 			j++;
 		}
 		temp = temp->next;
@@ -278,4 +278,21 @@ t_env	*init_env_var(char *envp[])
 		}
 	}
 	return (head);
+}
+
+void	test_print_envlist(t_dt *dt)
+{
+	t_env			*temp;
+	int				u;
+	
+	u = 1;
+	temp = dt->envp_lst;
+	printf(":::::::::::::::::: env ::::::::::::::::::::\n");
+	while (temp)
+	{
+		printf("%2d :: %-30s :: %s\n", u, temp->key, temp->value);
+		temp = temp->next;
+		u++;
+	}
+	printf(":::::::::::::::::::::::::::::::::::::::::::\n");
 }
