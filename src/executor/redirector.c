@@ -76,7 +76,6 @@ int	is_valid_redirection(t_redirect redirection)
 
 void	check_redirections(t_cmdtable *table)
 {
-	//printf("redirection %i\n", list->redirect_list->redirection);
 	int i = 0;
 	if (table->rdr_nb)
 	{

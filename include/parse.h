@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/15 14:22:26 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/15 17:27:37 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct s_dt
 	int					nrofpipes;
 	int					fd_in;
 	int					fd_out;
+	int					*pids;
 }						t_dt;
 
 t_return		ft_error(int code, t_dt *dt);

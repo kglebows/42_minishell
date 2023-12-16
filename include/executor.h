@@ -43,17 +43,19 @@ typedef struct s_cmd_list
 
 //exe.c
 int 	prepare_and_execute(t_dt *minishell);
-int 	exe_built_in_cmds(char **args, char **env);
+int	exe_built_in_cmds(char **args, char **env, t_env *envp_lst);
 char	*cmd_path(char *cmd, char **env);
-void	execute(t_cmdtable *table, char **args, char **env, bool last_cmd);
+void	execute(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst);
 int	ft_open(char *argv);
+char	*ft_strgetbetween(const char *start, const char *end);
+
 
 //builtin.c
 void execute_echo(char **args);
 int execute_cd(char **args);
 int	execute_pwd(void);
 void print_env_var_list(char **env);
-int set_env(char ***env,const char *key_val_str);
+int	set_env(t_env **head, char *key_val_str);
 
 
 

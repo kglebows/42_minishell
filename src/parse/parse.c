@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/14 18:44:34 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:30:09 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	how_many(t_token_type token, t_token *start)
 /**
  * @brief Create an command table of height of number of pipes.
  * @param dt main data structure
- * @return 
+ * @return
 */
 void	create_cmdtable(t_dt *dt)
 {
@@ -133,7 +133,7 @@ void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 	// 	printf("token : %d,len : %d ,starts with : %s\n", temp->type, temp->lenght, temp->data);
 	// 	temp = temp->next;
 	// }
-	
+
 	cmdtable->cmd_nb = how_many(TEXT, token)
 						+ how_many(TEXT_SQUOTE, token)
 						+ how_many(TEXT_DQUOTE, token);
@@ -191,7 +191,7 @@ t_return	ft_parse(t_dt *dt)
 		temp = temp->next;
 	}
 	create_cmdtable(dt);
-	print_cmdtable(dt);
+	//print_cmdtable(dt);
 	return (OK);
 }
 

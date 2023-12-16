@@ -94,39 +94,61 @@ void	print_env_var_list(char **env)
 	}
 }
 
-// int	set_env(t_env **head, char *key_val_str)
-// {
-// 	t_env	*current;
-// 	t_env	*new_node;
-// 	char	*eq_sign_pos;
 
-// 	eq_sign_pos = ft_strchr(key_val_str, '=');
-// 	if (!eq_sign_pos)
-// 	{
-// 		return (1);
-// 	}
-// 	current = *head;
-// 	while (current != NULL)
-// 	{
-// 		if (!ft_strncmp(current->key, key_val_str, eq_sign_pos - key_val_str))
-// 		{
-// 			free(current->value);
-// 			current->value = ft_strdup(eq_sign_pos + 1);
-// 			return (current->value != NULL);
-// 		}
-// 		current = current->next;
-// 	}
-// 	new_node = create_env_var_node(key_val_str);
-// 	if (!new_node)
-// 		return (0);
-// 	if (*head == NULL)
-// 		*head = new_node;
-// 	else
-// 	{
-// 		current = *head;
-// 		while (current->next != NULL)
-// 			current = current->next;
-// 		current->next = new_node;
-// 	}
-// 	return (1);
-// }
+static t_env	*create_env_var_node(char *str)
+{
+	char	*eq_sign_pos;
+	t_env	*node;
+
+	eq_sign_pos = ft_strchr(str, '=');
+	if (!eq_sign_pos)
+		return (NULL);
+	node = (t_env *)malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
+	node->next = NULL;
+	node->key = ft_strgetbetween(str, eq_sign_pos - 1);
+	if (!node->key)
+		return (free(node), NULL);
+	node->value = ft_strdup(eq_sign_pos + 1);
+	if (!node->value)
+		return (free(node->key), free(node), NULL);
+	return (node);
+}
+
+int	set_env(t_env **head, char *key_val_str)
+{
+	t_env	*current;
+	t_env	*new_node;
+	char	*eq_sign_pos;
+
+	eq_sign_pos = ft_strchr(key_val_str, '=');
+	if (!eq_sign_pos)
+	{
+		return (1);
+	}
+	current = *head;
+	while (current != NULL)
+	{
+		if (!ft_strncmp(current->key, key_val_str, eq_sign_pos - key_val_str))
+		{
+			free(current->value);
+			current->value = ft_strdup(eq_sign_pos + 1);
+			return (current->value != NULL);
+		}
+		current = current->next;
+	}
+	new_node = create_env_var_node(key_val_str);
+	if (!new_node)
+		return (0);
+	if (*head == NULL)
+		*head = new_node;
+	else
+	{
+		current = *head;
+		while (current->next != NULL)
+			current = current->next;
+		current->next = new_node;
+	}
+	return (1);
+}
