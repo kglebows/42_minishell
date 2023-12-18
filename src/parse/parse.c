@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 15:21:57 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:29:55 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	how_many(t_token_type token, t_token *start)
 
 	i = 0;
 	temp = start;
-	// printf("Token %d being calculated: \n", temp->type);
 	while (temp && (token == PIPE || temp->type != PIPE))
 	{
 		if (token > 4 && temp->type < 4)
@@ -37,7 +36,6 @@ int	how_many(t_token_type token, t_token *start)
 			i++;
 		temp = temp->next;
 	}
-	// printf("for token %d, starting from %s -> cnt is: %d\n", token, start->data, i);
 	return (i);
 }
 
@@ -52,16 +50,13 @@ t_return	create_cmdtable(t_dt *dt)
 	t_token		*temp;
 
 	temp = dt->token;
-	// printf("typ pierwszego tokena to : %d input to : %s\n", temp->type, temp->data);
 	dt->nrofpipes = how_many(PIPE, temp);
-	// printf("there are %d pies!\n", dt->nrofpipes);
 	dt->cmdtable = (t_cmdtable **)ft_calloc(dt->nrofpipes + 2, sizeof(t_cmdtable *));
 	if (!dt->cmdtable)
 		return (ft_error(-10, dt));
 	i = 0;
 	while (temp != NULL && i <= dt->nrofpipes)
 	{
-		// printf("creating pipe nr %d ...\n", i);
 		dt->cmdtable[i] = ft_calloc(1, sizeof(t_cmdtable));
 		if (!dt->cmdtable[i])
 			return (ft_error(-10, dt));
@@ -75,18 +70,6 @@ t_return	create_cmdtable(t_dt *dt)
 	}
 	return (OK);
 }
-
-char *ft_strslice(char *str, int size, t_dt *dt)
-{
-	char			*temp;
-
-	temp = calloc(size + 1, sizeof(char));
-	if (!temp)
-		ft_error(-10, dt);
-	ft_strlcpy(temp, str, size + 1);
-	return (temp);
-}
-
 
 t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
@@ -107,40 +90,25 @@ t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 		{
 			cmdtable->cmd[i] = ft_expander(temp->data, temp->lenght, dt);
 			if (cmdtable->cmd[i] == NULL)
-				return (KO);
+				return (ft_error(-11, dt));
 			i++;
 		}
 		else
 		{
 			cmdtable->rdr[j].type = temp->type;
 			temp = temp->next;
-			if (temp->type < 5)
-				return (ft_error(-16, dt));
 			cmdtable->rdr[j].data = ft_expander(temp->data, temp->lenght, dt);
-		if (cmdtable->rdr[j].data == NULL)
-				return (KO);
+			if (cmdtable->rdr[j].data == NULL)
+				return (ft_error(-11, dt));
 			j++;
 		}
 		temp = temp->next;
-		if (i > cmdtable->cmd_nb || j > cmdtable->rdr_nb)
-			return(ft_error(-15, dt));
 	}
 	return (OK);
 }
 
 t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
-	// cmdtable = ft_calloc(1, sizeof(t_cmdtable));
-	// if (!cmdtable)
-	// 	ft_error(-10, dt);
-	// t_token *temp;
-	// temp = dt->token;
-	// while (temp)
-	// {
-	// 	printf("token : %d,len : %d ,starts with : %s\n", temp->type, temp->lenght, temp->data);
-	// 	temp = temp->next;
-	// }
-
 	cmdtable->cmd_nb = how_many(TEXT, token)
 						+ how_many(TEXT_SQUOTE, token)
 						+ how_many(TEXT_DQUOTE, token);

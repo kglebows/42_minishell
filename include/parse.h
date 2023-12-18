@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 15:08:32 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:27:59 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,6 @@ t_env	*init_env_var(char *envp[]);
 t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
 void print_cmdtable(t_dt *dt);
 t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
-
-char *ft_strslice(char *str, int size, t_dt *dt);
 
 char *ft_expander(char *str, int size, t_dt *dt);
 
