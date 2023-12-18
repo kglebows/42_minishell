@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 14:44:19 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:03:20 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	how_many(t_token_type token, t_token *start)
 /**
  * @brief Create an command table of height of number of pipes.
  * @param dt main data structure
- * @return 
+ * @return
 */
 t_return	create_cmdtable(t_dt *dt)
 {
@@ -140,7 +140,7 @@ t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 	// 	printf("token : %d,len : %d ,starts with : %s\n", temp->type, temp->lenght, temp->data);
 	// 	temp = temp->next;
 	// }
-	
+
 	cmdtable->cmd_nb = how_many(TEXT, token)
 						+ how_many(TEXT_SQUOTE, token)
 						+ how_many(TEXT_DQUOTE, token);

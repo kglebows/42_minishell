@@ -6,58 +6,44 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:55:02 by ekordi            #+#    #+#             */
-/*   Updated: 2023/12/14 19:05:12 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/16 15:19:51 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-int	ft_open(char *argv)
-{
-	int	fd;
 
-	fd = open(argv, O_RDONLY);
-	if (fd == -1)
-	{
-		if (errno == EACCES)
-			ft_putstr_fd("zsh: permission denied: ", 2);
-		else if (errno == ENOENT)
-			ft_putstr_fd("zsh: no such file or directory: ", 2);
-		else
-			ft_putstr_fd("zsh: error opening the file: ", 2);
-		ft_putstr_fd(argv, 2);
-		ft_putstr_fd("\n", 2);
-	}
-	return (fd);
-}
 int	prepare_and_execute(t_dt *minishell)
 {
 	int		i;
-	int		original_std_fd[2];
 	int		nb_cmd;
 	bool	last_cmd;
+	int status;
 
-	original_std_fd[0] = dup(STDOUT_FILENO);
-	original_std_fd[1] = dup(STDIN_FILENO);
 	i = 0;
 	nb_cmd = 0;
 	while (minishell->cmdtable[nb_cmd])
 		nb_cmd++;
+	minishell->pids = ft_calloc(sizeof(int), nb_cmd + 1);
+	minishell->pids[nb_cmd] = 0;
 
 	while (i < nb_cmd)
 	{
+		minishell->cmdtable[i]->fd_rdr_out = 0;
+		check_redirections(minishell->cmdtable[i]);
 		if (i + 1 == nb_cmd)
 			last_cmd = true;
-		execute(minishell->cmdtable[i]->cmd, minishell->envp, last_cmd,
-			original_std_fd);
+		execute(minishell->cmdtable[i], minishell->envp, last_cmd, minishell->envp_lst);
 		i++;
 	}
+	i = 0;
 
-	// int status;
-	// waitpid(pid, &status, 0);
-	// if (WIFEXITED(status))
-	// 	//upodate exit code
-	// if (WIFSIGNALED(status))
-	// 	exit_code(status);
+	while (i < nb_cmd)
+		waitpid(minishell->pids[i++], 0, 0);
+	waitpid(minishell->pids[i], &status, 0);
+	if (WIFEXITED(status))
+	 	exit_code(WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+	 	exit_code(128 + WTERMSIG(status));
 	return (1);
 }
 
@@ -118,19 +104,13 @@ char	*cmd_path(char *cmd, char **env)
 	return (NULL);
 }
 
-void	execute(char **args, char **env, bool last_cmd, int *original_std_fd)
+void	execute(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst)
 {
 	char	*path;
 	int		pid1;
 	int		fd[2];
 	int		r;
 
-	if (access(args[0], X_OK) == 0)
-		path = args[0];
-	else
-		path = cmd_path(args[0], env);
-	if (path == NULL)
-		ft_putstr_fd("Path Error\n", 2);
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
 
@@ -142,32 +122,42 @@ void	execute(char **args, char **env, bool last_cmd, int *original_std_fd)
 	}
 	if (pid1 == 0)
 	{
-
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		if (last_cmd)
-			dup2(original_std_fd[0], STDOUT_FILENO);
-		r = exe_built_in_cmds(args, env);
+		if (table->fd_rdr_out)
+				dup2(table->fd_rdr_out, STDOUT_FILENO);
+		if (last_cmd && !table->fd_rdr_out)
+			dup2(table->fd_out, STDOUT_FILENO);
+
+		r = exe_built_in_cmds(table->cmd, env, envp_lst);
 		if (r == 1)
 			exit(0); // execution was succsesful
 		else if (r == 0)
 		{
-			if (execve(path, args, env) == -1)
+			if (access(table->cmd[0], X_OK) == 0)
+				path = table->cmd[0];
+			else
+				path = cmd_path(table->cmd[0], env);
+			if (path == NULL)
+				{ft_putstr_fd("Path not found\n", 2);
+				exit(0);}
+			if (execve(path, table->cmd, env) == -1)
 				ft_putstr_fd("Exec Error", 2);
 		}
 	}
 	else
 	{
+		table->fd_rdr_out = 0;
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		if (last_cmd)
-			dup2(original_std_fd[1], STDIN_FILENO);
-		waitpid(pid1, NULL, 0);
+			dup2(table->fd_in, STDIN_FILENO);
 	}
 }
 
-int	exe_built_in_cmds(char **args, char **env)
+int	exe_built_in_cmds(char **args, char **env, t_env *envp_lst)
 {
+
 	if (!ft_strncmp(args[0], "echo", 4) && ft_strlen(args[0]) == 4)
 	{
 		execute_echo(args + 1);
@@ -187,13 +177,15 @@ int	exe_built_in_cmds(char **args, char **env)
 		else
 			return (1);
 	}
-	// else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
-	// {
-	// 	if (args[1] && !set_env(&env, args[1]))
-	// 		return (-2);
-	// 	else
-	// 		return (1);
-	// }
+	else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
+	{
+		printf("kls\n");
+		if (args[1] && !set_env(&envp_lst, args[1]))
+			return (-2);
+		else
+		
+			return (1);
+	}
 	// else if (!ft_strncmp(args[0], "unset", 5) && ft_strlen(args[0]) == 5)
 	// {
 	// 	if (args[1] && cmd->is_param)
