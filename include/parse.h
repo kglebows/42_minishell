@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/15 15:45:32 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:43:39 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,9 +162,9 @@ int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
 
 t_env	*init_env_var(char *envp[]);
 
-void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
 void print_cmdtable(t_dt *dt);
-void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
 
 char *ft_strslice(char *str, int size, t_dt *dt);
 

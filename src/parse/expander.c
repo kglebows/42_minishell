@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/16 20:45:37 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:46:13 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*check_env(char *check, int i, t_dt *dt)
 	ret = NULL;
 	while (temp)
 	{
+		// printf(":: Checking... %s vs %s\n", check, temp->key);
 		if (ft_strncmp(temp->key, check, i) == 0)
 		{
 			ret = ft_strdup(temp->value);
@@ -64,19 +65,22 @@ char	*expand(char q, char *start, t_dt *dt)
 	char		*temp;
 	char		*exp;
 
-	i = 1;
-	printf("%c", start[i]);
-	if (start[i] == '?')
+	i = 0;
+	// printf("%c", start[i]);
+	if (start[i + 1] == '?')
 		return (ft_itoa(*ini_exit()));
 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
 		i++;
 	temp = calloc(i + 1, sizeof(char));
 	if (!temp)
 		ft_error(-10, dt);
-	ft_strlcpy(temp, start, i);
-	exp = check_env(temp, i, dt);
 	if (q == '\'')
+	{
+		ft_strlcpy(temp, &start[-1], i + 2);
 		return (temp);
+	}
+	ft_strlcpy(temp, start, i + 1);
+	exp = check_env(temp, i, dt);
 	free(temp);
 	return (exp);
 }
@@ -85,7 +89,10 @@ char	*update_string(char* str, char *update)
 {
 	char		*temp;
 
-	temp = ft_strjoin(str, update);
+	if (update)
+		temp = ft_strjoin(str, update);
+	else
+		temp = ft_strjoin(str, "");
 	if (str)
 		free(str);
 	if (update)
@@ -118,7 +125,7 @@ char *ft_expander(char *str, int size, t_dt *dt)
 		}
 		else if (str[i] == '$')
 		{
-			printf("<%c>", str[i]);
+			// printf("<%c>", str[i]);
 			i++;
 			temp = update_string(temp, expand(q, &str[i], dt));
 			if (str[i] == '?')
@@ -131,11 +138,17 @@ char *ft_expander(char *str, int size, t_dt *dt)
 		}
 		else
 		{
-			c = ft_calloc(1, sizeof(char));
-			*c = str[i];
+			c = ft_calloc(2, sizeof(char));
+			c[0] = str[i];
+			c[1] = '\0';
 			temp = update_string(temp, c);
 			i++;
 		}
+	}
+	if (q != ' ')
+	{
+		// ft_error(-11, dt);
+		return (NULL);
 	}
 	
 	return (temp);

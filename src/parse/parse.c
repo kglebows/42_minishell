@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/16 19:07:46 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:44:19 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	how_many(t_token_type token, t_token *start)
  * @param dt main data structure
  * @return 
 */
-void	create_cmdtable(t_dt *dt)
+t_return	create_cmdtable(t_dt *dt)
 {
 	int			i;
 	t_token		*temp;
@@ -57,21 +57,23 @@ void	create_cmdtable(t_dt *dt)
 	// printf("there are %d pies!\n", dt->nrofpipes);
 	dt->cmdtable = (t_cmdtable **)ft_calloc(dt->nrofpipes + 2, sizeof(t_cmdtable *));
 	if (!dt->cmdtable)
-		ft_error(-10, dt);
+		return (ft_error(-10, dt));
 	i = 0;
 	while (temp != NULL && i <= dt->nrofpipes)
 	{
 		// printf("creating pipe nr %d ...\n", i);
 		dt->cmdtable[i] = ft_calloc(1, sizeof(t_cmdtable));
 		if (!dt->cmdtable[i])
-			ft_error(-10, dt);
-		fill_cmdtable(dt->cmdtable[i], temp, dt);
+			return (ft_error(-10, dt));
+		if (fill_cmdtable(dt->cmdtable[i], temp, dt) != OK)
+			return (KO);
 		while (temp && temp->type != PIPE)
 			temp = temp->next;
 		i++;
 		if (temp)
 			temp = temp->next;
 	}
+	return (OK);
 }
 
 char *ft_strslice(char *str, int size, t_dt *dt)
@@ -86,7 +88,7 @@ char *ft_strslice(char *str, int size, t_dt *dt)
 }
 
 
-void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
+t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
 	t_token			*temp;
 	int				i;
@@ -95,7 +97,7 @@ void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 	cmdtable->cmd = (char **) ft_calloc(cmdtable->cmd_nb + 1, sizeof(char *));
 	cmdtable->rdr = (t_rdr *) ft_calloc(cmdtable->rdr_nb + 1, sizeof(t_rdr));
 	if (!cmdtable->cmd || !cmdtable->rdr)
-		ft_error(-10, dt);
+		return (ft_error(-10, dt));
 	temp = token;
 	i = 0;
 	j = 0;
@@ -104,6 +106,8 @@ void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 		if (temp->type > 4)
 		{
 			cmdtable->cmd[i] = ft_expander(temp->data, temp->lenght, dt);
+			if (cmdtable->cmd[i] == NULL)
+				return (KO);
 			i++;
 		}
 		else
@@ -111,17 +115,20 @@ void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 			cmdtable->rdr[j].type = temp->type;
 			temp = temp->next;
 			if (temp->type < 5)
-				ft_error(-16, dt);
+				return (ft_error(-16, dt));
 			cmdtable->rdr[j].data = ft_expander(temp->data, temp->lenght, dt);
+		if (cmdtable->rdr[j].data == NULL)
+				return (KO);
 			j++;
 		}
 		temp = temp->next;
 		if (i > cmdtable->cmd_nb || j > cmdtable->rdr_nb)
-			ft_error(-15, dt);
+			return(ft_error(-15, dt));
 	}
+	return (OK);
 }
 
-void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
+t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
 	// cmdtable = ft_calloc(1, sizeof(t_cmdtable));
 	// if (!cmdtable)
@@ -141,9 +148,11 @@ void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 						+ how_many(REDIRECTION_OUT, token)
 						+ how_many(REDIRECTION_IN_HEREDOC, token)
 						+ how_many(REDIRECTION_OUT_APPEND, token);
-	fill_cmd(cmdtable, token, dt);
 	cmdtable->fd_in = dup(STDIN_FILENO);
 	cmdtable->fd_out = dup(STDOUT_FILENO);
+	if (fill_cmd(cmdtable, token, dt) != OK)
+		return (KO);
+	return(OK);
 }
 
 void print_cmdtable(t_dt *dt)
@@ -190,8 +199,9 @@ t_return	ft_parse(t_dt *dt)
 			return (ft_error(-14, dt));
 		temp = temp->next;
 	}
-	create_cmdtable(dt);
-	print_cmdtable(dt);
+	if (create_cmdtable(dt) != OK)
+		return (KO);
+	// print_cmdtable(dt);
 	return (OK);
 }
 
