@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 15:23:16 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 19:09:47 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ char	*expand(char q, char *start, t_dt *dt)
 		return (ft_itoa(*ini_exit()));
 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
 		i++;
+	if (i == 0)
+		return(ft_calloc(1, sizeof(char)));
 	temp = calloc(i + 1, sizeof(char));
 	if (!temp)
 		ft_error(-10, dt);
