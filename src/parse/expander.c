@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 14:46:13 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:23:16 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ char	*expand(char q, char *start, t_dt *dt)
 	char		*exp;
 
 	i = 0;
-	// printf("%c", start[i]);
-	if (start[i + 1] == '?')
+	if (start[i] == '?')
 		return (ft_itoa(*ini_exit()));
 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
 		i++;
