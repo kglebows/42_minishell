@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 15:01:35 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:08:32 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ typedef struct t_cmdtable
 	int					rdr_nb;
 	int					fd_in;
 	int					fd_out;
-	int					fd;
+	int					fd_rdr_in;
+	int					fd_rdr_out;
 }			t_cmdtable;
 
 
@@ -126,6 +127,7 @@ typedef struct s_dt
 	int					nrofpipes;
 	int					fd_in;
 	int					fd_out;
+	int					*pids;
 }						t_dt;
 
 t_return		ft_error(int code, t_dt *dt);
