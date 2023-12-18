@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/15 16:57:35 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/18 18:02:22 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,20 @@ void ini_minishell(t_dt *dt)
 	while (42)
 	{
 		init_signal_handler();
+		/* START */
+		// if (isatty(fileno(stdin)))
+		// 	dt->input = readline("");
+		// else
+		// {
+		// 	char *line;
+		// 	line = get_next_line(fileno(stdin));
+		// 	if (!line)
+		// 		return ;
+		// 	dt->input = ft_strtrim(line, "\n");
+		// 	free(line);
+		// }
+		/* END */
+		
 		dt->input = readline("Mini$hell ];> ");
 		if (!dt->input)
 			break ;
@@ -72,7 +86,7 @@ void ini_minishell(t_dt *dt)
 		{
 			add_history(dt->input);
 			ft_token(dt);
-			// ft_lexer(dt);
+			// ft_expander(dt);
 			if (ft_parse(dt) == OK)
 				ft_executor(dt);
 		}

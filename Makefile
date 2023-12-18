@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/15 15:01:24 by ekordi           ###   ########.fr        #
+#    Updated: 2023/12/18 15:01:12 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,14 +15,14 @@ NAME = minishell
 CC = cc
 #CFLAGS = -Wall -Werror -Wextra -g
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -g
 
 OBJDIR = ./bin
 SRCDIR = ./src
 
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
-		parse/token.c parse/token_utils.c parse/lexer.c parse/parse.c\
+		parse/token.c parse/token_utils.c parse/expander.c parse/parse.c\
 		executor/ft_executor.c executor/exe.c executor/redirector.c\
 		utils/signal_handler.c executor/built_in_cmds.c\
 
@@ -60,6 +60,9 @@ makelibft:
 			echo "\033[0;32mLIBFT OK!\033[0m"; \
 		fi; \
 	fi
+
+# $(NAME): $(OBJS)
+# 	$(CC) $(CFLAGS) $(OBJS) $(LIBFTNAME) -L/usr/include -lreadline -o $@
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) -I $(LIBFT_PATH) -I $(INCLUDE_PATH) -lreadline -o $(NAME) $(OBJS) -L$(OBJDIR)/libft -lft

@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 15:06:09 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/11 20:12:11 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:11:45 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * @brief Creates static variable for exit code
  * @param -
- * @return Exit code for terminal.
+ * @return adress of current Exit Code for terminal.
 */
 int	*ini_exit(void)
 {
