@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/18 21:29:55 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:23:13 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,32 @@ int	how_many(t_token_type token, t_token *start)
 		temp = temp->next;
 	}
 	return (i);
+}
+
+void	free_cmdtable(t_dt *dt)
+{
+	int				i;
+	int				j;
+
+	i = 0;
+	while (dt->cmdtable[i])
+	{
+		j = 0;
+		while (dt->cmdtable[i]->rdr[j].data)
+		{
+			free(dt->cmdtable[i]->rdr[j].data);
+			j++;
+		}
+		j = 0;
+		while (dt->cmdtable[i]->cmd[j])
+		{
+			free(dt->cmdtable[i]->cmd[j]);
+			j++;
+		}
+		free(dt->cmdtable[i]);
+		i++;
+	}
+	free (dt->cmdtable);
 }
 
 /**
