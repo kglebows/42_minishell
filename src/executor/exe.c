@@ -17,7 +17,7 @@ int	prepare_and_execute(t_dt *minishell)
 	while (minishell->cmdtable[nb_cmd])
 		nb_cmd++;
 	if (nb_cmd == 1 && !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
-		exit(minishell->cmdtable[0]->cmd);
+		exit_shell(minishell->cmdtable[0]->cmd);
 	/// minishell->pids = ft_calloc(sizeof(int), nb_cmd + 1);
 	// minishell->pids[nb_cmd] = 0;
 	while (i < nb_cmd)
@@ -42,7 +42,7 @@ int	prepare_and_execute(t_dt *minishell)
 			execute(minishell->cmdtable[i], minishell, last_cmd);
 		i++;
 	}
-	// ft_waitpid(minishell, nb_cmd);
+	ft_waitpid(minishell, nb_cmd);
 	return (1);
 }
 /**

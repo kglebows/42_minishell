@@ -58,7 +58,7 @@ int	*ini_exit(void)
 void	exit_code(int code)
 {
 	int	*exit;
-
+	printf("exxit code : %d\n",code);
 	exit = ini_exit();
 	*exit = code;
 }

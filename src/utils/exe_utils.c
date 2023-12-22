@@ -11,14 +11,15 @@ void	ft_waitpid(t_dt *minishell, int nb_cmd)
 	int	i;
 	int	status;
 
+	(void) minishell;
+	(void) nb_cmd;
 	i = 0;
-	while (i < nb_cmd)
-		waitpid(minishell->pids[i++], 0, 0);
-	waitpid(minishell->pids[i], &status, 0);
-	if (WIFEXITED(status))
+	while (nb_cmd--)
+		wait(&status);
+	// if (WIFEXITED(status))
 		exit_code(WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		exit_code(128 + WTERMSIG(status));
+	// if (WIFSIGNALED(status))
+	// 	exit_code(128 + WTERMSIG(status));
 }
 /**
  * @brief Gets the value of an environment variable by name

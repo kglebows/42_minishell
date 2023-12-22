@@ -114,7 +114,6 @@ typedef struct s_dt
 	int				nrofpipes;
 	int				fd_in;
 	int				fd_out;
-	int				*pids;
 }					t_dt;
 
 t_return			(ft_error(int code, t_dt *dt));
