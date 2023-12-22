@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 17:18:30 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/14 16:51:04 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:26:29 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,20 @@ int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt)
 	// ft_printf(" type:%d len:%d\n", type, lenght);
 	// DEBUG
 	return (lenght);
+}
+
+void	free_token(t_dt *dt)
+{
+	t_token		*temp;
+	t_token		*f_temp;
+
+	temp = dt->token;
+	while (temp)
+	{
+		f_temp = temp;
+		temp = temp->next;
+		if (f_temp)
+			free(f_temp);
+	}
+	dt->token = NULL;
 }

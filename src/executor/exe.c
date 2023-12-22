@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 14:55:02 by ekordi            #+#    #+#             */
-/*   Updated: 2023/12/22 12:58:44 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/22 13:53:26 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	prepare_and_execute(t_dt *minishell)
 	int		nb_cmd;
 	bool	last_cmd;
 
+
+// ADD HERE AN EXIT WHEN exit command and no pipes. if pipes, ignore exit 
 	i = 0;
 	nb_cmd = 0;
 	while (minishell->cmdtable[nb_cmd])

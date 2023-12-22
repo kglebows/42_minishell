@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/15 16:57:35 by ekordi           ###   ########.fr       */
+/*   Updated: 2023/12/22 13:52:30 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,35 @@ void ini_minishell(t_dt *dt)
 {
 	while (42)
 	{
-		init_signal_handler();
+		// init_signal_handler();
+		/* START */
+		// if (isatty(fileno(stdin)))
+		// 	dt->input = readline("");
+		// else
+		// {
+		// 	char *line;
+		// 	line = get_next_line(fileno(stdin));
+		// 	if (!line)
+		// 		return ;
+		// 	dt->input = ft_strtrim(line, "\n");
+		// 	free(line);
+		// }
+		/* END */
+		
 		dt->input = readline("Mini$hell ];> ");
 		if (!dt->input)
 			break ;
-		// printf("Wpisany INPUT: %s\n", dt->input);
 		if (check_input(dt) == OK)
 		{
 			add_history(dt->input);
 			ft_token(dt);
-			// ft_lexer(dt);
 			if (ft_parse(dt) == OK)
-				ft_executor(dt);
+				prepare_and_execute(dt);
+			free_token(dt);
+			free_cmdtable(dt);
 		}
 		free(dt->input);
-		dt->token = NULL; // Leeks : i need to free token and cmdtable
+		// dt->token = NULL; // Leeks : i need to free token and cmdtable
 	}
 }
 
@@ -94,6 +108,6 @@ int	main(int argc, char *argv[], char *envp[])
 
 	dt = ini_dt(argc, argv, envp);
 	ini_minishell(dt);
-	ft_exit(dt);
+	ft_exit(dt); // need to do free env
 	return (*dt->exit);
 }

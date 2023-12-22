@@ -14,6 +14,7 @@
 # include <errno.h>
 # include <sys/stat.h>
 # include <termios.h>
+// # include <wait.h>
 
 # include "../lib/libft/libft.h"
 
@@ -23,12 +24,11 @@
 # include "utils.h"
 
 
-void	ft_executor(t_dt *dt);
+// void	ft_executor(t_dt *dt);
 t_return	ft_parse(t_dt *dt);
-void	ft_lexer(t_dt *dt);
 
 //signal_handler
-void	init_signal_handler(void);
+// void	init_signal_handler(void);
 
 # define FALSE 0
 # define TRUE 1

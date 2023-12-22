@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/18 17:12:23 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/17 15:36:43 by ekordi           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 
 #ifndef PARSE_H
 # define PARSE_H
@@ -161,10 +149,23 @@ int	lenght(char *str, char stop, t_dt *dt);
  * @return lenght of data
 */
 int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
+void	free_token(t_dt *dt);
 
 t_env	*init_env_var(char *envp[]);
 
-void	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
 void print_cmdtable(t_dt *dt);
-void	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+void	free_cmdtable(t_dt *dt);
+
+char *ft_expander(char *str, int size, t_dt *dt);
+
+
+
+/*
+	TESTING
+*/
+void	test_print_envlist(t_dt *dt);
+
+
 #endif
