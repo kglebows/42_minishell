@@ -49,7 +49,9 @@ int	lenght(char *str, char stop, t_dt *dt)
 	while (str[i] != '\0')
 	{
 		i++;
-		if (str[i] == stop || str[i] == '<' || str[i] == '>' || str[i] == '|')
+		if (str[i] == stop)
+			break ;
+		if (stop == ' ' && ( str[i] == '<' || str[i] == '>' || str[i] == '|'))
 			break ;
 	}
 	if (stop == '\'' || stop == '\"')
