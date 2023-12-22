@@ -9,25 +9,24 @@
 int	prepare_and_execute(t_dt *minishell)
 {
 	int		i;
-	int		nb_cmd;
+	int		table_num;
 	bool	last_cmd;
+	int		cmd_num = minishell->cmdtable[0]->cmd_nb;
 
 	i = 0;
-	nb_cmd = 0;
-	while (minishell->cmdtable[nb_cmd])
-		nb_cmd++;
-	if (nb_cmd == 1 && !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
+	table_num = 0;
+	while (minishell->cmdtable[table_num])
+		table_num++;
+	if (cmd_num != 0 && table_num == 1 && !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
 		exit_shell(minishell->cmdtable[0]->cmd);
-	/// minishell->pids = ft_calloc(sizeof(int), nb_cmd + 1);
-	// minishell->pids[nb_cmd] = 0;
-	while (i < nb_cmd)
+	while (i < table_num)
 	{
-		if (!ft_strncmp(minishell->cmdtable[i]->cmd[0], "exit", 4))
+		if (cmd_num != 0 && !ft_strncmp(minishell->cmdtable[i]->cmd[0], "exit", 4))
 		{
 			i++;
 			continue ;
 		}
-		if (i + 1 == nb_cmd)
+		if (i + 1 == table_num)
 			last_cmd = true;
 		minishell->cmdtable[i]->fd_rdr_out = 0;
 		if (check_redirections(minishell->cmdtable[i]))
@@ -35,14 +34,19 @@ int	prepare_and_execute(t_dt *minishell)
 			if (last_cmd)
 			{
 				exit_code(1);
-				exit(1);
+				ft_exit(minishell);
 			}
 		}
 		else
 			execute(minishell->cmdtable[i], minishell, last_cmd);
 		i++;
 	}
-	ft_waitpid(minishell, nb_cmd);
+
+
+	////fix exit code. right now is random
+
+
+	ft_waitpid(minishell, table_num);
 	return (1);
 }
 /**
@@ -106,7 +110,6 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 		dup2(fd[0], STDIN_FILENO);
 		if (last_cmd)
 			dup2(table->fd_in, STDIN_FILENO);
-		waitpid(pid1, 0, 0); // to be deleted
 	}
 }
 /**

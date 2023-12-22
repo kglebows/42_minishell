@@ -16,10 +16,7 @@ void	ft_waitpid(t_dt *minishell, int nb_cmd)
 	i = 0;
 	while (nb_cmd--)
 		wait(&status);
-	// if (WIFEXITED(status))
-		exit_code(WEXITSTATUS(status));
-	// if (WIFSIGNALED(status))
-	// 	exit_code(128 + WTERMSIG(status));
+	exit_code(WEXITSTATUS(status));
 }
 /**
  * @brief Gets the value of an environment variable by name

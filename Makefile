@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
+#    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/22 13:46:49 by kglebows         ###   ########.fr        #
+#    Updated: 2023/12/22 18:16:25 by ekordi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = minishell
 CC = cc
 #CFLAGS = -Wall -Werror -Wextra -g
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
 OBJDIR = ./bin
 SRCDIR = ./src
