@@ -69,16 +69,34 @@ int	execute_cd(char **args)
 void	execute_echo(char **args)
 {
 	bool	newline;
+	bool	endofn;
 	int		i;
+	int		n;
 
 	newline = true;
+	endofn = false;
 	i = 0;
 	while (args[i] != NULL)
 	{
-		if (args[i][0] == '-' && args[i][1] == 'n' && args[i][2] == '\0')
-			newline = false;
+		if (args[i][0] == '-' && args[i][ft_strlen(args[i])] == '\0' && endofn == false)
+		{
+			n = 1;
+			while (n < ft_strlen(args[i]))
+			{
+				if (args[i][n] != 'n')
+				{
+					endofn = true;
+					i--;
+					break ;
+				}
+				n++;
+			}
+			if (n == ft_strlen(args[i]))
+				newline = false;
+		}
 		else
 		{
+			endofn = true;
 			write(STDOUT_FILENO, args[i], strlen(args[i]));
 			if (args[i + 1] != NULL)
 				write(STDOUT_FILENO, " ", 1);
