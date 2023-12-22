@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 23:27:34 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/19 17:23:13 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:42:49 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,11 @@ char	*ft_strgetbetween(const char *start, const char *end)
 	word[i] = '\0';
 	return (word);
 }
-
+/**
+ * @brief Creates a new node for an environment variable
+ * @param str String containing the key-value pair of the environment variable
+ * @return Pointer to the newly created node on success, NULL on failure
+ */
 static t_env	*create_env_var_node(char *str)
 {
 	char	*eq_sign_pos;

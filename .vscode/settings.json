@@ -19,6 +19,15 @@
 		"system_error": "c",
 		"tuple": "c",
 		"type_traits": "c",
-		"vector": "c"
+		"vector": "c",
+		"minishell.h": "c",
+		"libft.h": "c",
+		"stat.h": "c",
+		"stdbool.h": "c",
+		"builtin.h": "c",
+		"stdio.h": "c",
+		"stdlib.h": "c",
+		"limits.h": "c",
+		"errno.h": "c"
 	}
 }

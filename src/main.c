@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 13:26:44 by kglebows          #+#    #+#             */
-/*   Updated: 2023/12/19 18:35:16 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:52:30 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void ini_minishell(t_dt *dt)
 {
 	while (42)
 	{
-		init_signal_handler();
+		// init_signal_handler();
 		/* START */
 		// if (isatty(fileno(stdin)))
 		// 	dt->input = readline("");
