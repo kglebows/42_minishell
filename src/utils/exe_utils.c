@@ -72,9 +72,7 @@ char	*cmd_path(char *cmd, char **env)
 		free(temp);
 		free(path);
 	}
-	ft_putstr_fd("zsh: command not found: ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("\n", 2);
+	ft_printf("minishell: command not found: %s\n", cmd);
 	free_arrayofstrings(paths);
 	return (NULL);
 }

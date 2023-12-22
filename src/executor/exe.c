@@ -12,16 +12,21 @@ int	prepare_and_execute(t_dt *minishell)
 	int		nb_cmd;
 	bool	last_cmd;
 
-
-// ADD HERE AN EXIT WHEN exit command and no pipes. if pipes, ignore exit 
 	i = 0;
 	nb_cmd = 0;
 	while (minishell->cmdtable[nb_cmd])
 		nb_cmd++;
-	minishell->pids = ft_calloc(sizeof(int), nb_cmd + 1);
-	minishell->pids[nb_cmd] = 0;
+	if (nb_cmd == 1 && !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
+		exit(minishell->cmdtable[0]->cmd);
+	/// minishell->pids = ft_calloc(sizeof(int), nb_cmd + 1);
+	// minishell->pids[nb_cmd] = 0;
 	while (i < nb_cmd)
 	{
+		if (!ft_strncmp(minishell->cmdtable[i]->cmd[0], "exit", 4))
+		{
+			i++;
+			continue ;
+		}
 		if (i + 1 == nb_cmd)
 			last_cmd = true;
 		minishell->cmdtable[i]->fd_rdr_out = 0;
@@ -32,16 +37,12 @@ int	prepare_and_execute(t_dt *minishell)
 				exit_code(1);
 				exit(1);
 			}
-			else
-			{	minishell->cmdtable[i]->fd_rdr_in = 0;
-				i++;
-				continue ;
-			}
 		}
-		execute(minishell->cmdtable[i], minishell, last_cmd);
+		else
+			execute(minishell->cmdtable[i], minishell, last_cmd);
 		i++;
 	}
-	//ft_waitpid(minishell, nb_cmd);
+	// ft_waitpid(minishell, nb_cmd);
 	return (1);
 }
 /**
@@ -51,10 +52,9 @@ int	prepare_and_execute(t_dt *minishell)
  * @param last_cmd Flag indicating if this is the last command in a pipeline
  * @param envp_lst Linked list of environment variables
  */
-void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst)
+void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst,
+		char *path)
 {
-	char	*path;
-
 	if (table->fd_rdr_out)
 		dup2(table->fd_rdr_out, STDOUT_FILENO);
 	if (last_cmd && !table->fd_rdr_out)
@@ -63,10 +63,6 @@ void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst)
 		exit(EXIT_SUCCESS);
 	else
 	{
-		if (access(table->cmd[0], X_OK) == 0)
-			path = table->cmd[0];
-		else
-			path = cmd_path(table->cmd[0], env);
 		if (execve(path, table->cmd, env) == -1)
 			ft_putstr_fd("Exec Error", 2);
 	}
@@ -79,11 +75,18 @@ void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst)
  */
 void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 {
-	int	pid1;
-	int	fd[2];
+	int		pid1;
+	int		fd[2];
+	char	*path;
 
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
+	if (access(table->cmd[0], X_OK) == 0)
+		path = table->cmd[0];
+	else
+		path = cmd_path(table->cmd[0], minishell->envp);
+	if (!path)
+		return ;
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -94,7 +97,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 	{
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		child(table, minishell->envp, last_cmd, minishell->envp_lst);
+		child(table, minishell->envp, last_cmd, minishell->envp_lst, path);
 	}
 	else
 	{
@@ -103,7 +106,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 		dup2(fd[0], STDIN_FILENO);
 		if (last_cmd)
 			dup2(table->fd_in, STDIN_FILENO);
-		waitpid(pid1, 0, 0);// to be deleted
+		waitpid(pid1, 0, 0); // to be deleted
 	}
 }
 /**

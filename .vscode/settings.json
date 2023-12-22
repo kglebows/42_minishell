@@ -28,6 +28,9 @@
 		"stdio.h": "c",
 		"stdlib.h": "c",
 		"limits.h": "c",
-		"errno.h": "c"
+		"errno.h": "c",
+		"locale": "c",
+		"string.h": "c",
+		"readline.h": "c"
 	}
 }

@@ -25,13 +25,13 @@ typedef enum e_token_type
 	TEXT,
 	TEXT_SQUOTE,
 	TEXT_DQUOTE
-}				t_token_type;
+}					t_token_type;
 
 typedef enum e_return
 {
 	OK,
 	KO
-}			t_return;
+} t_return ;
 
 /**
  * @brief Token list structure
@@ -42,11 +42,11 @@ typedef enum e_return
  */
 typedef struct s_token
 {
-	t_token_type		type;
-	char				*data;
-	int					lenght;
-	struct s_token		*next;
-}			t_token;
+	t_token_type	type;
+	char			*data;
+	int				lenght;
+	struct s_token	*next;
+}					t_token;
 
 /**
  * @brief Redirection information
@@ -55,9 +55,9 @@ typedef struct s_token
  */
 typedef struct s_rdr
 {
-	t_token_type		type;
-	char				*data;
-}			t_rdr;
+	t_token_type	type;
+	char			*data;
+}					t_rdr;
 
 // ! //
 
@@ -78,16 +78,15 @@ typedef struct s_rdr
  */
 typedef struct t_cmdtable
 {
-	char				**cmd;
-	int					cmd_nb;
-	t_rdr				*rdr;
-	int					rdr_nb;
-	int					fd_in;
-	int					fd_out;
-	int					fd_rdr_in;
-	int					fd_rdr_out;
-}			t_cmdtable;
-
+	char			**cmd;
+	int				cmd_nb;
+	t_rdr			*rdr;
+	int				rdr_nb;
+	int				fd_in;
+	int				fd_out;
+	int				fd_rdr_in;
+	int				fd_rdr_out;
+}					t_cmdtable;
 
 typedef struct s_env
 {
@@ -106,30 +105,31 @@ typedef struct s_env
  */
 typedef struct s_dt
 {
-	int					*exit;
-	char				**envp;
-	t_env				*envp_lst;
-	char				*input;
-	t_token				*token;
-	t_cmdtable			**cmdtable;
-	int					nrofpipes;
-	int					fd_in;
-	int					fd_out;
-	int					*pids;
-}						t_dt;
+	int				*exit;
+	char			**envp;
+	t_env			*envp_lst;
+	char			*input;
+	t_token			*token;
+	t_cmdtable		**cmdtable;
+	int				nrofpipes;
+	int				fd_in;
+	int				fd_out;
+	int				*pids;
+}					t_dt;
 
-t_return		ft_error(int code, t_dt *dt);
-void		ft_exit(t_dt *dt);
-int			*ini_exit(void);
-void		exit_code(int code);
-void		ft_token(t_dt *dt);
+t_return			(ft_error(int code, t_dt *dt));
+void				ft_exit(t_dt *dt);
+int					*ini_exit(void);
+void				exit_code(int code);
+void				exit_shell(char **args);
+void				ft_token(t_dt *dt);
 
 /**
  * @brief Tokenization - Turning input into tokens
  * @param dt main data structure
  * @return
-*/
-void	ft_token(t_dt *dt);
+ */
+void				ft_token(t_dt *dt);
 
 /**
  * @brief Calculate the lenght of string for token
@@ -137,8 +137,8 @@ void	ft_token(t_dt *dt);
  * @param stop Stop character that closes token
  * @param dt main data structure
  * @return lenght of data
-*/
-int	lenght(char *str, char stop, t_dt *dt);
+ */
+int					lenght(char *str, char stop, t_dt *dt);
 
 /**
  * @brief Create a new token and add it at the end of the token list
@@ -147,25 +147,23 @@ int	lenght(char *str, char stop, t_dt *dt);
  * @param data content of input assosiated with token
  * @param dt main data structure
  * @return lenght of data
-*/
-int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
-void	free_token(t_dt *dt);
+ */
+int					token_ini(t_token_type type, int lenght, char *data,
+						t_dt *dt);
+void				free_token(t_dt *dt);
 
-t_env	*init_env_var(char *envp[]);
+t_env				*init_env_var(char *envp[]);
 
-t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
-void print_cmdtable(t_dt *dt);
-t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
-void	free_cmdtable(t_dt *dt);
+t_return(fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt));
+void				print_cmdtable(t_dt *dt);
+t_return(fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt));
+void				free_cmdtable(t_dt *dt);
 
-char *ft_expander(char *str, int size, t_dt *dt);
-
-
+char				*ft_expander(char *str, int size, t_dt *dt);
 
 /*
 	TESTING
 */
-void	test_print_envlist(t_dt *dt);
-
+void				test_print_envlist(t_dt *dt);
 
 #endif

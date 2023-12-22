@@ -184,7 +184,7 @@ t_return	ft_parse(t_dt *dt)
 	}
 	if (create_cmdtable(dt) != OK)
 		return (KO);
-	// print_cmdtable(dt);
+	//print_cmdtable(dt);
 	return (OK);
 }
 
@@ -281,7 +281,7 @@ void	test_print_envlist(t_dt *dt)
 {
 	t_env			*temp;
 	int				u;
-	
+
 	u = 1;
 	temp = dt->envp_lst;
 	printf(":::::::::::::::::: env ::::::::::::::::::::\n");

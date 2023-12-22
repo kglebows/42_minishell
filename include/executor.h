@@ -71,39 +71,21 @@ char						*cmd_path(char *cmd, char **env);
 // utils.c
 void						free_arrayofstrings(char **array);
 
-// duping.c
-void						dup_output(int outpipe, t_cmd_list *list);
-void						dup_input(int inpipe, t_cmd_list *list);
-void						close_all_fds(int fd1, int fd2, int fd3);
-
-// pathfinder.c
-char						*find_cmd_path(char *envp[], char *argv);
-char						**find_path2(char *envp[]);
 
 // executor_utils.c
 int							cmd_is_builtin(char *cmd);
 void						free_double_char(char **stuff);
 void						ft_close_fd(int fd);
 
-// testing.c
-t_cmd_list					*create_cmd_list(char *cmd, char *builtin,
-								t_cmd_list *prev, t_cmd_list *next);
-t_cmd_list					*create_cmd_list2(char *cmd, char *builtin,
-								t_cmd_list *prev, t_cmd_list *next);
-t_redir_list				*create_redir_list(t_redirect redir, char *file);
-void						free_cmd_list(t_cmd_list *cmd_list);
 
-// void		ft_print_doublechar(char **double);
+void						free_cmd_list(t_cmd_list *cmd_list);
 
 // builtin.c
 int							execute_builtin(t_cmdtable *list, char *envp[]);
 int							cmd_is_builtin(char *cmd);
 int							ft_echo(char *message[]);
 int							ft_env(t_cmdtable *list, char *envp[]);
-// int	ft_exit_changename(t_cmd_list *list);
-// int	ft_export(t_cmd_list *list, char *envp[]);
-// int	ft_pwd(t_cmd_list *list, char *envp[]);
-// int	ft_unset(t_cmd_list *list, char *envp[]);
 int							ft_unsetenv(char *str, char *envp[]);
+
 
 #endif

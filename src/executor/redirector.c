@@ -105,7 +105,7 @@ int	check_redirections(t_cmdtable *table)
 				exit_status = set_outfile(table, table->rdr[i].data);
 			else if (table->rdr[i].type == REDIRECTION_IN_HEREDOC)
 			{
-				if (create_heredoc(table->rdr[i].data))
+				if (!create_heredoc(table->rdr[i].data))
 					exit_status = set_infile(table, "heredoc");
 			}
 			else if (table->rdr[i].type == REDIRECTION_OUT_APPEND)
