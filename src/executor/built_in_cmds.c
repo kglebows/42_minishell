@@ -21,10 +21,48 @@ int	execute_pwd(void)
  * @param args Command arguments
  * @return 1 on success, 0 on failure
  */
-int	execute_cd(char **args)
+
+void print_env_list(t_env *head) {
+    while (head != NULL) {
+        printf("Key: %s, Value: %s\n", head->key, head->value);
+        head = head->next;
+    }
+}
+int update_env_value(t_env *head, const char *key, const char *new_value) {
+    if (head == NULL || key == NULL || new_value == NULL) {
+        // Invalid input
+        return 0;
+    }
+
+    t_env *current = head;
+
+    while (current != NULL) {
+        if (strcmp(current->key, key) == 0) {
+            // Key found, update the value
+            free(current->value);  // Free existing value
+            current->value = strdup(new_value);  // Update value
+
+            if (current->value == NULL) {
+                // Memory allocation failure
+                return 0;
+            }
+
+            // Update successful
+            return 1;
+        }
+
+        current = current->next;
+    }
+
+    // Key not found
+    return 0;
+}
+
+int	execute_cd(char **args, t_env *envp_list)
 {
 	char	*tmp;
 	char	*tmp2;
+	char	*old_pwd;
 
 	if (args[1] != NULL)
 	{
@@ -35,11 +73,11 @@ int	execute_cd(char **args)
 				perror("chdir");
 				return (0);
 			}
-			return (1);
 		}
 		else
 		{
 			tmp = getcwd(NULL, 0);
+			old_pwd = getcwd(NULL, 0);
 			if (tmp == NULL)
 			{
 				perror("getcwd");
@@ -55,13 +93,34 @@ int	execute_cd(char **args)
 				return (0);
 			if (chdir(tmp) != 0)
 				ft_putstr_fd("Error\n", STDERR_FILENO);
-			return (free(tmp), 1);
+			free(tmp);
+
 		}
 	}
-	else if (chdir(getenv("HOME")))
+	else if (chdir(getenv("HOME")) != 0)
+	{
+		perror("chdir");
 		ft_putstr_fd("Error\n", STDERR_FILENO);
+		return (0);
+	}
+
+	// Update the PWD environment variable
+	tmp = getcwd(NULL, 0);
+	if (tmp == NULL)
+	{
+		perror("getcwd");
+		return (0);
+	}
+	//print_env_list(envp_list);
+	update_env_value(envp_list, "PWD", tmp);
+	update_env_value(envp_list, "OLDPWD", old_pwd);
+	free(tmp);
+	free(old_pwd);
+	print_env_list(envp_list);
+
 	return (1);
 }
+
 /**
  * @brief Executes the 'echo' command
  * @param args Command arguments
@@ -78,7 +137,8 @@ void	execute_echo(char **args)
 	i = 0;
 	while (args[i] != NULL)
 	{
-		if (args[i][0] == '-' && args[i][ft_strlen(args[i])] == '\0' && endofn == false)
+		if (args[i][0] == '-' && args[i][ft_strlen(args[i])] == '\0'
+			&& endofn == false)
 		{
 			n = 1;
 			while (n < ft_strlen(args[i]))

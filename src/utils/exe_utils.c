@@ -12,7 +12,6 @@ void	ft_waitpid(t_dt *minishell, int nb_cmd)
 	int	status;
 
 	(void) minishell;
-	(void) nb_cmd;
 	i = 0;
 	while (nb_cmd--)
 		wait(&status);
@@ -70,7 +69,9 @@ char	*cmd_path(char *cmd, char **env)
 		free(temp);
 		free(path);
 	}
-	ft_printf("minishell: command not found: %s\n", cmd);
+	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("\n", 2);
 	free_arrayofstrings(paths);
 	return (NULL);
 }
