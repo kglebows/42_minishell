@@ -165,4 +165,12 @@ char				*ft_expander(char *str, int size, t_dt *dt);
 */
 void				test_print_envlist(t_dt *dt);
 
+/*
+env
+*/
+t_return	envp_add_or_change(char *key, char *value ,t_dt *dt);
+t_return	envp_delete(char *key, t_dt *dt);
+void		envp_print_export(t_dt *dt);
+void		envp_print_env(t_dt *dt);
+
 #endif
