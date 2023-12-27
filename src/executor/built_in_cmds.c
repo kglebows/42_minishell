@@ -22,40 +22,43 @@ int	execute_pwd(void)
  * @return 1 on success, 0 on failure
  */
 
-void print_env_list(t_env *head) {
-    while (head != NULL) {
-        printf("Key: %s, Value: %s\n", head->key, head->value);
-        head = head->next;
-    }
+void	print_env_list(t_env *head)
+{
+	while (head != NULL)
+	{
+		printf("Key: %s, Value: %s\n", head->key, head->value);
+		head = head->next;
+	}
 }
-int update_env_value(t_env *head, const char *key, const char *new_value) {
-    if (head == NULL || key == NULL || new_value == NULL) {
-        // Invalid input
-        return 0;
-    }
+int	update_env_value(t_env *head, const char *key, const char *new_value)
+{
+	t_env	*current;
 
-    t_env *current = head;
-
-    while (current != NULL) {
-        if (strcmp(current->key, key) == 0) {
-            // Key found, update the value
-            free(current->value);  // Free existing value
-            current->value = strdup(new_value);  // Update value
-
-            if (current->value == NULL) {
-                // Memory allocation failure
-                return 0;
-            }
-
-            // Update successful
-            return 1;
-        }
-
-        current = current->next;
-    }
-
-    // Key not found
-    return 0;
+	if (head == NULL || key == NULL || new_value == NULL)
+	{
+		// Invalid input
+		return (0);
+	}
+	current = head;
+	while (current != NULL)
+	{
+		if (strcmp(current->key, key) == 0)
+		{
+			// Key found, update the value
+			free(current->value);               // Free existing value
+			current->value = strdup(new_value); // Update value
+			if (current->value == NULL)
+			{
+				// Memory allocation failure
+				return (0);
+			}
+			// Update successful
+			return (1);
+		}
+		current = current->next;
+	}
+	// Key not found
+	return (0);
 }
 
 int	execute_cd(char **args, t_env *envp_list)
@@ -94,7 +97,6 @@ int	execute_cd(char **args, t_env *envp_list)
 			if (chdir(tmp) != 0)
 				ft_putstr_fd("Error\n", STDERR_FILENO);
 			free(tmp);
-
 		}
 	}
 	else if (chdir(getenv("HOME")) != 0)
@@ -103,21 +105,16 @@ int	execute_cd(char **args, t_env *envp_list)
 		ft_putstr_fd("Error\n", STDERR_FILENO);
 		return (0);
 	}
-
-	// Update the PWD environment variable
 	tmp = getcwd(NULL, 0);
 	if (tmp == NULL)
 	{
 		perror("getcwd");
 		return (0);
 	}
-	//print_env_list(envp_list);
 	update_env_value(envp_list, "PWD", tmp);
 	update_env_value(envp_list, "OLDPWD", old_pwd);
 	free(tmp);
 	free(old_pwd);
-	print_env_list(envp_list);
-
 	return (1);
 }
 

@@ -56,62 +56,6 @@ char	*find_path(t_cmdtable *table, char **env, bool last_cmd)
 	return (temp);
 }
 
-char **env_to_char_array(t_env *head) {
-    if (head == NULL) {
-        return NULL;
-    }
-
-    int size = 0;
-    t_env *current = head;
-
-    // Count the number of elements in the linked list
-    while (current != NULL) {
-        size++;
-        current = current->next;
-    }
-
-    // Allocate memory for the char** array
-    char **env_array = (char **)malloc((size + 1) * sizeof(char *));
-
-    if (env_array == NULL) {
-        // Memory allocation failure
-        return NULL;
-    }
-
-    // Copy the linked list elements into the char** array
-    current = head;
-    int i = 0;
-
-    while (current != NULL) {
-        // Calculate the length of the string
-        size_t key_len = strlen(current->key);
-        size_t value_len = strlen(current->value);
-        env_array[i] = (char *)malloc(key_len + value_len + 2); // +2 for '=' and '\0'
-
-        if (env_array[i] == NULL) {
-            // Memory allocation failure
-            // Cleanup and return NULL
-            for (int j = 0; j < i; j++) {
-                free(env_array[j]);
-            }
-            free(env_array);
-            return NULL;
-        }
-
-        // Copy the key and value into the array element
-        strcpy(env_array[i], current->key);
-        strcat(env_array[i], "=");
-        strcat(env_array[i], current->value);
-
-        i++;
-        current = current->next;
-    }
-
-    // Set the last element of the array to NULL
-    env_array[i] = NULL;
-
-    return env_array;
-}
 /**
  * @brief Executes a child process for a command table
  * @param table Pointer to the command table
@@ -124,6 +68,8 @@ void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst,
 {
 	char	*path;
 
+	if (!ft_strncmp(table->cmd[0], "cd", 2) && ft_strlen(table->cmd[0]) == 2)
+		exit(EXIT_SUCCESS);
 	path = find_path(table, env, last_cmd);
 	close(fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
@@ -138,7 +84,7 @@ void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst,
 		if (exe_built_in_cmds(table->cmd, env, envp_lst) == 1)
 			exit(EXIT_SUCCESS);
 		else
-			execve(path, table->cmd, env_to_char_array(envp_lst));
+			execve(path, table->cmd, env);
 	}
 }
 /**
@@ -154,6 +100,8 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
+	else if (!ft_strncmp(table->cmd[0], "cd", 2) && ft_strlen(table->cmd[0]) == 2)
+		execute_cd(table->cmd, minishell->envp_lst);
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -190,8 +138,9 @@ int	exe_built_in_cmds(char **args, char **env, t_env *envp_lst)
 	}
 	else if (!ft_strncmp(args[0], "cd", 2) && ft_strlen(args[0]) == 2)
 	{
-		if (!execute_cd(args, envp_lst))
-			return (-1);
+		// if (!execute_cd(args, envp_lst))
+		// 	return (-1);
+			return (1);
 	}
 	else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
 	{
