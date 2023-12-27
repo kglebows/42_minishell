@@ -90,7 +90,7 @@ int	ft_open(char *file, t_token_type rdr_type)
 	else if (rdr_type == REDIRECTION_OUT)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (rdr_type == REDIRECTION_OUT_APPEND)
-		fd = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (rdr_type == REDIRECTION_IN_HEREDOC)
 		fd = open("heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)

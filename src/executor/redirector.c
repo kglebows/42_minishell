@@ -69,19 +69,11 @@ int	set_infile(t_cmdtable *table, char *file)
  * @param file Name of the output file to append
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on failure
  */
-int	append_file(char *file)
+int	append_file(t_cmdtable *table, char *file)
 {
-	int	fd;
-
-	fd = ft_open(file, REDIRECTION_OUT_APPEND);
-	if (fd < 0)
+	table->fd_rdr_out = ft_open(file, REDIRECTION_OUT_APPEND);
+	if (table->fd_rdr_out < 0)
 		return (EXIT_FAILURE);
-	else
-	{
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (EXIT_FAILURE);
-		close(fd);
-	}
 	return (EXIT_SUCCESS);
 }
 /**
@@ -109,7 +101,7 @@ int	check_redirections(t_cmdtable *table)
 					exit_status = set_infile(table, "heredoc");
 			}
 			else if (table->rdr[i].type == REDIRECTION_OUT_APPEND)
-				exit_status = append_file(table->rdr[i].data);
+				exit_status = append_file(table, table->rdr[i].data);
 			if (exit_status)
 				return (EXIT_FAILURE);
 			i++;
