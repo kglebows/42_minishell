@@ -3,8 +3,8 @@
 
 char	*check_env(char *check, int i, t_dt *dt)
 {
-	t_env			*temp;
-	char			*ret;
+	t_env	*temp;
+	char	*ret;
 
 	temp = dt->envp_lst;
 	ret = NULL;
@@ -22,9 +22,9 @@ char	*check_env(char *check, int i, t_dt *dt)
 
 char	*expand(char q, char *start, t_dt *dt)
 {
-	int			i;
-	char		*temp;
-	char		*exp;
+	int		i;
+	char	*temp;
+	char	*exp;
 
 	i = 0;
 	if (start[i] == '?')
@@ -32,7 +32,7 @@ char	*expand(char q, char *start, t_dt *dt)
 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
 		i++;
 	if (i == 0)
-		return(ft_calloc(1, sizeof(char)));
+		return (ft_calloc(1, sizeof(char)));
 	temp = calloc(i + 1, sizeof(char));
 	if (!temp)
 		ft_error(-10, dt);
@@ -47,9 +47,9 @@ char	*expand(char q, char *start, t_dt *dt)
 	return (exp);
 }
 
-char	*update_string(char* str, char *update)
+char	*update_string(char *str, char *update)
 {
-	char		*temp;
+	char	*temp;
 
 	if (update)
 		temp = ft_strjoin(str, update);
@@ -62,12 +62,12 @@ char	*update_string(char* str, char *update)
 	return (temp);
 }
 
-char *ft_expander(char *str, int size, t_dt *dt)
+char	*ft_expander(char *str, int size, t_dt *dt)
 {
-	char		q;
-	char		*temp;
-	int			i;
-	char		*c;
+	char	q;
+	char	*temp;
+	int		i;
+	char	*c;
 
 	q = ' ';
 	i = 0;

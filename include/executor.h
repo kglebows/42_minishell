@@ -43,13 +43,13 @@ typedef struct s_cmd_list
 
 // exe.c
 int							prepare_and_execute(t_dt *minishell);
-int							exe_built_in_cmds(char **args, char **env,
-								t_env *envp_lst);
+int							exe_built_in_cmds(char **args, t_env *envp_lst);
 void						execute(t_cmdtable *table, t_dt *minishell,
 								bool last_cmd);
 int							ft_open(char *file, t_token_type rdr_type);
 char						*ft_strgetbetween(const char *start,
 								const char *end);
+int							export(t_env **head, char **str);
 
 // redirector.c
 int							check_redirections(t_cmdtable *table);
@@ -67,15 +67,22 @@ void						ft_waitpid(t_dt *minishell, int nb_cmd);
 char						*get_env(char **env, const char *name);
 char						*cmd_path(char *cmd, char **env);
 
-// utils.c
+// exe_utils1.c
 void						free_arrayofstrings(char **array);
+t_env				*create_env_var_node(char *str);
+void						print_env_ascending(t_env *head);
+int	count_env_variables(t_env *head);
+
+// exe_utils2.c
+char	**env_to_char_array(t_env *head);
+char	*find_path(t_cmdtable *table, char **env, bool last_cmd);
+int	update_env_value(t_env *head, const char *key, const char *new_value);
 
 
 // executor_utils.c
 int							cmd_is_builtin(char *cmd);
 void						free_double_char(char **stuff);
 void						ft_close_fd(int fd);
-
 
 void						free_cmd_list(t_cmd_list *cmd_list);
 
@@ -85,6 +92,5 @@ int							cmd_is_builtin(char *cmd);
 int							ft_echo(char *message[]);
 int							ft_env(t_cmdtable *list, char *envp[]);
 int							ft_unsetenv(char *str, char *envp[]);
-
 
 #endif

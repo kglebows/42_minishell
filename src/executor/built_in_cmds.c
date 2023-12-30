@@ -16,50 +16,12 @@ int	execute_pwd(void)
 	free(pwd);
 	return (1);
 }
+
 /**
  * @brief Executes the 'cd' command
  * @param args Command arguments
  * @return 1 on success, 0 on failure
  */
-
-void	print_env_list(t_env *head)
-{
-	while (head != NULL)
-	{
-		printf("Key: %s, Value: %s\n", head->key, head->value);
-		head = head->next;
-	}
-}
-int	update_env_value(t_env *head, const char *key, const char *new_value)
-{
-	t_env	*current;
-
-	if (head == NULL || key == NULL || new_value == NULL)
-	{
-		// Invalid input
-		return (0);
-	}
-	current = head;
-	while (current != NULL)
-	{
-		if (strcmp(current->key, key) == 0)
-		{
-			// Key found, update the value
-			free(current->value);               // Free existing value
-			current->value = strdup(new_value); // Update value
-			if (current->value == NULL)
-			{
-				// Memory allocation failure
-				return (0);
-			}
-			// Update successful
-			return (1);
-		}
-		current = current->next;
-	}
-	// Key not found
-	return (0);
-}
 
 int	execute_cd(char **args, t_env *envp_list)
 {
@@ -170,32 +132,6 @@ void	execute_echo(char **args)
 }
 
 /**
- * @brief Creates a new node for an environment variable
- * @param str String containing the key-value pair of the environment variable
- * @return Pointer to the newly created node on success, NULL on failure
- */
-static t_env	*create_env_var_node(char *str)
-{
-	char	*eq_sign_pos;
-	t_env	*node;
-
-	eq_sign_pos = ft_strchr(str, '=');
-	if (!eq_sign_pos)
-		return (NULL);
-	node = (t_env *)malloc(sizeof(t_env));
-	if (!node)
-		return (NULL);
-	node->next = NULL;
-	node->key = ft_strgetbetween(str, eq_sign_pos - 1);
-	if (!node->key)
-		return (free(node), NULL);
-	node->value = ft_strdup(eq_sign_pos + 1);
-	if (!node->value)
-		return (free(node->key), free(node), NULL);
-	return (node);
-}
-
-/**
  * @brief Sets or updates an environment variable
  * @param head Pointer to the head of the environment variable linked list
 
@@ -208,11 +144,14 @@ int	set_env(t_env **head, char *key_val_str)
 	t_env	*new_node;
 	char	*eq_sign_pos;
 
+	if (!key_val_str)
+	{
+		print_env_ascending(*head);
+		return (EXIT_SUCCESS);
+	}
 	eq_sign_pos = ft_strchr(key_val_str, '=');
 	if (!eq_sign_pos)
-	{
 		return (1);
-	}
 	current = *head;
 	while (current != NULL)
 	{
@@ -269,13 +208,4 @@ int	unset_env(t_env **head, char *var)
 	}
 	return (0);
 }
-void	print_env_var_list(char **env)
-{
-	if (env == NULL)
-		return ;
-	while (*env != NULL)
-	{
-		printf("%s\n", *env);
-		env++;
-	}
-}
+

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
+#    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/23 14:53:15 by kglebows         ###   ########.fr        #
+#    Updated: 2023/12/30 13:39:38 by ekordi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS	= main.c \
 		parse/env.c\
 		executor/exe.c executor/redirector.c\
 		executor/built_in_cmds.c\
-		utils/exe_utils.c utils/utils.c
+		utils/exe_utils.c utils/exe_utils1.c utils/exe_utils2.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 

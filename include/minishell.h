@@ -26,6 +26,7 @@
 
 // void	ft_executor(t_dt *dt);
 t_return	ft_parse(t_dt *dt);
+t_env	*create_env_var_node(char *str);
 
 //signal_handler
 // void	init_signal_handler(void);

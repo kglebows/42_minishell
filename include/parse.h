@@ -119,7 +119,7 @@ typedef struct s_dt
 t_return			(ft_error(int code, t_dt *dt));
 void				ft_exit(t_dt *dt);
 int					*ini_exit(void);
-void				exit_code(int code);
+void				exit_code(int code, bool print);
 void				exit_shell(char **args);
 void				ft_token(t_dt *dt);
 
@@ -150,7 +150,6 @@ int					lenght(char *str, char stop, t_dt *dt);
 int					token_ini(t_token_type type, int lenght, char *data,
 						t_dt *dt);
 void				free_token(t_dt *dt);
-
 t_env				*init_env_var(char *envp[]);
 
 t_return(fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt));

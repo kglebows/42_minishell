@@ -184,7 +184,7 @@ t_return	ft_parse(t_dt *dt)
 	}
 	if (create_cmdtable(dt) != OK)
 		return (KO);
-	//print_cmdtable(dt);
+	print_cmdtable(dt);
 	return (OK);
 }
 
@@ -215,7 +215,7 @@ char	*ft_strgetbetween(const char *start, const char *end)
  * @param str String containing the key-value pair of the environment variable
  * @return Pointer to the newly created node on success, NULL on failure
  */
-static t_env	*create_env_var_node(char *str)
+t_env	*create_env_var_node(char *str)
 {
 	char	*eq_sign_pos;
 	t_env	*node;

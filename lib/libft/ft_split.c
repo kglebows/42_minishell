@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:45:55 by kglebows          #+#    #+#             */
-/*   Updated: 2023/04/21 11:06:52 by kglebows         ###   ########.fr       */
+/*   Updated: 2023/12/30 13:59:28 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ char	**ft_split(char const *s, char c)
 
 	i = 0;
 	j = 0;
-	split = malloc((ft_countwords(s, c) + 1) * sizeof(char *));
-	if (!s || split == NULL)
+	if (!s)
 		return (NULL);
-	while (i < (size_t) ft_strlen(s) && j < ft_countwords(s, c))
+	split = malloc((ft_countwords(s, c) + 1) * sizeof(char *));
+	if (!split)
+		return (NULL);
+	while (i < (size_t)ft_strlen(s) && j < ft_countwords(s, c))
 	{
 		while (s[i] == c)
 			i++;
@@ -66,11 +68,9 @@ char	**ft_split(char const *s, char c)
 		while (s[i] != c && s[i] != '\0')
 			i++;
 		split[j] = ft_substr(s, start, i - start);
-		if (ft_splitclean(split, j))
+		if (ft_splitclean(split, j++))
 			return (NULL);
-		j++;
 	}
 	split[j] = NULL;
 	return (split);
 }
-//

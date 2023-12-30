@@ -14,63 +14,33 @@ int	prepare_and_execute(t_dt *minishell)
 	int		cmd_num;
 
 	cmd_num = minishell->cmdtable[0]->cmd_nb;
-	i = 0;
+	i = -1;
 	table_num = 0;
 	while (minishell->cmdtable[table_num])
 		table_num++;
 	if (cmd_num != 0 && table_num == 1
 		&& !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
 		exit_shell(minishell->cmdtable[0]->cmd);
-	while (i < table_num)
+	while (++i < table_num)
 	{
 		if (cmd_num != 0 && !ft_strncmp(minishell->cmdtable[i]->cmd[0], "exit",
 				4))
-		{
-			i++;
 			continue ;
-		}
 		if (i + 1 == table_num)
 			last_cmd = true;
 		minishell->cmdtable[i]->fd_rdr_out = 0;
 		execute(minishell->cmdtable[i], minishell, last_cmd);
-		i++;
 	}
 	ft_waitpid(minishell, table_num);
 	return (1);
 }
 
-char	*find_path(t_cmdtable *table, char **env, bool last_cmd)
-{
-	char	*temp;
-
-	if (access(table->cmd[0], X_OK) == 0)
-		temp = table->cmd[0];
-	else
-		temp = cmd_path(table->cmd[0], env);
-	if (!temp)
-	{
-		if (last_cmd)
-			dup2(table->fd_in, STDIN_FILENO);
-		exit(127);
-	}
-	return (temp);
-}
-
-/**
- * @brief Executes a child process for a command table
- * @param table Pointer to the command table
- * @param env Environment variables
- * @param last_cmd Flag indicating if this is the last command in a pipeline
- * @param envp_lst Linked list of environment variables
- */
-void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst,
-		int *fd)
+void	child(t_cmdtable *table, bool last_cmd, t_env *envp_lst, int *fd)
 {
 	char	*path;
 
 	if (!ft_strncmp(table->cmd[0], "cd", 2) && ft_strlen(table->cmd[0]) == 2)
 		exit(EXIT_SUCCESS);
-	path = find_path(table, env, last_cmd);
 	close(fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
 	if (check_redirections(table))
@@ -81,10 +51,28 @@ void	child(t_cmdtable *table, char **env, bool last_cmd, t_env *envp_lst,
 			dup2(table->fd_rdr_out, STDOUT_FILENO);
 		if (last_cmd && !table->fd_rdr_out)
 			dup2(table->fd_out, STDOUT_FILENO);
-		if (exe_built_in_cmds(table->cmd, env, envp_lst) == 1)
+		if (exe_built_in_cmds(table->cmd, envp_lst) == 1)
 			exit(EXIT_SUCCESS);
 		else
-			execve(path, table->cmd, env);
+		{
+			path = find_path(table, env_to_char_array(envp_lst), last_cmd);
+			execve(path, table->cmd, env_to_char_array(envp_lst));
+		}
+	}
+}
+
+void	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
+{
+	if (!ft_strncmp(table->cmd[0], "cd", 2) && ft_strlen(table->cmd[0]) == 2)
+		execute_cd(table->cmd, minishell->envp_lst);
+	else if (!ft_strncmp(table->cmd[0], "export", 6)
+		&& ft_strlen(table->cmd[0]) == 6)
+		set_env(&minishell->envp_lst, table->cmd[1]);
+	else if (!ft_strncmp(table->cmd[0], "unset", 5)
+		&& ft_strlen(table->cmd[0]) == 5)
+	{
+		if (table->cmd[1])
+			unset_env(&minishell->envp_lst, table->cmd[1]);
 	}
 }
 /**
@@ -100,8 +88,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
-	else if (!ft_strncmp(table->cmd[0], "cd", 2) && ft_strlen(table->cmd[0]) == 2)
-		execute_cd(table->cmd, minishell->envp_lst);
+	exe_parent_builtin_cmds(table, minishell);
 	pid1 = fork();
 	if (pid1 < 0)
 	{
@@ -109,7 +96,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 		exit(1);
 	}
 	if (pid1 == 0)
-		child(table, minishell->envp, last_cmd, minishell->envp_lst, fd);
+		child(table, last_cmd, minishell->envp_lst, fd);
 	else
 	{
 		table->fd_rdr_out = 0;
@@ -119,15 +106,8 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 			dup2(table->fd_in, STDIN_FILENO);
 	}
 }
-/**
- * @brief Executes built-in commands or external executables
- * @param args Command arguments
- * @param env Environment variables
- * @param envp_lst Linked list of environment variables
- * @return 1 if the command was executed successfully,
-	0 if not a built-in command, -1 on error
- */
-int	exe_built_in_cmds(char **args, char **env, t_env *envp_lst)
+
+int	exe_built_in_cmds(char **args, t_env *envp_lst)
 {
 	if (!ft_strncmp(args[0], "echo", 4) && ft_strlen(args[0]) == 4)
 		execute_echo(args + 1);
@@ -137,23 +117,18 @@ int	exe_built_in_cmds(char **args, char **env, t_env *envp_lst)
 			return (-1);
 	}
 	else if (!ft_strncmp(args[0], "cd", 2) && ft_strlen(args[0]) == 2)
-	{
-		// if (!execute_cd(args, envp_lst))
-		// 	return (-1);
-			return (1);
-	}
+		return (1);
 	else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
-	{
-		if (args[1] && !set_env(&envp_lst, args[1]))
-			return (-1);
-	}
+		return (1);
 	else if (!ft_strncmp(args[0], "unset", 5) && ft_strlen(args[0]) == 5)
-	{
-		if (args[1])
-			unset_env(&envp_lst, args[1]);
-	}
+		return (1);
 	else if (!ft_strncmp(args[0], "env", 3) && ft_strlen(args[0]) == 3)
-		print_env_var_list(env);
+		print_env_list(envp_lst);
+	// else if (!ft_strncmp(args[0], "$?", 2))
+	// {
+	// 	ft_putstr_fd("hell\n", 2);
+	// 	exit_code(0, true);
+	// }
 	else
 		return (0);
 	return (1);

@@ -66,7 +66,7 @@ void ini_minishell(t_dt *dt)
 		// 	free(line);
 		// }
 		/* END */
-		
+
 		dt->input = readline("Mini$hell ];> ");
 		if (!dt->input)
 			break ;
