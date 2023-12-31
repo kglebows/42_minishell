@@ -77,6 +77,7 @@ int	count_env_variables(t_env *head);
 char	**env_to_char_array(t_env *head);
 char	*find_path(t_cmdtable *table, char **env, bool last_cmd);
 int	update_env_value(t_env *head, const char *key, const char *new_value);
+int	ft_strcmp(const char *s1, const char *s2);
 
 
 // executor_utils.c

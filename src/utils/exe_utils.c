@@ -69,7 +69,7 @@ char	*cmd_path(char *cmd, char **env)
 		free(temp);
 		free(path);
 	}
-	ft_putstr_fd("minishell: command fdnot found: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("\n", 2);
 	free_arrayofstrings(paths);

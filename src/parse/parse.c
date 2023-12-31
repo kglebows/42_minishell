@@ -184,7 +184,7 @@ t_return	ft_parse(t_dt *dt)
 	}
 	if (create_cmdtable(dt) != OK)
 		return (KO);
-	print_cmdtable(dt);
+	//print_cmdtable(dt);
 	return (OK);
 }
 

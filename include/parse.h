@@ -119,7 +119,7 @@ typedef struct s_dt
 t_return			(ft_error(int code, t_dt *dt));
 void				ft_exit(t_dt *dt);
 int					*ini_exit(void);
-void				exit_code(int code, bool print);
+void				exit_code(int code);
 void				exit_shell(char **args);
 void				ft_token(t_dt *dt);
 

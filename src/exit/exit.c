@@ -55,11 +55,10 @@ int	*ini_exit(void)
  * @param code new exit code
  * @return
 */
-void	exit_code(int code, bool print)
+void	exit_code(int code)
 {
 	int	*exit;
-	if(print)
-		printf("minishell : %d: command not found\n", code);
+	//printf("minishell : %d: command not found\n", code);
 	exit = ini_exit();
 	*exit = code;
 }
