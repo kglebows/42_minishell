@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:28:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/03 17:38:10 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/16 18:01:53 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,6 @@ void	write_with_space(const char *str, bool hasNext)
 		write(STDOUT_FILENO, " ", 1);
 }
 
-/**
- * @brief Executes the 'echo' command
- * @param args Command arguments
- */
-void	execute_echo(char **args)
-{
-	bool	newline;
-	int		i;
-
-	newline = true;
-	i = 0;
-	while (args[i] != NULL)
-	{
-		if (is_valid_option(args[i], newline) && !newline)
-			break ;
-		else
-			write_with_space(args[i], args[i + 1] != NULL);
-		i++;
-	}
-	if (newline)
-		write(STDOUT_FILENO, "\n", 1);
-}
-
 // /**
 //  * @brief Executes the 'echo' command
 //  * @param args Command arguments
@@ -79,45 +56,69 @@ void	execute_echo(char **args)
 // void	execute_echo(char **args)
 // {
 // 	bool	newline;
-// 	bool	endofn;
 // 	int		i;
-// 	int		n;
 
 // 	newline = true;
-// 	endofn = false;
 // 	i = 0;
 // 	while (args[i] != NULL)
 // 	{
-// 		if (args[i][0] == '-' && args[i][ft_strlen(args[i])] == '\0'
-// 			&& endofn == false)
-// 		{
-// 			n = 1;
-// 			while (n < ft_strlen(args[i]))
-// 			{
-// 				if (args[i][n] != 'n')
-// 				{
-// 					endofn = true;
-// 					i--;
-// 					break ;
-// 				}
-// 				n++;
-// 			}
-// 			if (n == ft_strlen(args[i]))
-// 				newline = false;
-// 		}
+// 		if (is_valid_option(args[i], newline) && !newline)
+// 			break ;
 // 		else
-// 		{
-// 			endofn = true;
-// 			write(STDOUT_FILENO, args[i], strlen(args[i]));
-// 			if (args[i + 1] != NULL)
-// 				write(STDOUT_FILENO, " ", 1);
-// 			else
-// 			{
-// 				i++;
-// 				break ;
-// 			}
-// 		}
+// 			write_with_space(args[i], args[i + 1] != NULL);
 // 		i++;
 // 	}
 // 	if (newline)
 // 		write(STDOUT_FILENO, "\n", 1);
+// }
+
+/**
+ * @brief Executes the 'echo' command
+ * @param args Command arguments
+ */
+void	execute_echo(char **args)
+{
+	bool	newline;
+	bool	endofn;
+	int		i;
+	int		n;
+
+	newline = true;
+	endofn = false;
+	i = 0;
+	while (args[i] != NULL)
+	{
+		if (args[i][0] == '-' && args[i][ft_strlen(args[i])] == '\0'
+			&& endofn == false)
+		{
+			n = 1;
+			while (n < ft_strlen(args[i]))
+			{
+				if (args[i][n] != 'n')
+				{
+					endofn = true;
+					i--;
+					break ;
+				}
+				n++;
+			}
+			if (n == ft_strlen(args[i]))
+				newline = false;
+		}
+		else
+		{
+			endofn = true;
+			write(STDOUT_FILENO, args[i], strlen(args[i]));
+			if (args[i + 1] != NULL)
+				write(STDOUT_FILENO, " ", 1);
+			else
+			{
+				i++;
+				break ;
+			}
+		}
+		i++;
+	}
+	if (newline)
+		write(STDOUT_FILENO, "\n", 1);
+}

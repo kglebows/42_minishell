@@ -34,7 +34,7 @@ void	free_cmdtable(t_dt *dt)
 	int	j;
 
 	i = 0;
-	while (dt->cmdtable[i])
+	while (dt->cmdtable && dt->cmdtable[i])
 	{
 		j = 0;
 		while (dt->cmdtable[i]->rdr[j].data)
