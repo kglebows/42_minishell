@@ -69,21 +69,21 @@ void ini_minishell(t_dt *dt)
 		setup_signals();
 
 
-		// dt->input = readline("Mini$hell ];> ");
+		dt->input = readline("Mini$hell ];> ");
 
 
 
-		if (isatty(fileno(stdin)))
-			dt->input = readline("");
-		else
-		{
-			char *line;
-			line = get_next_line(fileno(stdin));
-			if (!line)
-				break ;
-			dt->input = ft_strtrim(line, "\n");
-			free(line);
-		}
+		// if (isatty(fileno(stdin)))
+		// 	dt->input = readline("");
+		// else
+		// {
+		// 	char *line;
+		// 	line = get_next_line(fileno(stdin));
+		// 	if (!line)
+		// 		break ;
+		// 	dt->input = ft_strtrim(line, "\n");
+		// 	free(line);
+		// }
 
 
 

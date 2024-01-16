@@ -59,10 +59,14 @@ char	*expand(char q, char *start, t_dt *dt)
 	char	*exp;
 
 	i = 0;
-	if (start[i] == '?')
+	if (start[i] == '?' && q != '\'')
 		return (ft_itoa(*ini_exit()));
+	if (start[i] == '?' && q == '\'')
+		return (ft_strdup("$?"));
 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
 		i++;
+	if (i == 0 && (q != ' ' || start[i] == ' ' || start[i] == '\0'))
+		return (ft_strdup("$"));
 	if (i == 0)
 		return (ft_calloc(1, sizeof(char)));
 	temp = calloc(i + 1, sizeof(char));
