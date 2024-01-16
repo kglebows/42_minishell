@@ -28,6 +28,30 @@ char	*ft_strndup(const char *s, size_t n)
 	}
 	return result;
 }
+// char	*expand(char q, char *start, t_dt *dt)
+// {
+// 	int		i;
+// 	char	*temp;
+// 	char	*exp;
+
+// 	i = 0;
+// 	if (start[i] == '?')
+// 		return (ft_itoa(*ini_exit()));
+// 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
+// 		i++;
+// 	if (i == 0)
+// 		return (ft_calloc(1, sizeof(char)));
+// 		// return (ft_strdup("$")); // Return "$" when there is no alphanumeric character following the '$'
+// 	temp = ft_strndup(start, i);
+// 	if (!temp)
+// 		ft_error(-10, dt);
+// 	if (q == '\'')
+// 		return (temp);
+// 	exp = check_env(temp, i, dt);
+// 	free(temp);
+// 	return (exp ? exp : ft_strdup(""));
+// }
+
 char	*expand(char q, char *start, t_dt *dt)
 {
 	int		i;
@@ -40,17 +64,20 @@ char	*expand(char q, char *start, t_dt *dt)
 	while (start[i] == '_' || ft_isalnum(start[i]) == 1)
 		i++;
 	if (i == 0)
-		return (ft_strdup("$")); // Return "$" when there is no alphanumeric character following the '$'
-	temp = ft_strndup(start, i);
+		return (ft_calloc(1, sizeof(char)));
+	temp = calloc(i + 1, sizeof(char));
 	if (!temp)
 		ft_error(-10, dt);
 	if (q == '\'')
+	{
+		ft_strlcpy(temp, &start[-1], i + 2);
 		return (temp);
+	}
+	ft_strlcpy(temp, start, i + 1);
 	exp = check_env(temp, i, dt);
 	free(temp);
-	return (exp ? exp : ft_strdup(""));
+	return (exp);
 }
-
 
 char	*update_string(char *str, char *update)
 {
