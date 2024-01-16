@@ -1,5 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
+/*   Updated: 2024/01/06 15:10:35 by ekordi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
+
+void	exit_all_minishell(void)
+{
+	FILE	*cmd_pipe;
+	char	buffer[256];
+	int		pid;
+
+	cmd_pipe = popen("pgrep -x minishell", "r");
+	if (cmd_pipe == NULL)
+	{
+		perror("popen");
+		exit(EXIT_FAILURE);
+	}
+	while (fgets(buffer, sizeof(buffer), cmd_pipe) != NULL)
+	{
+		pid = atoi(buffer);
+		if (pid != getpid())
+		{
+			if (kill(pid, SIGTERM) == -1)
+				perror("kill");
+		}
+	}
+	pclose(cmd_pipe);
+}
+
 void	exit_shell(char **args)
 {
 	int	exit_code;
@@ -8,12 +44,11 @@ void	exit_shell(char **args)
 	exit_code = 0;
 	arg_count = 0;
 	while (args[arg_count] != NULL)
-	{
 		arg_count++;
-	}
 	if (arg_count == 1)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
+		exit_all_minishell();
 		exit(exit_code);
 	}
 	if (arg_count == 2)
@@ -22,6 +57,7 @@ void	exit_shell(char **args)
 		{
 			exit_code = atoi(args[1]);
 			ft_putstr_fd("exit\n", STDERR_FILENO);
+			exit_all_minishell();
 			exit(exit_code);
 		}
 		else
@@ -29,6 +65,7 @@ void	exit_shell(char **args)
 			ft_putstr_fd("exit: ", STDERR_FILENO);
 			ft_putstr_fd(args[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+			exit_all_minishell();
 			exit(255);
 		}
 	}
@@ -42,11 +79,12 @@ void	exit_shell(char **args)
  * @brief Creates static variable for exit code
  * @param -
  * @return adress of current Exit Code for terminal.
-*/
+ */
 int	*ini_exit(void)
 {
-	static int	exit = 0;
+	static int	exit;
 
+	exit = 0;
 	return (&exit);
 }
 
@@ -54,11 +92,12 @@ int	*ini_exit(void)
  * @brief Changes programs exit code
  * @param code new exit code
  * @return
-*/
+ */
 void	exit_code(int code)
 {
 	int	*exit;
-	//printf("minishell : %d: command not found\n", code);
+
+	// printf("minishell : %d: command not found\n", code);
 	exit = ini_exit();
 	*exit = code;
 }
@@ -67,7 +106,7 @@ void	exit_code(int code)
  * @brief An exit structure
  * @param dt Main program data structure
  * @return
-*/
+ */
 void	ft_exit(t_dt *dt)
 {
 	exit(*dt->exit);

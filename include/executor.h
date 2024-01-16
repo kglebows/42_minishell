@@ -49,10 +49,12 @@ void						execute(t_cmdtable *table, t_dt *minishell,
 int							ft_open(char *file, t_token_type rdr_type);
 char						*ft_strgetbetween(const char *start,
 								const char *end);
-int							export(t_env **head, char **str);
+int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell);
+void	child(t_cmdtable *table, bool last_cmd, t_env *envp_lst, int *fd);
+
 
 // redirector.c
-int							check_redirections(t_cmdtable *table);
+int							check_redirections(t_cmdtable *table, int *fd);
 
 // builtin.c
 void						execute_echo(char **args);
@@ -72,6 +74,9 @@ void						free_arrayofstrings(char **array);
 t_env				*create_env_var_node(char *str);
 void						print_env_ascending(t_env *head);
 int	count_env_variables(t_env *head);
+
+// signals.c
+void	block_signal(void);
 
 // exe_utils2.c
 char	**env_to_char_array(t_env *head);

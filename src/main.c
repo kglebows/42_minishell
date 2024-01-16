@@ -17,7 +17,7 @@ t_dt *ini_dt(int argc, char *argv[], char *envp[])
 	(void)argv;
 	dt = (t_dt){
 		.exit = ini_exit(),
-		.envp = envp,
+	 	.envp = envp,
 		.envp_lst = init_env_var(envp),
 		.input = NULL,
 		.token = NULL,
@@ -66,7 +66,7 @@ void ini_minishell(t_dt *dt)
 		// 	free(line);
 		// }
 		/* END */
-
+		setup_signals();
 		dt->input = readline("Mini$hell ];> ");
 		if (!dt->input)
 			break ;

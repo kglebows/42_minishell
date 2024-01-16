@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
+/*   Updated: 2024/01/02 14:24:46 by ekordi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -11,7 +22,7 @@ void	ft_waitpid(t_dt *minishell, int nb_cmd)
 	int	i;
 	int	status;
 
-	(void) minishell;
+	(void)minishell;
 	i = 0;
 	while (nb_cmd--)
 		wait(&status);
@@ -39,6 +50,7 @@ char	*get_env(char **env, const char *name)
 	}
 	return (NULL);
 }
+
 /**
 
 	* @brief Finds the full path of a command by searching in the PATH environment variable
@@ -83,8 +95,9 @@ char	*cmd_path(char *cmd, char **env)
  */
 int	ft_open(char *file, t_token_type rdr_type)
 {
-	int	fd = 0;
+	int	fd;
 
+	fd = 0;
 	if (rdr_type == REDIRECTION_IN)
 		fd = open(file, O_RDONLY);
 	else if (rdr_type == REDIRECTION_OUT)

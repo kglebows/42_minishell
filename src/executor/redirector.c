@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirector.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
+/*   Updated: 2024/01/06 14:36:16 by ekordi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -7,7 +18,7 @@
  * @return File descriptor to the heredoc file on success,
 	EXIT_FAILURE on failure
  */
-int	create_heredoc(char *delimiter)
+int	create_heredoc(char *delimiter, t_cmdtable *table, int *fd_pipe)
 {
 	int		fd;
 	char	*line;
@@ -15,6 +26,7 @@ int	create_heredoc(char *delimiter)
 	fd = ft_open("heredoc", REDIRECTION_IN_HEREDOC);
 	if (fd == -1)
 		return (EXIT_FAILURE);
+	dup2(table->fd_in, STDIN_FILENO);
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -30,6 +42,7 @@ int	create_heredoc(char *delimiter)
 	fd = ft_open("heredoc", REDIRECTION_IN);
 	if (fd == -1)
 		return (EXIT_FAILURE);
+	dup2(fd_pipe[0], STDIN_FILENO);
 	return (EXIT_SUCCESS);
 }
 /**
@@ -81,7 +94,7 @@ int	append_file(t_cmdtable *table, char *file)
  * @param table Pointer to the command table
  * @return EXIT_SUCCESS on success, EXIT_FAILURE on failure
  */
-int	check_redirections(t_cmdtable *table)
+int	check_redirections(t_cmdtable *table, int *fd_pipe)
 {
 	int	i;
 	int	exit_status;
@@ -97,7 +110,7 @@ int	check_redirections(t_cmdtable *table)
 				exit_status = set_outfile(table, table->rdr[i].data);
 			else if (table->rdr[i].type == REDIRECTION_IN_HEREDOC)
 			{
-				if (!create_heredoc(table->rdr[i].data))
+				if (!create_heredoc(table->rdr[i].data, table, fd_pipe))
 					exit_status = set_infile(table, "heredoc");
 			}
 			else if (table->rdr[i].type == REDIRECTION_OUT_APPEND)
@@ -107,5 +120,5 @@ int	check_redirections(t_cmdtable *table)
 			i++;
 		}
 	}
-	return(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

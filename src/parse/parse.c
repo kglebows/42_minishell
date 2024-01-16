@@ -9,11 +9,11 @@
  * @param token token to be counted
  * @param start token from which to start the count
  * @return number of pipes or tokens between pipes
-*/
+ */
 int	how_many(t_token_type token, t_token *start)
 {
-	t_token		*temp;
-	int			i;
+	t_token	*temp;
+	int		i;
 
 	i = 0;
 	temp = start;
@@ -30,8 +30,8 @@ int	how_many(t_token_type token, t_token *start)
 
 void	free_cmdtable(t_dt *dt)
 {
-	int				i;
-	int				j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (dt->cmdtable[i])
@@ -51,22 +51,23 @@ void	free_cmdtable(t_dt *dt)
 		free(dt->cmdtable[i]);
 		i++;
 	}
-	free (dt->cmdtable);
+	free(dt->cmdtable);
 }
 
 /**
  * @brief Create an command table of height of number of pipes.
  * @param dt main data structure
  * @return
-*/
+ */
 t_return	create_cmdtable(t_dt *dt)
 {
-	int			i;
-	t_token		*temp;
+	int		i;
+	t_token	*temp;
 
 	temp = dt->token;
 	dt->nrofpipes = how_many(PIPE, temp);
-	dt->cmdtable = (t_cmdtable **)ft_calloc(dt->nrofpipes + 2, sizeof(t_cmdtable *));
+	dt->cmdtable = (t_cmdtable **)ft_calloc(dt->nrofpipes + 2,
+		sizeof(t_cmdtable *));
 	if (!dt->cmdtable)
 		return (ft_error(-10, dt));
 	i = 0;
@@ -88,12 +89,12 @@ t_return	create_cmdtable(t_dt *dt)
 
 t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
-	t_token			*temp;
-	int				i;
-	int				j;
+	t_token	*temp;
+	int		i;
+	int		j;
 
-	cmdtable->cmd = (char **) ft_calloc(cmdtable->cmd_nb + 1, sizeof(char *));
-	cmdtable->rdr = (t_rdr *) ft_calloc(cmdtable->rdr_nb + 1, sizeof(t_rdr));
+	cmdtable->cmd = (char **)ft_calloc(cmdtable->cmd_nb + 1, sizeof(char *));
+	cmdtable->rdr = (t_rdr *)ft_calloc(cmdtable->rdr_nb + 1, sizeof(t_rdr));
 	if (!cmdtable->cmd || !cmdtable->rdr)
 		return (ft_error(-10, dt));
 	temp = token;
@@ -124,24 +125,22 @@ t_return	fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 
 t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 {
-	cmdtable->cmd_nb = how_many(TEXT, token)
-						+ how_many(TEXT_SQUOTE, token)
-						+ how_many(TEXT_DQUOTE, token);
+	cmdtable->cmd_nb = how_many(TEXT, token) + how_many(TEXT_SQUOTE, token)
+		+ how_many(TEXT_DQUOTE, token);
 	cmdtable->rdr_nb = how_many(REDIRECTION_IN, token)
-						+ how_many(REDIRECTION_OUT, token)
-						+ how_many(REDIRECTION_IN_HEREDOC, token)
-						+ how_many(REDIRECTION_OUT_APPEND, token);
+		+ how_many(REDIRECTION_OUT, token) + how_many(REDIRECTION_IN_HEREDOC,
+		token) + how_many(REDIRECTION_OUT_APPEND, token);
 	cmdtable->fd_in = dup(STDIN_FILENO);
 	cmdtable->fd_out = dup(STDOUT_FILENO);
 	if (fill_cmd(cmdtable, token, dt) != OK)
 		return (KO);
-	return(OK);
+	return (OK);
 }
 
-void print_cmdtable(t_dt *dt)
+void	print_cmdtable(t_dt *dt)
 {
-	int			i;
-	int			j;
+	int	i;
+	int	j;
 
 	i = 0;
 	printf("\n::::: CMD TABLE :::::\n");
@@ -158,7 +157,8 @@ void print_cmdtable(t_dt *dt)
 		j = 0;
 		while (dt->cmdtable[i] && j < dt->cmdtable[i]->rdr_nb)
 		{
-			printf("%d:%s ", dt->cmdtable[i]->rdr[j].type, dt->cmdtable[i]->rdr[j].data);
+			printf("%d:%s ", dt->cmdtable[i]->rdr[j].type,
+				dt->cmdtable[i]->rdr[j].data);
 			j++;
 		}
 		printf("\n");
@@ -169,7 +169,7 @@ void print_cmdtable(t_dt *dt)
 
 t_return	ft_parse(t_dt *dt)
 {
-	t_token		*temp;
+	t_token	*temp;
 
 	temp = dt->token;
 	if (temp && temp->type == PIPE)
@@ -184,7 +184,7 @@ t_return	ft_parse(t_dt *dt)
 	}
 	if (create_cmdtable(dt) != OK)
 		return (KO);
-	//print_cmdtable(dt);
+	// print_cmdtable(dt);
 	return (OK);
 }
 
@@ -192,6 +192,7 @@ char	*ft_strgetbetween(const char *start, const char *end)
 {
 	char	*word;
 	size_t	i;
+
 	if ((*start == '\'' && *end == '\'') || (*start == '"' && *end == '"'))
 	{
 		start++;
@@ -219,9 +220,21 @@ t_env	*create_env_var_node(char *str)
 {
 	char	*eq_sign_pos;
 	t_env	*node;
+
 	eq_sign_pos = ft_strchr(str, '=');
 	if (!eq_sign_pos)
-		return (NULL);
+	{
+		// Handle case where there is no '=' sign (no value)
+		node = (t_env *)malloc(sizeof(t_env));
+		if (!node)
+			return (NULL);
+		node->next = NULL;
+		node->key = ft_strdup(str);
+		if (!node->key)
+			return (free(node), NULL);
+		node->value = NULL;
+		return (node);
+	}
 	node = (t_env *)malloc(sizeof(t_env));
 	if (!node)
 		return (NULL);
@@ -238,6 +251,7 @@ t_env	*create_env_var_node(char *str)
 void	free_env_var_list(t_env *head)
 {
 	t_env	*temp;
+
 	while (head != NULL)
 	{
 		temp = head;
@@ -254,9 +268,9 @@ t_env	*init_env_var(char *envp[])
 	t_env	*tail;
 	t_env	*new_node;
 	int		i;
+
 	head = NULL;
 	tail = NULL;
-
 	i = 0;
 	while (envp[i++] != NULL)
 	{
@@ -279,8 +293,8 @@ t_env	*init_env_var(char *envp[])
 
 void	test_print_envlist(t_dt *dt)
 {
-	t_env			*temp;
-	int				u;
+	t_env	*temp;
+	int		u;
 
 	u = 1;
 	temp = dt->envp_lst;

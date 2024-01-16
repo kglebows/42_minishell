@@ -6,7 +6,7 @@
 #    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2023/12/30 13:39:38 by ekordi           ###   ########.fr        #
+#    Updated: 2024/01/03 17:53:28 by ekordi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,9 @@ SRCDIR = ./src
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
 		parse/token.c parse/token_utils.c parse/expander.c parse/parse.c\
-		parse/env.c\
-		executor/exe.c executor/redirector.c\
-		executor/built_in_cmds.c\
+		parse/env.c executor/builtin_cmds/export.c\
+		executor/exe.c executor/signals.c executor/redirector.c executor/builtin_cmds/echo.c\
+		executor/builtin_cmds/cd.c executor/builtin_cmds/pwd.c executor/builtin_cmds/unset.c\
 		utils/exe_utils.c utils/exe_utils1.c utils/exe_utils2.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_utils1.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/02 14:23:32 by ekordi            #+#    #+#             */
+/*   Updated: 2024/01/02 14:25:05 by ekordi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /**
@@ -18,14 +30,16 @@ void	free_arrayofstrings(char **array)
 	}
 	free(array);
 }
+
 void	print_env_list(t_env *head)
 {
 	while (head != NULL)
 	{
-		printf("Key: %s, Value: %s\n", head->key, head->value);
+		printf("%s=%s\n", head->key, head->value);
 		head = head->next;
 	}
 }
+
 /**
  * @brief Creates a new node for an environment variable
  * @param str String containing the key-value pair of the environment variable
@@ -72,6 +86,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 		return (-1);
 	return (0);
 }
+
 /// @brief Sorts the given linked list in by ascii values
 /// @param array The array to sort
 /// @param count The length of the array
@@ -98,6 +113,7 @@ static void	sort_env_linked_list(t_env **array, int count)
 		i++;
 	}
 }
+
 /// @brief Counts the number of env variables stored in the linked list
 /// @param head A pointer to the first node in the linked list
 /// @return The amount of env variables stored in the linked list.
