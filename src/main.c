@@ -52,8 +52,13 @@ void ini_minishell(t_dt *dt)
 {
 	while (42)
 	{
-		// init_signal_handler();
-		/* START */
+		setup_signals();
+
+
+		dt->input = readline("Mini$hell ];> ");
+
+
+
 		// if (isatty(fileno(stdin)))
 		// 	dt->input = readline("");
 		// else
@@ -61,29 +66,10 @@ void ini_minishell(t_dt *dt)
 		// 	char *line;
 		// 	line = get_next_line(fileno(stdin));
 		// 	if (!line)
-		// 		return ;
+		// 		break ;
 		// 	dt->input = ft_strtrim(line, "\n");
 		// 	free(line);
 		// }
-		/* END */
-		setup_signals();
-
-
-		// dt->input = readline("Mini$hell ];> ");
-
-
-
-		if (isatty(fileno(stdin)))
-			dt->input = readline("");
-		else
-		{
-			char *line;
-			line = get_next_line(fileno(stdin));
-			if (!line)
-				break ;
-			dt->input = ft_strtrim(line, "\n");
-			free(line);
-		}
 
 
 
@@ -99,7 +85,6 @@ void ini_minishell(t_dt *dt)
 			free_cmdtable(dt);
 		}
 		free(dt->input);
-		// dt->token = NULL; // Leeks : i need to free token and cmdtable
 	}
 }
 
@@ -116,6 +101,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	dt = ini_dt(argc, argv, envp);
 	ini_minishell(dt);
-	ft_exit(dt); // need to do free env
+	free_env_var_list(dt->envp_lst);
+	ft_exit(dt);
 	return (*dt->exit);
 }

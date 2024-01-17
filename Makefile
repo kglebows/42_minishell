@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
+#    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2024/01/03 17:53:28 by ekordi           ###   ########.fr        #
+#    Updated: 2024/01/17 11:59:39 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCDIR = ./src
 
 SRCS	= main.c \
 		exit/error.c exit/exit.c \
-		parse/token.c parse/token_utils.c parse/expander.c parse/parse.c\
+		parse/token.c parse/expander.c parse/parse.c\
 		parse/env.c executor/builtin_cmds/export.c\
 		executor/exe.c executor/signals.c executor/redirector.c executor/builtin_cmds/echo.c\
 		executor/builtin_cmds/cd.c executor/builtin_cmds/pwd.c executor/builtin_cmds/unset.c\

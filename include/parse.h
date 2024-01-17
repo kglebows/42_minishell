@@ -171,5 +171,6 @@ t_return	envp_add_or_change(char *key, char *value ,t_dt *dt);
 t_return	envp_delete(char *key, t_dt *dt);
 void		envp_print_export(t_dt *dt);
 void		envp_print_env(t_dt *dt);
+void		free_env_var_list(t_env *head);
 
 #endif

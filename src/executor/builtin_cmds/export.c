@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/03 19:05:52 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 13:04:26 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,35 @@ int	is_valid_env_name(const char *name)
 // 	add_env_node(head, new_node);
 // 	return (EXIT_SUCCESS);
 // }
+
+int	characters_before_eq(char *str)
+{
+	int		i;
+	char	q;
+
+	printf("str=%s :: ", str);
+	q = ' ';
+	i = 0;
+	while (*str != '=')
+	{
+		if (*str == '\0')
+			break ;
+		if (q == ' ' && *str == '\'')
+			q = '\'';
+		else if (q == ' ' && *str == '\"')
+			q = '\"';
+		else if (q == '\'' && *str == '\'')
+			q = ' ';
+		else if (q == '\"' && *str == '\"')
+			q = ' ';
+		else
+			i++;
+		str++;
+	}
+	printf("%d\n", i);
+	return (i);
+}
+
 /**
  * @brief Sets or updates an environment variable
  * @param head Pointer to the head of the environment variable linked list
@@ -139,8 +168,8 @@ int	set_env(t_env **head, char *key_val_str)
 		current = *head;
 		while (current != NULL)
 		{
-			if (!ft_strncmp(current->key, key_val_str, eq_sign_pos
-					- key_val_str))
+			if (!ft_strncmp(current->key, key_val_str, ft_strlen(current->key))
+				&& ft_strlen(current->key) == characters_before_eq(key_val_str))
 				return (update_env(current, eq_sign_pos + 1));
 			current = current->next;
 		}
