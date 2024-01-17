@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 18:11:23 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 14:34:03 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	exit_shell(char **args)
 int	*ini_exit(void)
 {
 	static int	exit = 0;
-
+  
 	return (&exit);
 }
 
@@ -100,6 +100,7 @@ void	exit_code(int code)
 	// printf("minishell : %d: command not found\n", code);
 	exit = ini_exit();
 	*exit = code;
+	printf("setting exit code :: %d\n", *exit);
 }
 
 /**
