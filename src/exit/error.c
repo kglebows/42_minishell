@@ -50,7 +50,9 @@ t_return	ft_error(int code, t_dt *dt)
 	else
 		error_(code);
 	(void)dt;
-	exit_code(2);
+	if (code > -10)
+		exit_code(2);
+	else
+		exit_code(258);
 	return (KO);
 }
-	

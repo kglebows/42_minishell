@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 13:04:26 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:03:27 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@
  * @param value New value to set
  * @return 1 on success, 0 on failure
  */
-int	update_env(t_env *node, const char *value)
+void	update_env(t_env *node, char *value)
 {
-	free(node->value);
-	node->value = ft_strdup(value);
-	return (node->value != NULL);
+	if (node->value)
+		free(node->value);
+	if (*value != '\0')
+		node->value = ft_strdup(value);
+	else
+		node->value = NULL;
 }
 
 /**
@@ -53,14 +56,18 @@ int	ft_fisalnum(int c)
 }
 int	is_valid_env_name(const char *name)
 {
-	if (!name || !isalpha(name[0]))
-		return (0); // Invalid if name is NULL or does not start with a letter
-	for (int i = 1; name[i] != '\0' || name[i] != '='; i++)
+	int	i;
+
+	i = 1;
+	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+		return (0);
+	while (name[i])
 	{
-		if (ft_fisalnum(name[i]) || name[i] == '-')
+		if (ft_isalnum(name[i]) == 0 && name[i] != '=' && name[i] != '_' && name[i] != ' ')
 			return (0);
+		i++;
 	}
-	return (1); // Valid environment variable name
+	return (1);
 }
 // int	set_env(t_env **head, char *key_val_str)
 // {
@@ -110,7 +117,6 @@ int	characters_before_eq(char *str)
 	int		i;
 	char	q;
 
-	printf("str=%s :: ", str);
 	q = ' ';
 	i = 0;
 	while (*str != '=')
@@ -129,10 +135,40 @@ int	characters_before_eq(char *str)
 			i++;
 		str++;
 	}
-	printf("%d\n", i);
 	return (i);
 }
+void	prepare_and_add(t_env **head, char *key_val_str)
+{
+	t_env	*current;
+	t_env	*new_node;
+	char	*eq_sign_pos;
 
+	new_node = NULL;
+	eq_sign_pos = ft_strchr(key_val_str, '=');
+	// if (eq_sign_pos)
+	// {
+	// 	new_node = create_env_var_node(key_val_str);
+	// }
+	// else
+	// {
+	current = *head;
+	while (current != NULL)
+	{
+		if (!ft_strncmp(current->key, key_val_str, ft_strlen(current->key))
+			&& ft_strlen(current->key) == characters_before_eq(key_val_str))
+		{
+			if (eq_sign_pos)
+				update_env(current, eq_sign_pos + 1);
+			return ;
+		}
+		current = current->next;
+	}
+	// }
+	new_node = create_env_var_node(key_val_str);
+	// if (!new_node)
+	// 	return (EXIT_FAILURE);
+	add_env_node(head, new_node);
+}
 /**
  * @brief Sets or updates an environment variable
  * @param head Pointer to the head of the environment variable linked list
@@ -140,44 +176,28 @@ int	characters_before_eq(char *str)
 	* @param key_val_str String containing the key-value pair of the environment variable
  * @return 1 on success, 0 on failure
  */
-int	set_env(t_env **head, char *key_val_str)
+int	set_env(t_env **head, char **key_val_str)
 {
-	t_env	*current;
-	t_env	*new_node;
-	char	*eq_sign_pos;
+	int	i;
 
-	new_node = NULL;
-	if (!key_val_str)
+	i = 1;
+	if (!key_val_str[1])
 	{
 		print_env_ascending(*head);
 		return (EXIT_SUCCESS);
 	}
-	eq_sign_pos = ft_strchr(key_val_str, '=');
-	if (eq_sign_pos == key_val_str)
+	while (key_val_str[i])
 	{
-		if (!is_valid_env_name(key_val_str))
+		if (!is_valid_env_name(key_val_str[i]))
 		{
 			exit_code(1);
 			ft_putstr_fd("not a valid identifier\n", 2);
 			return (EXIT_FAILURE);
 		}
-		new_node = create_env_var_node(key_val_str);
+		else
+			prepare_and_add(head, key_val_str[i]);
+		i++;
 	}
-	else
-	{
-		current = *head;
-		while (current != NULL)
-		{
-			if (!ft_strncmp(current->key, key_val_str, ft_strlen(current->key))
-				&& ft_strlen(current->key) == characters_before_eq(key_val_str))
-				return (update_env(current, eq_sign_pos + 1));
-			current = current->next;
-		}
-		new_node = create_env_var_node(key_val_str);
-	}
-	if (!new_node)
-		return (EXIT_FAILURE);
-	add_env_node(head, new_node);
 	return (EXIT_SUCCESS);
 }
 
