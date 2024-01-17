@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 18:40:52 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:41:25 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,3 +117,5 @@ int	ft_open(char *file, t_token_type rdr_type)
 	}
 	return (fd);
 }
+
+

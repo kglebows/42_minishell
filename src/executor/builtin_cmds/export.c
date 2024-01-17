@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 18:03:27 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 23:33:25 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,54 +63,13 @@ int	is_valid_env_name(const char *name)
 		return (0);
 	while (name[i])
 	{
-		if (ft_isalnum(name[i]) == 0 && name[i] != '=' && name[i] != '_' && name[i] != ' ')
+		if (ft_isalnum(name[i]) == 0 && name[i] != '=' && name[i] != '_'
+			&& name[i] != ' ')
 			return (0);
 		i++;
 	}
 	return (1);
 }
-// int	set_env(t_env **head, char *key_val_str)
-// {
-// 	t_env	*current;
-// 	t_env	*new_node;
-// 	char	*eq_sign_pos;
-
-// 	new_node = NULL;
-// 	if (!key_val_str)
-// 	{
-// 		print_env_ascending(*head);
-// 		return (EXIT_SUCCESS);
-// 	}
-// 	eq_sign_pos = ft_strchr(key_val_str, '=');
-// 	// if (!eq_sign_pos || eq_sign_pos == key_val_str)
-// 	// {
-// 	// 	exit_code(1);
-// 	// 	ft_putstr_fd("not a valid identifier\n", 2);
-// 	// 	return (EXIT_FAILURE);
-// 	// }
-// 	if (!is_valid_env_name(key_val_str))
-// 	{
-// 		exit_code(1);
-// 		ft_putstr_fd("not a valid identifier\n", 2);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	current = *head;
-// 	while (current != NULL)
-// 	{
-// 		if (!ft_strncmp(current->key, key_val_str, eq_sign_pos - key_val_str))
-// 		{
-// 			return (update_env(current, eq_sign_pos + 1));
-// 		}
-// 		current = current->next;
-// 	}
-// 	new_node = create_env_var_node(key_val_str);
-// 	if (!new_node)
-// 	{
-// 		return (EXIT_FAILURE);
-// 	}
-// 	add_env_node(head, new_node);
-// 	return (EXIT_SUCCESS);
-// }
 
 int	characters_before_eq(char *str)
 {
@@ -145,12 +104,6 @@ void	prepare_and_add(t_env **head, char *key_val_str)
 
 	new_node = NULL;
 	eq_sign_pos = ft_strchr(key_val_str, '=');
-	// if (eq_sign_pos)
-	// {
-	// 	new_node = create_env_var_node(key_val_str);
-	// }
-	// else
-	// {
 	current = *head;
 	while (current != NULL)
 	{
@@ -163,10 +116,7 @@ void	prepare_and_add(t_env **head, char *key_val_str)
 		}
 		current = current->next;
 	}
-	// }
 	new_node = create_env_var_node(key_val_str);
-	// if (!new_node)
-	// 	return (EXIT_FAILURE);
 	add_env_node(head, new_node);
 }
 /**
@@ -200,50 +150,3 @@ int	set_env(t_env **head, char **key_val_str)
 	}
 	return (EXIT_SUCCESS);
 }
-
-// /**
-//  * @brief Sets or updates an environment variable
-//  * @param head Pointer to the head of the environment variable linked list
-
-// 	* @param key_val_str String containing the key-value pair of the environment variable
-//  * @return 1 on success, 0 on failure
-//  */
-// int	set_env(t_env **head, char *key_val_str)
-// {
-// 	t_env	*current;
-// 	t_env	*new_node;
-// 	char	*eq_sign_pos;
-
-// 	if (!key_val_str)
-// 	{
-// 		print_env_ascending(*head);
-// 		return (EXIT_SUCCESS);
-// 	}
-// 	eq_sign_pos = ft_strchr(key_val_str, '=');
-// 	if (!eq_sign_pos)
-// 		return (1);
-// 	current = *head;
-// 	while (current != NULL)
-// 	{
-// 		if (!ft_strncmp(current->key, key_val_str, eq_sign_pos - key_val_str))
-// 		{
-// 			free(current->value);
-// 			current->value = ft_strdup(eq_sign_pos + 1);
-// 			return (current->value != NULL);
-// 		}
-// 		current = current->next;
-// 	}
-// 	new_node = create_env_var_node(key_val_str);
-// 	if (!new_node)
-// 		return (0);
-// 	if (*head == NULL)
-// 		*head = new_node;
-// 	else
-// 	{
-// 		current = *head;
-// 		while (current->next != NULL)
-// 			current = current->next;
-// 		current->next = new_node;
-// 	}
-// 	return (1);
-// }

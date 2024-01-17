@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 19:15:54 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:39:48 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	exit_shell(char **args)
 	}
 	if (arg_count == 2)
 	{
-		if (isdigit(args[1][0]) || (args[1][0] == '-' && isdigit(args[1][1])))
+		if (ft_isdigit(args[1][0]) || (args[1][0] == '-' && ft_isdigit(args[1][1])))
 		{
 			exit_code_var = atoi(args[1]);
 			ft_putstr_fd("exit\n", STDERR_FILENO);
@@ -84,7 +84,7 @@ void	exit_shell(char **args)
 int	*ini_exit(void)
 {
 	static int	exit = 0;
-  
+
 	return (&exit);
 }
 

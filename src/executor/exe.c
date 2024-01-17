@@ -116,7 +116,7 @@ int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
 		&& ft_strlen(table->cmd[0]) == 5)
 	{
 		if (table->cmd[1])
-			unset_env(&minishell->envp_lst, table->cmd[1]);
+			unset(&minishell->envp_lst, table->cmd);
 	}
 	return (0);
 }

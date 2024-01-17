@@ -1,12 +1,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <fcntl.h>
 # include <string.h>
 # include <signal.h>
