@@ -12,7 +12,10 @@ char	*check_env(char *check, int i, t_dt *dt)
 	{
 		if (ft_strncmp(temp->key, check, i) == 0 && temp->key[i] == '\0')
 		{
-			ret = ft_strdup(temp->value);
+			if (temp->value)
+				ret = ft_strdup(temp->value);
+			else
+				ret = NULL;
 			break ;
 		}
 		temp = temp->next;
