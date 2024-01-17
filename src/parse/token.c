@@ -61,9 +61,8 @@ int	lenght(char *str, char stop, t_dt *dt)
 	}
 	if (stop == '\'' || stop == '\"')
 	{
-		if (str[i] == '\0')
-			ft_error(-11, dt);
-		i++;
+		if (str[i] != '\0')
+			i++;
 		if (str[i] == '\'')
 			i += lenght(&str[i], '\'', dt);
 		else if (str[i] == '\"')
