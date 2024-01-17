@@ -8,11 +8,11 @@ void	error_(int code)
 	else if (code == -11)
 		printf("minishell: Quotes not closed!\n");
 	else if (code == -12)
-		printf("minishell: U start with a pipe?!\n");
+		printf("minishell: syntax error near unexpected token `|'\n");
 	else if (code == -13)
-		printf("minishell: U end with this token?!\n");
+		printf("minishell: syntax error near unexpected token\n");
 	else if (code == -14)
-		printf("minishell: U want to redirect what?!\n");
+		printf("minishell: syntax error near unexpected token\n");
 	else if (code == -15)
 		printf("Error! \n");
 	else if (code == -16)

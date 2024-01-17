@@ -14,7 +14,10 @@
 # include <errno.h>
 # include <sys/stat.h>
 # include <termios.h>
+
+// FOR LINUX VALGRIND
 // # include <wait.h>
+//
 
 # include "../lib/libft/libft.h"
 

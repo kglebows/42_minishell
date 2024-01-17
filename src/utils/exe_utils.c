@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 17:06:05 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 18:40:52 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@
  */
 void	ft_waitpid(t_dt *minishell, int nb_cmd)
 {
-	int	i;
 	int	status;
 
 	(void)minishell;
-	i = 0;
 	while (nb_cmd--)
 		wait(&status);
 	exit_code(WEXITSTATUS(status));

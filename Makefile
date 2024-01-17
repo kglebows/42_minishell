@@ -6,15 +6,16 @@
 #    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2024/01/17 11:59:39 by kglebows         ###   ########.fr        #
+#    Updated: 2024/01/17 18:50:47 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-#CFLAGS = -Wall -Werror -Wextra -g
 
+
+# CFLAGS = -Wall -Werror -Wextra -g
 CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
 OBJDIR = ./bin
@@ -67,7 +68,7 @@ makelibft:
 # 	$(CC) $(CFLAGS) $(OBJS) $(LIBFTNAME) -L/usr/include -lreadline -o $@
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) -I $(LIBFT_PATH) -I $(INCLUDE_PATH) -lreadline -o $(NAME) $(OBJS) -L$(OBJDIR)/libft -lft
+	@$(CC) $(CFLAGS) -I $(LIBFT_PATH) -I $(INCLUDE_PATH) -o $(NAME) $(OBJS) -L$(OBJDIR)/libft -lft -lreadline
 
 clean-empty-dirs:
 	@if [ -d $(OBJDIR) ]; then find $(OBJDIR) -type d -empty -exec rmdir {} +; fi

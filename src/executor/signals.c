@@ -1,10 +1,12 @@
 #include "minishell.h"
+
 static void	handle_parent_signal(int signo);
 static void	setup_termios_config(void);
 void	setup_signals(void)
 {
 	struct sigaction	sa_int;
 
+	sa_int = (struct sigaction){};
 	setup_termios_config();
 	sa_int.sa_handler = handle_parent_signal;
 	sigaction(SIGINT, &sa_int, NULL);

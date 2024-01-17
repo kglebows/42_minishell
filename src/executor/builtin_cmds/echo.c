@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:28:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/16 18:01:53 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:42:34 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ bool	is_valid_option(const char *arg, bool newline)
 {
 	int	n;
 
+	(void)newline;
 	if (arg[0] == '-' && arg[ft_strlen(arg)] == '\0')
 	{
 		n = 1;
