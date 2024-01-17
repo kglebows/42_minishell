@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/02 14:24:46 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 17:06:05 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*cmd_path(char *cmd, char **env)
 	i = 0;
 	paths = ft_split(get_env(env, "PATH"), ':');
 	i = 0;
-	while (paths && paths[i])
+	while (paths && paths[i] && cmd[0] != '\0')
 	{
 		path = ft_strjoin(paths[i++], "/");
 		temp = ft_strjoin(path, cmd);

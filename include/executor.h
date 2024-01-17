@@ -61,7 +61,7 @@ void						execute_echo(char **args);
 int							execute_cd(char **args, t_env *envp_list);
 int							execute_pwd(void);
 void						print_env_var_list(char **env);
-int							set_env(t_env **head, char *key_val_str);
+int							set_env(t_env **head, char **key_val_str);
 int							unset_env(t_env **head, char *var);
 
 // exe_utils.c

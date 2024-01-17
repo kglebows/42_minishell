@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/06 15:10:35 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 18:11:23 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ void	exit_all_minishell(void)
 
 void	exit_shell(char **args)
 {
-	int	exit_code;
+	int	exit_code_var;
 	int	arg_count;
 
-	exit_code = 0;
+	exit_code_var = 0;
 	arg_count = 0;
 	while (args[arg_count] != NULL)
 		arg_count++;
@@ -49,16 +49,16 @@ void	exit_shell(char **args)
 	{
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 		exit_all_minishell();
-		exit(exit_code);
+		exit(exit_code_var);
 	}
 	if (arg_count == 2)
 	{
 		if (isdigit(args[1][0]) || (args[1][0] == '-' && isdigit(args[1][1])))
 		{
-			exit_code = atoi(args[1]);
+			exit_code_var = atoi(args[1]);
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			exit_all_minishell();
-			exit(exit_code);
+			exit(exit_code_var);
 		}
 		else
 		{
@@ -72,6 +72,7 @@ void	exit_shell(char **args)
 	if (arg_count > 2)
 	{
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
+		exit_code(1);
 		return ;
 	}
 }
@@ -82,9 +83,8 @@ void	exit_shell(char **args)
  */
 int	*ini_exit(void)
 {
-	static int	exit;
+	static int	exit = 0;
 
-	exit = 0;
 	return (&exit);
 }
 

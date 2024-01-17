@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 16:42:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/02 14:22:58 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/17 17:01:58 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,42 @@ static void	assign_array(t_env *head, char **array)
 	temp = head;
 	while (temp)
 	{
-		array[i] = (char *)malloc(strlen(temp->key) + strlen(temp->value) + 2);
-		ft_strlcpy(array[i], temp->key, strlen(temp->key) + 1);
-		ft_strlcat(array[i], "=", strlen(array[i]) + 2);
-		ft_strlcat(array[i], temp->value, strlen(array[i]) + strlen(temp->value)
-			+ 1);
+		if (temp->value)
+		{
+			array[i] = (char *)malloc(ft_strlen(temp->key) + ft_strlen(temp->value)
+				+ 2);
+			ft_strlcpy(array[i], temp->key, ft_strlen(temp->key) + 1);
+			ft_strlcat(array[i], "=", ft_strlen(array[i]) + 2);
+			ft_strlcat(array[i], temp->value, ft_strlen(array[i])
+				+ ft_strlen(temp->value) + 1);
+			i++;
+		}
 		temp = temp->next;
-		i++;
 	}
 	array[i] = NULL;
 }
+int	count_env_variables_with_value(t_env *head)
+{
+	int		i;
+	t_env	*temp;
 
+	temp = head;
+	i = 0;
+	while (temp)
+	{
+		if (temp->value)
+			i++;
+		temp = temp->next;
+	}
+	return (i);
+}
 char	**env_to_char_array(t_env *head)
 {
 	int		count;
 	char	**result;
 
-	count = count_env_variables(head);
-	result = (char **)malloc((count + 1) * sizeof(char *));
+	count = count_env_variables_with_value(head);
+	result = (char **)calloc((count + 1), sizeof(char *));
 	assign_array(head, result);
 	return (result);
 }

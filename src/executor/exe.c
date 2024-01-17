@@ -22,6 +22,7 @@ int	prepare_and_execute(t_dt *minishell)
 		&& !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
 	{
 		exit_shell(minishell->cmdtable[0]->cmd);
+		return (1);
 	}
 	while (++i < table_num)
 	{
@@ -49,6 +50,12 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 		ft_putstr_fd("Pipe Error\n", 2);
 	if (table->cmd[0])
 		exit_code = exe_parent_builtin_cmds(table, minishell);
+	// if (table->cmd[0][0] == '\0')
+	// {
+	// //printf("NULL\n");
+	// 	exit_code = 1;
+	// 	/* code */
+	// }
 	block_signal();
 	pid1 = fork();
 	table->fd_rdr_out = 0;
@@ -102,7 +109,7 @@ int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
 	else if (!ft_strncmp(table->cmd[0], "export", 6)
 		&& ft_strlen(table->cmd[0]) == 6)
 	{
-		if (table->cmd[1] && set_env(&minishell->envp_lst, table->cmd[1]))
+		if (set_env(&minishell->envp_lst, table->cmd))
 			return (1);
 	}
 	else if (!ft_strncmp(table->cmd[0], "unset", 5)
@@ -121,13 +128,9 @@ int	exe_built_in_cmds(char **args, t_env *envp_lst)
 	else if (!ft_strncmp(args[0], "pwd", 3) && ft_strlen(args[0]) == 3)
 		execute_pwd();
 	else if (!ft_strncmp(args[0], "env", 3) && ft_strlen(args[0]) == 3)
-		print_env_list(envp_lst);
+		print_env_var_list(env_to_char_array(envp_lst));
 	else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
-	{
-		if (!args[1])
-			set_env(&envp_lst, args[1]);
 		return (1);
-	}
 	else if (!ft_strncmp(args[0], "cd", 2) && ft_strlen(args[0]) == 2)
 		return (1);
 	else if (!ft_strncmp(args[0], "unset", 5) && ft_strlen(args[0]) == 5)

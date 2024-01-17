@@ -31,6 +31,7 @@
 		"errno.h": "c",
 		"locale": "c",
 		"string.h": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"sstream": "c"
 	}
 }

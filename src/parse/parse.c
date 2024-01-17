@@ -44,12 +44,14 @@ void	free_cmdtable(t_dt *dt)
 			free(dt->cmdtable[i]->rdr[j].data);
 			j++;
 		}
+		free(dt->cmdtable[i]->rdr);
 		j = 0;
 		while (dt->cmdtable[i]->cmd[j])
 		{
 			free(dt->cmdtable[i]->cmd[j]);
 			j++;
 		}
+		free(dt->cmdtable[i]->cmd);
 		free(dt->cmdtable[i]);
 		i++;
 	}
@@ -228,7 +230,7 @@ t_env	*create_env_var_node(char *str)
 	if (!eq_sign_pos)
 	{
 		// Handle case where there is no '=' sign (no value)
-		node = (t_env *)malloc(sizeof(t_env));
+		node = (t_env *)ft_calloc(1, sizeof(t_env));
 		if (!node)
 			return (NULL);
 		node->next = NULL;
@@ -238,7 +240,7 @@ t_env	*create_env_var_node(char *str)
 		node->value = NULL;
 		return (node);
 	}
-	node = (t_env *)malloc(sizeof(t_env));
+	node = (t_env *)ft_calloc(1, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	node->next = NULL;
