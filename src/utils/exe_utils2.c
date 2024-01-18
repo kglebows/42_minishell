@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_utils2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 16:42:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 17:01:58 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 20:11:53 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char	*find_path(t_cmdtable *table, char **env, bool last_cmd)
 	struct stat	path_stat;
 
 	temp = NULL;
+	(void) last_cmd;
 	if (stat(table->cmd[0], &path_stat) == 0)
 	{
 		if (S_ISDIR(path_stat.st_mode))

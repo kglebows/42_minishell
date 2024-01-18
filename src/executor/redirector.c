@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirector.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 18:20:39 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 20:06:13 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,18 @@ int	set_outfile(t_cmdtable *table, char *file)
  */
 int	set_infile(t_cmdtable *table, char *file)
 {
+	int	exit_code;
 	table->fd_rdr_in = ft_open(file, REDIRECTION_IN);
 	if (table->fd_rdr_in < 0)
 		return (EXIT_FAILURE);
 	else
 	{
+		exit_code = EXIT_SUCCESS;
 		if (dup2(table->fd_rdr_in, STDIN_FILENO) == -1)
-			return (EXIT_FAILURE);
+			exit_code = EXIT_FAILURE;
 		close(table->fd_rdr_in);
 	}
-	return (EXIT_SUCCESS);
+	return (exit_code);
 }
 /**
  * @brief Appends the output to a file for a command table

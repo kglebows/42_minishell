@@ -135,8 +135,8 @@ t_return	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt)
 	cmdtable->rdr_nb = how_many(REDIRECTION_IN, token)
 		+ how_many(REDIRECTION_OUT, token) + how_many(REDIRECTION_IN_HEREDOC,
 		token) + how_many(REDIRECTION_OUT_APPEND, token);
-	cmdtable->fd_in = dup(STDIN_FILENO);
-	cmdtable->fd_out = dup(STDOUT_FILENO);
+	cmdtable->fd_in = dt->fd_in;
+	cmdtable->fd_out = dt->fd_out;
 	if (fill_cmd(cmdtable, token, dt) != OK)
 		return (KO);
 	return (OK);
