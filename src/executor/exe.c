@@ -58,7 +58,10 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 		setup_child_signals();
 		if (*minishell->exit)
 			ft_exit(minishell);
-		child(table, last_cmd, minishell->envp_lst, fd);
+		if(table->cmd[0])
+			child(table, last_cmd, minishell->envp_lst, fd);
+		else
+			ft_exit(minishell);
 	}
 	else
 	{
