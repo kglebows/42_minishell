@@ -22,7 +22,7 @@ int	prepare_and_execute(t_dt *minishell)
 	if (minishell->cmdtable[0]->cmd_nb != 0 && table_num == 1
 		&& !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
 	{
-		exit_shell(minishell->cmdtable[0]->cmd);
+		exit_shell(minishell->cmdtable[0]->cmd, minishell);
 		return (1);
 	}
 	while (++i < table_num)
@@ -84,7 +84,7 @@ void	child(t_cmdtable *table, bool last_cmd, t_env *envp_lst, int *fd)
 			dup2(table->fd_rdr_out, STDOUT_FILENO);
 		if (last_cmd && !table->fd_rdr_out)
 			dup2(table->fd_out, STDOUT_FILENO);
-		if (exe_built_in_cmds(table->cmd, envp_lst))
+		if (!exe_built_in_cmds(table->cmd, envp_lst))
 			exit(EXIT_SUCCESS);
 		else
 		{
@@ -103,7 +103,8 @@ int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
 	else if (!ft_strncmp(table->cmd[0], "export", 6)
 		&& ft_strlen(table->cmd[0]) == 6)
 	{
-		set_env(&minishell->envp_lst, table->cmd);
+		if (table->cmd[1])
+			set_env(&minishell->envp_lst, table->cmd);
 	}
 	else if (!ft_strncmp(table->cmd[0], "unset", 5)
 		&& ft_strlen(table->cmd[0]) == 5)
@@ -123,14 +124,17 @@ int	exe_built_in_cmds(char **args, t_env *envp_lst)
 	else if (!ft_strncmp(args[0], "env", 3) && ft_strlen(args[0]) == 3)
 		print_env_var_list(env_to_char_array(envp_lst));
 	else if (!ft_strncmp(args[0], "export", 6) && ft_strlen(args[0]) == 6)
-		return (1);
+	{
+		if (!args[1])
+			set_env(&envp_lst, args);
+	}
 	else if (!ft_strncmp(args[0], "cd", 2) && ft_strlen(args[0]) == 2)
-		return (1);
-	else if (!ft_strncmp(args[0], "unset", 5) && ft_strlen(args[0]) == 5)
-		return (1);
-	else if (!ft_strncmp(args[0], "exit", 4) && ft_strlen(args[0]) == 4)
-		return (1);
-	else
 		return (0);
-	return (1);
+	else if (!ft_strncmp(args[0], "unset", 5) && ft_strlen(args[0]) == 5)
+		return (0);
+	else if (!ft_strncmp(args[0], "exit", 4) && ft_strlen(args[0]) == 4)
+		return (0);
+	else
+		return (1);
+	return (0);
 }

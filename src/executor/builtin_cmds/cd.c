@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:27:38 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/01 15:27:52 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 10:17:45 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	make_path(char *tmp, char *tmp2, char *arg)
 		free(tmp);
 	return (1);
 }
-int	execute_cd(char **args, t_env *envp_list)
+void	execute_cd(char **args, t_env *envp_list)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -50,18 +50,21 @@ int	execute_cd(char **args, t_env *envp_list)
 	if (args[1] != NULL)
 	{
 		if (!make_path(tmp, tmp2, args[1]))
-			return (0);
+		{
+			exit_code(1);
+			return ;
+		}
 	}
 	else if (chdir(getenv("HOME")) != 0)
 	{
 		perror("chdir");
 		ft_putstr_fd("Error\n", STDERR_FILENO);
-		return (0);
+		exit_code(1);
+		return ;
 	}
 	tmp = getcwd(NULL, 0);
 	update_env_value(envp_list, "PWD", tmp);
 	update_env_value(envp_list, "OLDPWD", old_pwd);
 	free(tmp);
 	free(old_pwd);
-	return (1);
 }

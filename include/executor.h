@@ -49,20 +49,21 @@ void						execute(t_cmdtable *table, t_dt *minishell,
 int							ft_open(char *file, t_token_type rdr_type);
 char						*ft_strgetbetween(const char *start,
 								const char *end);
-int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell);
-void	child(t_cmdtable *table, bool last_cmd, t_env *envp_lst, int *fd);
-
+int							exe_parent_builtin_cmds(t_cmdtable *table,
+								t_dt *minishell);
+void						child(t_cmdtable *table, bool last_cmd,
+								t_env *envp_lst, int *fd);
 
 // redirector.c
 int							check_redirections(t_cmdtable *table, int *fd);
 
 // builtin.c
 void						execute_echo(char **args);
-int							execute_cd(char **args, t_env *envp_list);
+void						execute_cd(char **args, t_env *envp_list);
 int							execute_pwd(void);
 void						print_env_var_list(char **env);
-void							set_env(t_env **head, char **key_val_str);
-void	unset(t_env **head, char **var);
+void						set_env(t_env **head, char **key_val_str);
+void						unset(t_env **head, char **var);
 
 // exe_utils.c
 void						ft_waitpid(t_dt *minishell, int nb_cmd);
@@ -71,19 +72,19 @@ char						*cmd_path(char *cmd, char **env);
 
 // exe_utils1.c
 void						free_arrayofstrings(char **array);
-t_env				*create_env_var_node(char *str);
+t_env						*create_env_var_node(char *str);
 void						print_env_ascending(t_env *head);
 int	count_env_variables(t_env *head);
-
 // signals.c
-void	block_signal(void);
+void						block_signal(void);
 
 // exe_utils2.c
-char	**env_to_char_array(t_env *head);
-char	*find_path(t_cmdtable *table, char **env, bool last_cmd);
-int	update_env_value(t_env *head, const char *key, const char *new_value);
-int	ft_strcmp(const char *s1, const char *s2);
-
+char						**env_to_char_array(t_env *head);
+char						*find_path(t_cmdtable *table, char **env,
+								bool last_cmd);
+int							update_env_value(t_env *head, const char *key,
+								const char *new_value);
+int							ft_strcmp(const char *s1, const char *s2);
 
 // executor_utils.c
 int							cmd_is_builtin(char *cmd);

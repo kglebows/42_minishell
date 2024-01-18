@@ -120,7 +120,7 @@ t_return			(ft_error(int code, t_dt *dt));
 void				ft_exit(t_dt *dt);
 int					*ini_exit(void);
 void				exit_code(int code);
-void				exit_shell(char **args);
+void				exit_shell(char **args, t_dt *minishell);
 void				ft_token(t_dt *dt);
 
 /**

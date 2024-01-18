@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 09:46:33 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 11:03:25 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ void	prepare_and_add(t_env **head, char *key_val_str)
 void	set_env(t_env **head, char **key_val_str)
 {
 	int	i;
-
 	i = 1;
 	if (!key_val_str[1])
 	{

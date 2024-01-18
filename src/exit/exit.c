@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 22:39:48 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 11:21:51 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	exit_all_minishell(void)
 	pclose(cmd_pipe);
 }
 
-void	exit_shell(char **args)
+void	exit_shell(char **args, t_dt *minishell)
 {
 	int	exit_code_var;
 	int	arg_count;
@@ -55,16 +55,18 @@ void	exit_shell(char **args)
 	{
 		if (ft_isdigit(args[1][0]) || (args[1][0] == '-' && ft_isdigit(args[1][1])))
 		{
+			dup2(minishell->fd_out, STDOUT_FILENO);
 			exit_code_var = atoi(args[1]);
-			ft_putstr_fd("exit\n", STDERR_FILENO);
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			exit_all_minishell();
 			exit(exit_code_var);
 		}
 		else
 		{
-			ft_putstr_fd("exit: ", STDERR_FILENO);
-			ft_putstr_fd(args[1], STDERR_FILENO);
-			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+			dup2(minishell->fd_out, STDOUT_FILENO);
+			ft_putstr_fd("exit: ", STDOUT_FILENO);
+			ft_putstr_fd(args[1], STDOUT_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
 			exit_all_minishell();
 			exit(255);
 		}
