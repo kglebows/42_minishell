@@ -14,6 +14,7 @@ int	prepare_and_execute(t_dt *minishell)
 
 	i = -1;
 	table_num = 0;
+	exit_code(0);
 	while (minishell->cmdtable[table_num])
 	{
 		table_num++;
@@ -44,26 +45,19 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 {
 	int	pid1;
 	int	fd[2];
-	int	exit_code;
 
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
 	if (table->cmd[0])
-		exit_code = exe_parent_builtin_cmds(table, minishell);
-	// if (table->cmd[0][0] == '\0')
-	// {
-	// //printf("NULL\n");
-	// 	exit_code = 1;
-	// 	/* code */
-	// }
+		exe_parent_builtin_cmds(table, minishell);
 	block_signal();
 	pid1 = fork();
 	table->fd_rdr_out = 0;
 	if (pid1 == 0)
 	{
 		setup_child_signals();
-		if (exit_code == EXIT_FAILURE)
-			exit(exit_code);
+		if (*minishell->exit)
+			ft_exit(minishell);
 		child(table, last_cmd, minishell->envp_lst, fd);
 	}
 	else
@@ -109,8 +103,7 @@ int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
 	else if (!ft_strncmp(table->cmd[0], "export", 6)
 		&& ft_strlen(table->cmd[0]) == 6)
 	{
-		if (set_env(&minishell->envp_lst, table->cmd))
-			return (1);
+		set_env(&minishell->envp_lst, table->cmd);
 	}
 	else if (!ft_strncmp(table->cmd[0], "unset", 5)
 		&& ft_strlen(table->cmd[0]) == 5)

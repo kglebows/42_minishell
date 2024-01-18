@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 23:33:25 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 09:46:33 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	prepare_and_add(t_env **head, char *key_val_str)
 	* @param key_val_str String containing the key-value pair of the environment variable
  * @return 1 on success, 0 on failure
  */
-int	set_env(t_env **head, char **key_val_str)
+void	set_env(t_env **head, char **key_val_str)
 {
 	int	i;
 
@@ -134,19 +134,20 @@ int	set_env(t_env **head, char **key_val_str)
 	if (!key_val_str[1])
 	{
 		print_env_ascending(*head);
-		return (EXIT_SUCCESS);
+		return ;
 	}
 	while (key_val_str[i])
 	{
 		if (!is_valid_env_name(key_val_str[i]))
 		{
-			exit_code(1);
 			ft_putstr_fd("not a valid identifier\n", 2);
-			return (EXIT_FAILURE);
+			exit_code(1);
 		}
 		else
+		{
 			prepare_and_add(head, key_val_str[i]);
+			exit_code(0);
+		}
 		i++;
 	}
-	return (EXIT_SUCCESS);
 }
