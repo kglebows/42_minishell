@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 11:21:51 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/18 17:14:18 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	exit_shell(char **args, t_dt *minishell)
 		else
 		{
 			dup2(minishell->fd_out, STDOUT_FILENO);
-			ft_putstr_fd("exit: ", STDOUT_FILENO);
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
 			ft_putstr_fd(args[1], STDOUT_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
 			exit_all_minishell();
