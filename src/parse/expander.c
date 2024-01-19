@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:47:35 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/19 17:11:50 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:30:21 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*expand(char q, char *start, t_dt *dt)
 		return (ft_strdup("$"));
 	if (i == 0)
 		return (ft_calloc(1, sizeof(char)));
-	temp = calloc(i + 1, sizeof(char));
+	temp = ft_calloc(i + 1, sizeof(char));
 	if (q == '\'')
 	{
 		ft_strlcpy(temp, &start[-1], i + 2);
