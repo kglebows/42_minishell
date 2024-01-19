@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 17:14:18 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/19 16:14:48 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exit_all_minishell(void)
+void exit_all_minishell(void)
 {
-	FILE	*cmd_pipe;
-	char	buffer[256];
-	int		pid;
+	FILE *cmd_pipe;
+	char buffer[256];
+	int pid;
 
 	cmd_pipe = popen("pgrep -x minishell", "r");
 	if (cmd_pipe == NULL)
@@ -26,7 +26,7 @@ void	exit_all_minishell(void)
 	}
 	while (fgets(buffer, sizeof(buffer), cmd_pipe) != NULL)
 	{
-		pid = atoi(buffer);
+		pid = ft_atoi(buffer);
 		if (pid != getpid())
 		{
 			if (kill(pid, SIGTERM) == -1)
@@ -36,10 +36,10 @@ void	exit_all_minishell(void)
 	pclose(cmd_pipe);
 }
 
-void	exit_shell(char **args, t_dt *minishell)
+void exit_shell(char **args, t_dt *minishell)
 {
-	int	exit_code_var;
-	int	arg_count;
+	int exit_code_var;
+	int arg_count;
 
 	exit_code_var = 0;
 	arg_count = 0;
@@ -47,6 +47,8 @@ void	exit_shell(char **args, t_dt *minishell)
 		arg_count++;
 	if (arg_count == 1)
 	{
+		close(minishell->fd_out);
+		close(minishell->fd_in);
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 		exit_all_minishell();
 		exit(exit_code_var);
@@ -55,7 +57,9 @@ void	exit_shell(char **args, t_dt *minishell)
 	{
 		if (ft_isdigit(args[1][0]) || (args[1][0] == '-' && ft_isdigit(args[1][1])))
 		{
-			dup2(minishell->fd_out, STDOUT_FILENO);
+			dup2(minishell->fd_out, STDOUT_FILENO); // close fd_out and in
+			close(minishell->fd_out);
+			close(minishell->fd_in);
 			exit_code_var = atoi(args[1]);
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			exit_all_minishell();
@@ -64,6 +68,8 @@ void	exit_shell(char **args, t_dt *minishell)
 		else
 		{
 			dup2(minishell->fd_out, STDOUT_FILENO);
+			close(minishell->fd_out);
+			close(minishell->fd_in);
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
 			ft_putstr_fd(args[1], STDOUT_FILENO);
@@ -76,42 +82,8 @@ void	exit_shell(char **args, t_dt *minishell)
 	{
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
 		exit_code(1);
-		return ;
+		return;
 	}
 }
-/**
- * @brief Creates static variable for exit code
- * @param -
- * @return adress of current Exit Code for terminal.
- */
-int	*ini_exit(void)
-{
-	static int	exit = 0;
 
-	return (&exit);
-}
 
-/**
- * @brief Changes programs exit code
- * @param code new exit code
- * @return
- */
-void	exit_code(int code)
-{
-	int	*exit;
-
-	// printf("minishell : %d: command not found\n", code);
-	exit = ini_exit();
-	*exit = code;
-	// printf("setting exit code :: %d\n", *exit);
-}
-
-/**
- * @brief An exit structure
- * @param dt Main program data structure
- * @return
- */
-void	ft_exit(t_dt *dt)
-{
-	exit(*dt->exit);
-}

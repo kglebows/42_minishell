@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exe_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 22:41:25 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/19 11:49:56 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/wait.h>
 
 /**
  * @brief Waits for child processes to finish and sets the exit code
@@ -107,11 +108,11 @@ int	ft_open(char *file, t_token_type rdr_type)
 	if (fd == -1)
 	{
 		if (errno == EACCES)
-			ft_putstr_fd("zsh: permission denied: ", 2);
+			ft_putstr_fd("minishell: permission denied: ", 2);
 		else if (errno == ENOENT)
-			ft_putstr_fd("zsh: no such file or directory: ", 2);
+			ft_putstr_fd("minishell: no such file or directory: ", 2);
 		else
-			ft_putstr_fd("zsh: error opening the file: ", 2);
+			ft_putstr_fd("minishell: error opening the file: ", 2);
 		ft_putstr_fd(file, 2);
 		ft_putstr_fd("\n", 2);
 	}

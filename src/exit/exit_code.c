@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   exit_code.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 10:28:08 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/19 10:28:09 by kglebows         ###   ########.fr       */
+/*   Created: 2024/01/19 13:02:26 by kglebows          #+#    #+#             */
+/*   Updated: 2024/01/19 17:08:12 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "minishell.h"
 
-//signal_handler
-// void	init_signal_handler(void);
-void	print_env_list(t_env *head);
+int	*ini_exit(void)
+{
+	static int	exit = 0;
 
-#endif
+	return (&exit);
+}
+
+void	exit_code(int code)
+{
+	int	*exit;
+
+	exit = ini_exit();
+	*exit = code;
+}
+
+void	ft_exit(t_dt *dt)
+{
+	exit(*dt->exit);
+}

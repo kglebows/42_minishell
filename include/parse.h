@@ -1,135 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/19 10:28:03 by kglebows          #+#    #+#             */
+/*   Updated: 2024/01/19 17:12:43 by kglebows         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
 
 # include "minishell.h"
 
-/**
- * @brief Type of a token 0-3 Redirection, 4 pipe, 5-7 text
- * @param REDIRECTION_IN <
- * @param REDIRECTION_IN_HEREDOC <<
- * @param REDIRECTION_OUT >
- * @param REDIRECTION_OUT_APPEND >>
- * @param PIPE |
- * @param TEXT ...
- * @param TEXT_SQUOTE '...'
- * @param TEST_DQUOTE  "..."
- */
-typedef enum e_token_type
-{
-	REDIRECTION_IN,
-	REDIRECTION_IN_HEREDOC,
-	REDIRECTION_OUT,
-	REDIRECTION_OUT_APPEND,
-	PIPE,
-	TEXT,
-	TEXT_SQUOTE,
-	TEXT_DQUOTE
-}					t_token_type;
-
-typedef enum e_return
-{
-	OK,
-	KO
-} t_return ;
+/*
+	env.c
+*/
 
 /**
- * @brief Token list structure
- * @param type Type of a token
- * @param data content of input assosiated with token
- * @param lenght lenght of data
- * @param next pointer to next node, NULL = end of list
+ * @brief Gets the word inside of the quotes
+ * @param start pointer to the word start
+ * @param end
+ * @return Pointer to 
  */
-typedef struct s_token
-{
-	t_token_type	type;
-	char			*data;
-	int				lenght;
-	struct s_token	*next;
-}					t_token;
-
+char	*ft_strgetbetween(const char *start, const char *end);
 /**
- * @brief Redirection information
- * @param type Type of redirection
- * @param data Redirection destination or deliminator for heredoc
+ * @brief Creates a new node for an environment variable
+ * @param str String containing the key-value pair of the environment variable
+ * @return Pointer to the newly created node on success, NULL on failure
  */
-typedef struct s_rdr
-{
-	t_token_type	type;
-	char			*data;
-}					t_rdr;
-
-// ! //
-
-// notes for Execution :
-// the files are created to the point of reaching in-file that does not exist
-// heredocs are executed first
-
-// ^ //
-
+t_env	*create_env_var_node(char *str);
 /**
- * @brief Command Table for Executor
- * @param cmd Array of command with options
- * @param cmd_nb Number of command elements (cmd + options)
- * @param rdr Array of redirections
- * @param rdr_nb Number of redirections (in and out)
- * @param fd_in input file, default - standard input
- * @param fd_out output file, default - standard output
+ * @brief Frees memory of environment list
+ * @param head First element of env list
+ * @return 
  */
-typedef struct t_cmdtable
-{
-	char			**cmd;
-	int				cmd_nb;
-	t_rdr			*rdr;
-	int				rdr_nb;
-	int				fd_in;
-	int				fd_out;
-	int				fd_rdr_in;
-	int				fd_rdr_out;
-}					t_cmdtable;
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
-
+void	free_env_var_list(t_env *head);
 /**
- * @brief Main data structure that holds all information needed for the program.
- * @param exit exit code of main process
- * @param envp ENVironment Pointer. String with environment information.
- * @param input pointer to minishells input
- * @param token linked list of tokens header
- * @param nrofpipes number of pipes
+ * @brief Creates environment variable list by coping system envp
+ * @param envp Pointer to original envp from the system
+ * @return 
  */
-typedef struct s_dt
-{
-	int				*exit;
-	char			**envp;
-	t_env			*envp_lst;
-	char			*input;
-	t_token			*token;
-	t_cmdtable		**cmdtable;
-	int				nrofpipes;
-	int				fd_in;
-	int				fd_out;
-}					t_dt;
+t_env	*init_env_var(char *envp[]);
 
-t_return			(ft_error(int code, t_dt *dt));
-void				ft_exit(t_dt *dt);
-int					*ini_exit(void);
-void				exit_code(int code);
-void				exit_shell(char **args, t_dt *minishell);
-void				ft_token(t_dt *dt);
+/*
+	token.c
+*/
 
 /**
  * @brief Tokenization - Turning input into tokens
  * @param dt main data structure
  * @return
  */
-void				ft_token(t_dt *dt);
-
+void	ft_token(t_dt *dt);
 /**
  * @brief Calculate the lenght of string for token
  * @param str Pointer to first character in input for token
@@ -137,8 +62,7 @@ void				ft_token(t_dt *dt);
  * @param dt main data structure
  * @return lenght of data
  */
-int					lenght(char *str, char stop, t_dt *dt);
-
+int		lenght(char *str, char stop, t_dt *dt);
 /**
  * @brief Create a new token and add it at the end of the token list
  * @param type Type of a token
@@ -147,30 +71,88 @@ int					lenght(char *str, char stop, t_dt *dt);
  * @param dt main data structure
  * @return lenght of data
  */
-int					token_ini(t_token_type type, int lenght, char *data,
-						t_dt *dt);
-void				free_token(t_dt *dt);
-t_env				*init_env_var(char *envp[]);
-
-t_return(fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt));
-void				print_cmdtable(t_dt *dt);
-t_return(fill_cmd(t_cmdtable *cmdtable, t_token *token, t_dt *dt));
-void				free_cmdtable(t_dt *dt);
-
-char				*ft_expander(char *str, int size, t_dt *dt);
+int		token_ini(t_token_type type, int lenght, char *data, t_dt *dt);
+/**
+ * @brief Memory free of all tokens
+ * @param dt main data structure
+ * @return
+ */
+void	free_token(t_dt *dt);
+/**
+ * @brief Duplicates string to the size of n. Null terminates after n characters.
+ * @param s string to duplicate
+ * @param n size to duplicate 
+ * @return pointer to new string
+ */
+char	*ft_strndup(const char *s, size_t n);
+/**
+ * @brief Creates a nullterminated string with just one character
+ * @param c character to put in string
+ * @return pointer to newly allocated string
+ */
+char	*ft_onecharstring(char c);
 
 /*
-	TESTING
+	parse.c
 */
-void				test_print_envlist(t_dt *dt);
+
+/**
+ * @brief Checks the tokens and creates command table
+ * @param dt main data structure
+ * @return OK - command table ready for execution 
+ * KO - tokens are not valid for execution
+ */
+t_ok	ft_parse(t_dt *dt);
+/**
+ * @brief fills the command table with commands and redirections
+ * @param cmdtable pointer to a pipe section in command table
+ * @param token pointer to token to that section
+ * @param dt main data structure
+ * @return 
+ */
+t_ok	fill_cmdtable(t_cmdtable *cmdtable, t_token *token, t_dt *dt);
+/**
+ * @brief Create an command table of height of number of pipes.
+ * @param dt main data structure
+ * @return OK - command table created KO - tokens are not valid for execution
+ */
+t_ok	create_cmdtable(t_dt *dt);
+/**
+ * @brief How many tokens are ther`e in token list.
+ *  If PIPE - counts pipes in whole list.
+ *  If TEXT - counts elements for cmd between pipes.
+ * 	If REDIRECTION - counts number of redirections between pipes.
+ * @param token token to be counted
+ * @param start token from which to start the count
+ * @return number of pipes or tokens between pipes
+ */
+int		how_many(t_token_type token, t_token *start);
+/**
+ * @brief Memory free of the command table
+ * @param dt main data structure
+ * @return 
+ */
+void	free_cmdtable(t_dt *dt);
 
 /*
-env
+	expander.c
 */
-t_return	envp_add_or_change(char *key, char *value ,t_dt *dt);
-t_return	envp_delete(char *key, t_dt *dt);
-void		envp_print_export(t_dt *dt);
-void		envp_print_env(t_dt *dt);
-void		free_env_var_list(t_env *head);
+
+/**
+ * @brief Checks environment list for key and returns a string with value
+ * @param check variable name/key to check
+ * @param i lenght of name/key to check
+ * @param dt main data structure
+ * @return pointer to newly allocated string with value
+ */
+char	*check_env(char *check, int i, t_dt *dt);
+/**
+ * @brief Expands the environment variables into values from iput string
+ * @param s string to expand
+ * @param size lenght of the string to expand
+ * @param dt main data structure
+ * @return poitner to newly allocated string after expansion
+ */
+char	*ft_expander(char *s, int size, t_dt *dt);
 
 #endif
