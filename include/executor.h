@@ -49,7 +49,7 @@ void						execute(t_cmdtable *table, t_dt *minishell,
 int							ft_open(char *file, t_token_type rdr_type);
 char						*ft_strgetbetween(const char *start,
 								const char *end);
-int							exe_parent_builtin_cmds(t_cmdtable *table,
+void							exe_parent_builtin_cmds(t_cmdtable *table,
 								t_dt *minishell);
 void						child(t_cmdtable *table, bool last_cmd,
 								t_env *envp_lst, int *fd);

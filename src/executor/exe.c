@@ -16,9 +16,7 @@ int	prepare_and_execute(t_dt *minishell)
 	table_num = 0;
 	exit_code(0);
 	while (minishell->cmdtable[table_num])
-	{
 		table_num++;
-	}
 	if (minishell->cmdtable[0]->cmd_nb != 0 && table_num == 1
 		&& !ft_strncmp(minishell->cmdtable[0]->cmd[0], "exit", 4))
 	{
@@ -35,6 +33,21 @@ int	prepare_and_execute(t_dt *minishell)
 	return (1);
 }
 
+void	parent(t_cmdtable *table, int *fd, bool last_cmd)
+{
+	//table->fd_rdr_out = 0;
+	close(fd[1]);
+	if (last_cmd)
+	{
+		dup2(table->fd_in, STDIN_FILENO);
+		close(fd[0]);
+	}
+	else
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+	}
+}
 /**
  * @brief Executes a command table in the minishell
  * @param table Pointer to the command table
@@ -48,96 +61,80 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
-	printf("1: %d 2: %d\n", fd[0], fd[1]);
-	if (table->cmd[0])
-		exe_parent_builtin_cmds(table, minishell);
+	exe_parent_builtin_cmds(table, minishell);
 	block_signal();
 	pid1 = fork();
-	table->fd_rdr_out = 0;
+	// table->fd_rdr_out = 0;
 	if (pid1 == 0)
 	{
 		setup_child_signals();
-		if (*minishell->exit)
+		if (*minishell->exit || !table->cmd[0])
 			ft_exit(minishell);
-		if(table->cmd[0])
-			child(table, last_cmd, minishell->envp_lst, fd);
 		else
-			ft_exit(minishell);
+			child(table, last_cmd, minishell->envp_lst, fd);
 	}
 	else
-	{
-		table->fd_rdr_out = 0;
-		close(fd[1]);
-		if (last_cmd)
-		{
-			dup2(table->fd_in, STDIN_FILENO);
-			close(fd[0]);
-		}
-		else
-		{
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
-		}
-	}
+		parent(table, fd, last_cmd);
 }
 
+void	set_output_direction(int *fd, t_cmdtable *table, bool last_cmd)
+{
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+	if (table->fd_rdr_out)
+	{
+		dup2(table->fd_rdr_out, STDOUT_FILENO);
+		close(table->fd_rdr_out);
+	}
+	else if (last_cmd && !table->fd_rdr_out)
+	{
+		dup2(table->fd_out, STDOUT_FILENO);
+		close(table->fd_out);
+	}
+}
 void	child(t_cmdtable *table, bool last_cmd, t_env *envp_lst, int *fd)
 {
 	char	*path;
 
 	close(fd[0]);
+	//table->fd_rdr_out = 0;
 	if (check_redirections(table, fd) && table->cmd)
-	{
-		// TODO: here
 		exit(1);
-	}
 	else
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		if (table->fd_rdr_out)
-		{
-			dup2(table->fd_rdr_out, STDOUT_FILENO);
-			close(table->fd_rdr_out);
-		}
-		else if (last_cmd && !table->fd_rdr_out)
-		{
-			dup2(table->fd_out, STDOUT_FILENO);
-			close(table->fd_out);
-		}
-		if (!exe_built_in_cmds(table->cmd, envp_lst))
-		{
-			// TODO: here
+		set_output_direction(fd, table, last_cmd);
+		if (exe_built_in_cmds(table->cmd, envp_lst) == EXIT_SUCCESS)
 			exit(EXIT_SUCCESS);
-		}
 		else
 		{
 			path = find_path(table, env_to_char_array(envp_lst), last_cmd);
-			// TODO: here
 			execve(path, table->cmd, env_to_char_array(envp_lst));
 		}
 	}
 }
 
-int	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
+void	exe_parent_builtin_cmds(t_cmdtable *table, t_dt *minishell)
 {
-	if (!ft_strncmp(table->cmd[0], "cd", 2) && ft_strlen(table->cmd[0]) == 2)
+	if (table->cmd[0])
 	{
-		execute_cd(table->cmd, minishell->envp_lst);
+		if (!ft_strncmp(table->cmd[0], "cd", 2)
+			&& ft_strlen(table->cmd[0]) == 2)
+		{
+			execute_cd(table->cmd, minishell->envp_lst);
+		}
+		else if (!ft_strncmp(table->cmd[0], "export", 6)
+			&& ft_strlen(table->cmd[0]) == 6)
+		{
+			if (table->cmd[1])
+				set_env(&minishell->envp_lst, table->cmd);
+		}
+		else if (!ft_strncmp(table->cmd[0], "unset", 5)
+			&& ft_strlen(table->cmd[0]) == 5)
+		{
+			if (table->cmd[1])
+				unset(&minishell->envp_lst, table->cmd);
+		}
 	}
-	else if (!ft_strncmp(table->cmd[0], "export", 6)
-		&& ft_strlen(table->cmd[0]) == 6)
-	{
-		if (table->cmd[1])
-			set_env(&minishell->envp_lst, table->cmd);
-	}
-	else if (!ft_strncmp(table->cmd[0], "unset", 5)
-		&& ft_strlen(table->cmd[0]) == 5)
-	{
-		if (table->cmd[1])
-			unset(&minishell->envp_lst, table->cmd);
-	}
-	return (0);
 }
 
 int	exe_built_in_cmds(char **args, t_env *envp_lst)

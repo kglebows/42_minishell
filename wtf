@@ -1,8 +1,0 @@
-declare -x HOME="/root"
-declare -x HOSTNAME="247d973c2f67"
-declare -x OLDPWD="/"
-declare -x PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-declare -x PWD="/dorker_workspace/Desktop/Workspace/42_minishell/test"
-declare -x SHLVL="1"
-declare -x TERM="xterm"
-declare -x _="./minishell"

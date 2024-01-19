@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirector.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 20:06:13 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:37:24 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	set_outfile(t_cmdtable *table, char *file)
 int	set_infile(t_cmdtable *table, char *file)
 {
 	int	exit_code;
+
 	table->fd_rdr_in = ft_open(file, REDIRECTION_IN);
 	if (table->fd_rdr_in < 0)
 		return (EXIT_FAILURE);
@@ -92,6 +93,7 @@ int	append_file(t_cmdtable *table, char *file)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
 /**
  * @brief Checks and applies redirections for a command table
  * @param table Pointer to the command table
