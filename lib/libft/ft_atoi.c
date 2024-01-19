@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 15:45:55 by kglebows          #+#    #+#             */
-/*   Updated: 2023/08/14 13:43:33 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:26:25 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,3 @@ long	ft_atoi(const char *str)
 		return (99999999999);
 	return (n * s);
 }
-
-// #include <stdio.h>
-// #include <string.h>
-// #include <stdlib.h>
-
-// int main() 
-// {
-//     char str1[] = "    -1s23sfafafa32423";
-//     int result;
-
-//     printf("\n : ft_atoi : \n");
-//     result = atoi(str1);
-//     if (result == 0)
-//         printf("\nNULL : should be");
-//     else
-//         printf("\n%d : should be" , result);
-//     result = ft_atoi(str1);
-//     if (result == 0)
-//         printf("\nNULL : is\n");
-//     else
-//         printf("\n%d : is\n" , result);
-
-//     printf("\n : end : \n\n");
-//     return 0;
-// }
