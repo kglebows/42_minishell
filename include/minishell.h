@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:28:06 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/19 17:39:47 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:53:07 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-// # include "../lib/libft/libft.h"
+ # include "../lib/libft/libft.h"
 # include "struct.h"
 # include "parse.h"
 # include "builtin.h"

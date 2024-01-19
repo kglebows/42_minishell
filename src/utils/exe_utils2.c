@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 16:42:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 20:11:53 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:04:14 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**env_to_char_array(t_env *head)
 	char	**result;
 
 	count = count_env_variables_with_value(head);
-	result = (char **)calloc((count + 1), sizeof(char *));
+	result = (char **)ft_calloc((count + 1), sizeof(char *));
 	assign_array(head, result);
 	return (result);
 }

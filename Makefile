@@ -6,7 +6,7 @@
 #    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2024/01/19 17:39:37 by kglebows         ###   ########.fr        #
+#    Updated: 2024/01/19 17:54:23 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,14 +57,14 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 all: init-submodules makelibft $(NAME)
 
-# init-submodules:
-# 	@if [ -z "$(shell ls -A $(LIBFT_PATH))" ]; then \
-# 		git submodule init $(LIBFT_PATH); \
-# 		git submodule update $(LIBFT_PATH); \
-# 	fi
 init-submodules:
+	@if [ -z "$(shell ls -A $(LIBFT_PATH))" ]; then \
 		git submodule init $(LIBFT_PATH); \
 		git submodule update $(LIBFT_PATH); \
+	fi
+# init-submodules:
+# 		git submodule init $(LIBFT_PATH); \
+# 		git submodule update $(LIBFT_PATH); \
 
 makelibft:
 	@if [ ! -f "$(LIBFTNAME)" ]; then \
