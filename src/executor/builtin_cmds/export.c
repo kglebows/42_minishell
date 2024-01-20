@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 11:03:25 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/20 14:08:14 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,7 @@ void	add_env_node(t_env **head, t_env *new_node)
 		current->next = new_node;
 	}
 }
-int	ft_fisalnum(int c)
-{
-	if ((c >= '0' && c <= '9'))
-		return (1);
-	else
-		return (0);
-}
+
 int	is_valid_env_name(const char *name)
 {
 	int	i;

@@ -1,0 +1,11 @@
+Makefile
+README.md
+bin
+hi
+include
+l
+lib
+minishell
+o
+src
+wtf

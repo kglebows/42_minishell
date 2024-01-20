@@ -62,13 +62,15 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 	pipe(fd);
 	exe_parent_builtin_cmds(table, minishell);
 	block_signal();
+	print_cmdtable(minishell);
 	pid1 = fork();
 	// table->fd_rdr_out = 0;
 	if (pid1 == 0)
 	{
 		setup_child_signals();
 		if (*minishell->exit || !table->cmd[0])
-			ft_exit(minishell);
+		{printf("%d\n", *minishell->exit);
+			ft_exit(minishell);}
 		else
 			child(table, last_cmd, minishell->envp_lst, fd);
 	}
