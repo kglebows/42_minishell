@@ -59,8 +59,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 	int	pid1;
 	int	fd[2];
 
-	if (pipe(fd) == -1)
-		ft_putstr_fd("Pipe Error\n", 2);
+	pipe(fd);
 	exe_parent_builtin_cmds(table, minishell);
 	block_signal();
 	pid1 = fork();

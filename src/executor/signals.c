@@ -19,9 +19,9 @@ static void	handle_parent_signal(int signo)
 	if (signo == SIGINT)
 	{
 		ft_putstr_fd("\n", STDOUT_FILENO);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		// rl_replace_line("", 0);
+		// rl_on_new_line();
+		// rl_redisplay();
 		exit_code(1);
 	}
 }

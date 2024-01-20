@@ -32,6 +32,8 @@
 		"locale": "c",
 		"string.h": "c",
 		"readline.h": "c",
-		"sstream": "c"
+		"sstream": "c",
+		"unistd.h": "c",
+		"fcntl.h": "c"
 	}
 }
