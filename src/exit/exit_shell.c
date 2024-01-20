@@ -6,35 +6,12 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 10:17:57 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/20 11:36:50 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:29:47 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	exit_all_minishell(void)
-// {
-// 	FILE	*cmd_pipe;
-// 	char	buffer[256];
-// 	int		pid;
-
-// 	cmd_pipe = popen("pgrep -x minishell", "r");
-// 	if (cmd_pipe == NULL)
-// 	{
-// 		perror("popen");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	while (fgets(buffer, sizeof(buffer), cmd_pipe) != NULL)
-// 	{
-// 		pid = atoi(buffer);
-// 		if (pid != getpid())
-// 		{
-// 			if (kill(pid, SIGTERM) == -1)
-// 				perror("kill");
-// 		}
-// 	}
-// 	pclose(cmd_pipe);
-// }
 void	exit_minishell_parent(int *pipe_fd, int child_pid)
 {
 	ssize_t	bytes_read;
@@ -132,6 +109,7 @@ void	exit_shell(char **args, t_dt *minishell)
 		exit_minishell(arg_count, minishell, &exit_code_var, args);
 	else
 	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 		ft_putstr_fd("exit: too many arguments\n", STDERR_FILENO);
 		exit_code(1);// doesnt change the exit code
 		return ;

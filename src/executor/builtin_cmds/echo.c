@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:28:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/17 18:42:34 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:46:44 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,24 @@ void	write_with_space(const char *str, bool hasNext)
 		write(STDOUT_FILENO, " ", 1);
 }
 
-// /**
-//  * @brief Executes the 'echo' command
-//  * @param args Command arguments
-//  */
-// void	execute_echo(char **args)
-// {
-// 	bool	newline;
-// 	int		i;
+void	n_option(char **args, int *i, bool *newline, bool *endofn)
+{
+	int	n;
 
-// 	newline = true;
-// 	i = 0;
-// 	while (args[i] != NULL)
-// 	{
-// 		if (is_valid_option(args[i], newline) && !newline)
-// 			break ;
-// 		else
-// 			write_with_space(args[i], args[i + 1] != NULL);
-// 		i++;
-// 	}
-// 	if (newline)
-// 		write(STDOUT_FILENO, "\n", 1);
-// }
+	n = 1;
+	while (n < ft_strlen(args[*i]))
+	{
+		if (args[*i][n] != 'n')
+		{
+			*endofn = true;
+			--i;
+			break ;
+		}
+		n++;
+	}
+	if (n == ft_strlen(args[*i]))
+		*newline = false;
+}
 
 /**
  * @brief Executes the 'echo' command
@@ -79,33 +75,18 @@ void	write_with_space(const char *str, bool hasNext)
  */
 void	execute_echo(char **args)
 {
+	int		i;
 	bool	newline;
 	bool	endofn;
-	int		i;
-	int		n;
 
-	newline = true;
 	endofn = false;
+	newline = true;
 	i = 0;
 	while (args[i] != NULL)
 	{
 		if (args[i][0] == '-' && args[i][ft_strlen(args[i])] == '\0'
 			&& endofn == false)
-		{
-			n = 1;
-			while (n < ft_strlen(args[i]))
-			{
-				if (args[i][n] != 'n')
-				{
-					endofn = true;
-					i--;
-					break ;
-				}
-				n++;
-			}
-			if (n == ft_strlen(args[i]))
-				newline = false;
-		}
+			n_option(args, &i, &newline, &endofn);
 		else
 		{
 			endofn = true;
@@ -113,10 +94,7 @@ void	execute_echo(char **args)
 			if (args[i + 1] != NULL)
 				write(STDOUT_FILENO, " ", 1);
 			else
-			{
-				i++;
 				break ;
-			}
 		}
 		i++;
 	}

@@ -35,7 +35,6 @@ int	prepare_and_execute(t_dt *minishell)
 
 void	parent(t_cmdtable *table, int *fd, bool last_cmd)
 {
-	//table->fd_rdr_out = 0;
 	close(fd[1]);
 	if (last_cmd)
 	{
@@ -62,17 +61,14 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 	pipe(fd);
 	exe_parent_builtin_cmds(table, minishell);
 	block_signal();
-	print_cmdtable(minishell);
 	pid1 = fork();
-	// table->fd_rdr_out = 0;
 	if (pid1 == 0)
 	{
 		setup_child_signals();
-		if (*minishell->exit || !table->cmd[0])
-		{printf("%d\n", *minishell->exit);
-			ft_exit(minishell);}
+		if (*minishell->exit)
+			ft_exit(minishell);
 		else
-			child(table, last_cmd, minishell->envp_lst, fd);
+			child(table, last_cmd, minishell, fd);
 	}
 	else
 		parent(table, fd, last_cmd);
@@ -93,23 +89,24 @@ void	set_output_direction(int *fd, t_cmdtable *table, bool last_cmd)
 		close(table->fd_out);
 	}
 }
-void	child(t_cmdtable *table, bool last_cmd, t_env *envp_lst, int *fd)
+void	child(t_cmdtable *table, bool last_cmd, t_dt *minishell, int *fd)
 {
 	char	*path;
 
 	close(fd[0]);
-	//table->fd_rdr_out = 0;
 	if (check_redirections(table, fd) && table->cmd)
 		exit(1);
+	if(!table->cmd[0])
+		ft_exit(minishell);
 	else
 	{
 		set_output_direction(fd, table, last_cmd);
-		if (exe_built_in_cmds(table->cmd, envp_lst) == EXIT_SUCCESS)
+		if (exe_built_in_cmds(table->cmd, minishell->envp_lst) == EXIT_SUCCESS)
 			exit(EXIT_SUCCESS);
 		else
 		{
-			path = find_path(table, env_to_char_array(envp_lst), last_cmd);
-			execve(path, table->cmd, env_to_char_array(envp_lst));
+			path = find_path(table, env_to_char_array(minishell->envp_lst), last_cmd);
+			execve(path, table->cmd, env_to_char_array(minishell->envp_lst));
 		}
 	}
 }

@@ -3,15 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   exe_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 19:17:48 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:52:49 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/wait.h>
+
+int	is_valid_env_name(const char *name)
+{
+	int	i;
+
+	i = 1;
+	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+		return (0);
+	while (name[i])
+	{
+		if (ft_isalnum(name[i]) == 0 && name[i] != '=' && name[i] != '_'
+			&& name[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 /**
  * @brief Waits for child processes to finish and sets the exit code
@@ -52,7 +68,7 @@ char	*get_env(char **env, const char *name)
 
 /**
 
-	* @brief Finds the full path of a command by searching in the PATH environment variable
+	* @brief Finds the full path of a command
  * @param cmd Command to find
  * @param env Array of environment variables
  * @return Full path of the command or NULL if not found
@@ -66,7 +82,6 @@ char	*cmd_path(char *cmd, char **env)
 
 	i = 0;
 	paths = ft_split(get_env(env, "PATH"), ':');
-	i = 0;
 	while (paths && paths[i] && cmd[0] != '\0')
 	{
 		path = ft_strjoin(paths[i++], "/");
@@ -86,6 +101,7 @@ char	*cmd_path(char *cmd, char **env)
 	free_arrayofstrings(paths);
 	return (NULL);
 }
+
 /**
  * @brief Opens a file with the specified redirection type
  * @param file Name of the file
@@ -118,5 +134,3 @@ int	ft_open(char *file, t_token_type rdr_type)
 	}
 	return (fd);
 }
-
-

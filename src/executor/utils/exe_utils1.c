@@ -6,30 +6,11 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:32 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 11:13:44 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/20 14:57:03 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
- * @brief Frees memory allocated for an array of strings
- * @param array Array of strings
- */
-void	free_arrayofstrings(char **array)
-{
-	int	i;
-
-	if (array == NULL)
-		return ;
-	i = 0;
-	while (array[i] != NULL)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
 
 void	print_env_list(t_env *head)
 {
@@ -38,28 +19,6 @@ void	print_env_list(t_env *head)
 		printf("%s=%s\n", head->key, head->value);
 		head = head->next;
 	}
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (!s1)
-		return (-2);
-	while (s1[i] && s2[i])
-	{
-		if (s1[i] > s2[i])
-			return (1);
-		if (s1[i] < s2[i])
-			return (-1);
-		i++;
-	}
-	if (s1[i] > s2[i])
-		return (1);
-	if (s1[i] < s2[i])
-		return (-1);
-	return (0);
 }
 
 void	swap_nodes(t_env *a, t_env *b)
@@ -124,12 +83,14 @@ void	print_env_ascending(t_env *head)
 	current = head;
 	count = count_env_variables(current);
 	sort_env_linked_list(current, count);
-	for (i = 0; i < count; i++)
+	i = 0;
+	while (i < count)
 	{
 		if (current->value)
 			printf("declare -x %s=\"%s\"\n", current->key, current->value);
 		else
 			printf("declare -x %s\n", current->key);
 		current = current->next;
+		i++;
 	}
 }

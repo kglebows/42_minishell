@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:27:38 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/20 14:07:45 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/20 14:46:29 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	make_path(char *tmp, char *tmp2, char *arg)
 		free(tmp);
 	return (1);
 }
+
 void	execute_cd(char **args, t_env *envp_list)
 {
 	char	*tmp;
