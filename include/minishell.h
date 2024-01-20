@@ -27,14 +27,9 @@
 # include "utils.h"
 
 
-// void	ft_executor(t_dt *dt);
 t_return	ft_parse(t_dt *dt);
 t_env	*create_env_var_node(char *str);
-void	setup_signals(void);
-void	setup_child_signals(void);
 
-//signal_handler
-// void	init_signal_handler(void);
 
 # define FALSE 0
 # define TRUE 1

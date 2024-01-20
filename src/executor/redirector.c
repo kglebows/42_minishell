@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/19 18:37:24 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/20 18:18:27 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	create_heredoc(char *delimiter, t_cmdtable *table, int *fd_pipe)
 	char	*line;
 
 	fd = ft_open("heredoc", REDIRECTION_IN_HEREDOC);
-	if (fd == -1)
-		return (EXIT_FAILURE);
 	dup2(table->fd_in, STDIN_FILENO);
 	while (1)
 	{
 		line = readline("heredoc> ");
+		if (line == NULL)
+			break ;
 		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0
 			&& ft_strlen(line) == ft_strlen(delimiter))
 		{

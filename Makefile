@@ -6,7 +6,7 @@
 #    By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2024/01/20 14:58:46 by ekordi           ###   ########.fr        #
+#    Updated: 2024/01/20 18:25:40 by ekordi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS	= main.c \
 		executor/exe.c executor/signals.c executor/redirector.c executor/builtin_cmds/echo.c\
 		executor/builtin_cmds/cd.c executor/builtin_cmds/pwd.c executor/builtin_cmds/unset.c\
 		executor/utils/exe_utils.c executor/utils/exe_utils1.c executor/utils/exe_utils3.c\
-		executor/utils/exe_utils2.c exit/exit_shell.c
+		executor/utils/exe_utils2.c exit/exit_shell.c executor/builtin_cmds/junction_box.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 

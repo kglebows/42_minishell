@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 10:17:57 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/20 16:29:47 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/20 18:35:25 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	exit_minishell_parent(int *pipe_fd, int child_pid)
 	char	buffer[256];
 
 	close(pipe_fd[1]);
+	close(STDOUT_FILENO);
 	while ((bytes_read = read(pipe_fd[0], buffer, sizeof(buffer))) > 0)
 	{
 		pid = ft_atoi(buffer);
@@ -49,8 +50,7 @@ void	exit_all_minishell(void)
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		execve("/usr/bin/pgrep", pgrep_args, NULL);
-		perror("execve");
-		_exit(EXIT_FAILURE);
+		exit(0);
 	}
 	else
 		exit_minishell_parent(pipe_fd, child_pid);

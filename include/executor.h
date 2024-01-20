@@ -54,6 +54,11 @@ void						exe_parent_builtin_cmds(t_cmdtable *table,
 void						child(t_cmdtable *table, bool last_cmd,
 								t_dt *minishell, int *fd);
 
+// junction_box.c
+void						exe_parent_builtin_cmds(t_cmdtable *table,
+								t_dt *minishell);
+int							exe_built_in_cmds(char **args, t_env *envp_lst);
+
 // redirector.c
 int							check_redirections(t_cmdtable *table, int *fd);
 
@@ -78,6 +83,9 @@ void						print_env_ascending(t_env *head);
 int							count_env_variables(t_env *head);
 // signals.c
 void						block_signal(void);
+void						setup_heredoc_signals(void);
+void						setup_signals(void);
+void						setup_child_signals(void);
 
 // exe_utils2.c
 char						**env_to_char_array(t_env *head);
