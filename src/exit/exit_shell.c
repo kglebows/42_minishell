@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 10:17:57 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/22 15:03:05 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 15:26:13 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,16 @@ void	exit_minishell_parent(int *pipe_fd, int child_pid)
 
 	close(pipe_fd[1]);
 	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	while (42)
+	bytes_read = read(pipe_fd[0], buffer, sizeof(buffer));
+	while (bytes_read > 0)
 	{
-		bytes_read = read(pipe_fd[0], buffer, sizeof(buffer));
-		if (bytes_read > 0)
-			break ;
 		pid = ft_atoi(buffer);
 		if (pid != child_pid)
 		{
 			if (kill(pid, SIGTERM) == -1)
 				perror("kill");
 		}
+		bytes_read = read(pipe_fd[0], buffer, sizeof(buffer));
 	}
 	if (bytes_read == -1)
 	{
@@ -95,13 +93,13 @@ void	exit_minishell(int arg_count, t_dt *minishell,
 			&& ft_str_isdigit(args[1] + 1)))
 		{
 			*exit_code_var = ft_atoi(args[1]);
-			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 		}
 		else
 		{
-			ft_putstr_fd("exit\nminishell: exit: ", STDOUT_FILENO);
-			ft_putstr_fd(args[1], STDOUT_FILENO);
-			ft_putstr_fd(": numeric argument required\n", STDOUT_FILENO);
+			ft_putstr_fd("exit\nminishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(args[1], STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			*exit_code_var = 255;
 		}
 	}

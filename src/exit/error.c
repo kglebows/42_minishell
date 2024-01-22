@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:07:34 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/19 17:07:37 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 16:35:45 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,12 @@ void	error_(int code, t_dt *dt)
 {
 	(void)dt;
 	if (code == -10)
-		ft_printf("minishell: Memory allocation failed!\n");
+		ft_putstr_fd("minishell: Memory allocation failed!\n", STDERR_FILENO);
 	else if (code == -11)
-		ft_printf("minishell: Quotes not closed!\n");
-	else if (code == -12)
-		ft_printf("minishell: syntax error near unexpected token `|'\n");
-	else if (code == -13)
-		ft_printf("minishell: syntax error near unexpected token\n");
-	else if (code == -14)
-		ft_printf("minishell: syntax error near unexpected token\n");
+		ft_putstr_fd("minishell: Quotes not closed!\n", STDERR_FILENO);
+	else if (code == -12 || code == -13 || code == -14)
+		ft_putstr_fd("minishell: syntax error near unexpected token \n",
+			STDERR_FILENO);
 	else if (code == -15)
 		ft_printf("Error! \n");
 	else if (code == -16)
@@ -42,7 +39,8 @@ void	error_(int code, t_dt *dt)
 t_ok	ft_error(int code, t_dt *dt)
 {
 	if (code == -1)
-		ft_printf("minishell: Minishell takes no arguments!\n");
+		ft_putstr_fd("minishell: Minishell takes no arguments!\n",
+			STDERR_FILENO);
 	else if (code == -2)
 		ft_printf("Error! \n");
 	else if (code == -3)
@@ -56,8 +54,6 @@ t_ok	ft_error(int code, t_dt *dt)
 	else if (code == -7)
 		ft_printf("Error! \n");
 	else if (code == -8)
-		ft_printf("Error! \n");
-	else if (code == -9)
 		ft_printf("Error! \n");
 	else
 		error_(code, dt);
