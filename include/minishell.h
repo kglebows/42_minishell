@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:28:06 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/22 14:31:26 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:44:56 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 # include "exit.h"
 
 t_env	*create_env_var_node(char *str);
+void	set_heredoc(t_cmdtable *table, int *fd);
+int		create_heredoc(char *delimiter, t_cmdtable *table, int *fd_pipe);
+int		set_infile(t_cmdtable *table, char *file);
 
 # define FALSE 0
 # define TRUE 1

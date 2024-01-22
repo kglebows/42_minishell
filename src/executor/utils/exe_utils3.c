@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:54:59 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/20 14:57:08 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:40:20 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,23 @@ int	ft_strcmp(const char *s1, const char *s2)
 	if (s1[i] < s2[i])
 		return (-1);
 	return (0);
+}
+
+void	set_heredoc(t_cmdtable *table, int *fd)
+{
+	int	i;
+
+	i = 0;
+	if (table->rdr_nb)
+	{
+		while (i < table->rdr_nb)
+		{
+			if (table->rdr[i].type == REDIRECTION_IN_HEREDOC)
+			{
+				if (!create_heredoc(table->rdr[i].data, table, fd))
+					set_infile(table, "heredoc");
+			}
+			i++;
+		}
+	}
 }

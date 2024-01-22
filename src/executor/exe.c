@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:21:52 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/22 15:56:17 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:40:02 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 	pipe(fd);
 	exe_parent_builtin_cmds(table, minishell);
 	block_signal();
+	set_heredoc(table, fd);
 	pid1 = fork();
 	if (pid1 == 0)
 	{
@@ -119,7 +120,7 @@ void	child(t_cmdtable *table, bool last_cmd, t_dt *minishell, int *fd)
 		else
 		{
 			path = find_path(table, env_to_char_array(minishell->envp_lst),
-					last_cmd);
+				last_cmd);
 			execve(path, table->cmd, env_to_char_array(minishell->envp_lst));
 		}
 	}

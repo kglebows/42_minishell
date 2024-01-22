@@ -6,7 +6,7 @@
 /*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:28:42 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/20 14:46:44 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/22 17:32:13 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	n_option(char **args, int *i, bool *newline, bool *endofn)
 		if (args[*i][n] != 'n')
 		{
 			*endofn = true;
-			--i;
+			--*i;
 			break ;
 		}
 		n++;

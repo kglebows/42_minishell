@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirector.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/22 16:23:10 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 17:39:53 by ekordi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	check_redirections(t_cmdtable *table, int *fd_pipe)
 {
 	int	i;
 	int	exit_status;
+	(void)fd_pipe;
 
 	i = 0;
 	if (table->rdr_nb)
@@ -116,11 +117,6 @@ int	check_redirections(t_cmdtable *table, int *fd_pipe)
 				exit_status = set_infile(table, table->rdr[i].data);
 			else if (table->rdr[i].type == REDIRECTION_OUT)
 				exit_status = set_outfile(table, table->rdr[i].data);
-			else if (table->rdr[i].type == REDIRECTION_IN_HEREDOC)
-			{
-				if (!create_heredoc(table->rdr[i].data, table, fd_pipe))
-					exit_status = set_infile(table, "heredoc");
-			}
 			else if (table->rdr[i].type == REDIRECTION_OUT_APPEND)
 				exit_status = append_file(table, table->rdr[i].data);
 			if (exit_status)
