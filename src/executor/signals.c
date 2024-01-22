@@ -1,17 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/20 14:06:11 by ekordi            #+#    #+#             */
+/*   Updated: 2024/01/22 14:40:36 by kglebows         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static void	handle_parent_signal(int signo);
-static void	setup_termios_config(void);
-void	setup_signals(void)
-{
-	struct sigaction	sa_int;
-
-	sa_int = (struct sigaction){};
-	setup_termios_config();
-	sa_int.sa_handler = handle_parent_signal;
-	sigaction(SIGINT, &sa_int, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
 /// @brief Handles the SIGINT signal
 /// @param signo The signal number
 static void	handle_parent_signal(int signo)
@@ -41,9 +41,21 @@ void	setup_child_signals(void)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
+
 /// @brief Blocks teh SIGINT, SIQUIT signals
 void	block_signal(void)
 {
 	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	setup_signals(void)
+{
+	struct sigaction	sa_int;
+
+	sa_int = (struct sigaction){};
+	setup_termios_config();
+	sa_int.sa_handler = handle_parent_signal;
+	sigaction(SIGINT, &sa_int, NULL);
 	signal(SIGQUIT, SIG_IGN);
 }

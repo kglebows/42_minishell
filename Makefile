@@ -6,7 +6,7 @@
 #    By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/16 18:20:23 by kglebows          #+#    #+#              #
-#    Updated: 2024/01/19 17:54:23 by kglebows         ###   ########.fr        #
+#    Updated: 2024/01/22 14:34:21 by kglebows         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ SRCDIR = ./src
 
 SRCS	= main.c \
 		exit/error.c \
-		exit/exit.c \
 		exit/exit_code.c \
 		parse/token.c \
 		parse/token_utils.c \
@@ -32,9 +31,19 @@ SRCS	= main.c \
 		parse/parse_utils.c \
 		parse/env.c \
 		executor/builtin_cmds/export.c\
-		executor/exe.c executor/signals.c executor/redirector.c executor/builtin_cmds/echo.c\
-		executor/builtin_cmds/cd.c executor/builtin_cmds/pwd.c executor/builtin_cmds/unset.c\
-		utils/exe_utils.c utils/exe_utils1.c utils/exe_utils2.c
+		executor/exe.c \
+		executor/signals.c \
+		executor/redirector.c \
+		executor/builtin_cmds/echo.c \
+		executor/builtin_cmds/cd.c \
+		executor/builtin_cmds/pwd.c \
+		executor/builtin_cmds/unset.c\
+		executor/utils/exe_utils.c \
+		executor/utils/exe_utils1.c \
+		executor/utils/exe_utils3.c \
+		executor/utils/exe_utils2.c \
+		exit/exit_shell.c \
+		executor/builtin_cmds/junction_box.c
 
 OBJS	= $(SRCS:%.c=$(OBJDIR)/%.o)
 

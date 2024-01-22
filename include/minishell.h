@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:28:06 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/19 18:20:14 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:31:26 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@
 # include "utils.h"
 # include "exit.h"
 
-void	setup_signals(void);
-void	setup_child_signals(void);
-void	block_signal(void);
+t_env	*create_env_var_node(char *str);
 
 # define FALSE 0
 # define TRUE 1

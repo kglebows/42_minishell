@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 20:06:13 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/22 14:40:13 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	create_heredoc(char *delimiter, t_cmdtable *table, int *fd_pipe)
 	char	*line;
 
 	fd = ft_open("heredoc", REDIRECTION_IN_HEREDOC);
-	if (fd == -1)
-		return (EXIT_FAILURE);
 	dup2(table->fd_in, STDIN_FILENO);
 	while (1)
 	{
 		line = readline("heredoc> ");
+		if (line == NULL)
+			break ;
 		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0
 			&& ft_strlen(line) == ft_strlen(delimiter))
 		{
@@ -46,6 +46,7 @@ int	create_heredoc(char *delimiter, t_cmdtable *table, int *fd_pipe)
 	dup2(fd_pipe[0], STDIN_FILENO);
 	return (EXIT_SUCCESS);
 }
+
 /**
  * @brief Sets the output file for a command table
  * @param table Pointer to the command table
@@ -59,6 +60,7 @@ int	set_outfile(t_cmdtable *table, char *file)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
 /**
  * @brief Sets the input file for a command table
  * @param table Pointer to the command table
@@ -68,6 +70,7 @@ int	set_outfile(t_cmdtable *table, char *file)
 int	set_infile(t_cmdtable *table, char *file)
 {
 	int	exit_code;
+
 	table->fd_rdr_in = ft_open(file, REDIRECTION_IN);
 	if (table->fd_rdr_in < 0)
 		return (EXIT_FAILURE);
@@ -80,6 +83,7 @@ int	set_infile(t_cmdtable *table, char *file)
 	}
 	return (exit_code);
 }
+
 /**
  * @brief Appends the output to a file for a command table
  * @param file Name of the output file to append
@@ -92,6 +96,7 @@ int	append_file(t_cmdtable *table, char *file)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+
 /**
  * @brief Checks and applies redirections for a command table
  * @param table Pointer to the command table

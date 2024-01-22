@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:29:23 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 11:03:25 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/22 14:47:18 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,6 @@ void	add_env_node(t_env **head, t_env *new_node)
 		current->next = new_node;
 	}
 }
-int	ft_fisalnum(int c)
-{
-	if ((c >= '0' && c <= '9'))
-		return (1);
-	else
-		return (0);
-}
-int	is_valid_env_name(const char *name)
-{
-	int	i;
-
-	i = 1;
-	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
-		return (0);
-	while (name[i])
-	{
-		if (ft_isalnum(name[i]) == 0 && name[i] != '=' && name[i] != '_'
-			&& name[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 int	characters_before_eq(char *str)
 {
@@ -96,6 +73,7 @@ int	characters_before_eq(char *str)
 	}
 	return (i);
 }
+
 void	prepare_and_add(t_env **head, char *key_val_str)
 {
 	t_env	*current;
@@ -119,16 +97,19 @@ void	prepare_and_add(t_env **head, char *key_val_str)
 	new_node = create_env_var_node(key_val_str);
 	add_env_node(head, new_node);
 }
+
 /**
  * @brief Sets or updates an environment variable
  * @param head Pointer to the head of the environment variable linked list
 
-	* @param key_val_str String containing the key-value pair of the environment variable
+	* @param key_val_str String containing the key-value
+			pair of the environment variable
  * @return 1 on success, 0 on failure
  */
 void	set_env(t_env **head, char **key_val_str)
 {
 	int	i;
+
 	i = 1;
 	if (!key_val_str[1])
 	{

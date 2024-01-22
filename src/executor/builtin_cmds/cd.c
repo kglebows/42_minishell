@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 15:27:38 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 10:17:45 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/22 14:40:55 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ int	make_path(char *tmp, char *tmp2, char *arg)
 	if (tmp && chdir(tmp) != 0)
 	{
 		perror("chdir");
+		exit_code(1);
 		return (0);
 	}
 	if (tmp)
 		free(tmp);
 	return (1);
 }
+
 void	execute_cd(char **args, t_env *envp_list)
 {
 	char	*tmp;
@@ -50,10 +52,7 @@ void	execute_cd(char **args, t_env *envp_list)
 	if (args[1] != NULL)
 	{
 		if (!make_path(tmp, tmp2, args[1]))
-		{
-			exit_code(1);
 			return ;
-		}
 	}
 	else if (chdir(getenv("HOME")) != 0)
 	{

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 10:28:12 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/19 10:28:13 by kglebows         ###   ########.fr       */
+/*   Created: 2024/01/22 14:38:50 by kglebows          #+#    #+#             */
+/*   Updated: 2024/01/22 14:46:45 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,9 @@
 # define EXECUTOR_H
 
 # include "minishell.h"
+
 typedef struct s_cmd_list	t_cmd_list;
 
-/*enum e_redirect
-
-	piping		|
-	infile		<
-	outfile		>
-	here_doc	<<
-	append		>>
-*/
 typedef enum e_redirect
 {
 	piping,
@@ -61,10 +54,15 @@ void						execute(t_cmdtable *table, t_dt *minishell,
 int							ft_open(char *file, t_token_type rdr_type);
 char						*ft_strgetbetween(const char *start,
 								const char *end);
-int							exe_parent_builtin_cmds(t_cmdtable *table,
+void						exe_parent_builtin_cmds(t_cmdtable *table,
 								t_dt *minishell);
 void						child(t_cmdtable *table, bool last_cmd,
-								t_env *envp_lst, int *fd);
+								t_dt *minishell, int *fd);
+
+// junction_box.c
+void						exe_parent_builtin_cmds(t_cmdtable *table,
+								t_dt *minishell);
+int							exe_built_in_cmds(char **args, t_env *envp_lst);
 
 // redirector.c
 int							check_redirections(t_cmdtable *table, int *fd);
@@ -81,14 +79,18 @@ void						unset(t_env **head, char **var);
 void						ft_waitpid(t_dt *minishell, int nb_cmd);
 char						*get_env(char **env, const char *name);
 char						*cmd_path(char *cmd, char **env);
+int							is_valid_env_name(const char *name);
 
 // exe_utils1.c
 void						free_arrayofstrings(char **array);
 t_env						*create_env_var_node(char *str);
 void						print_env_ascending(t_env *head);
-int	count_env_variables(t_env *head);
+int							count_env_variables(t_env *head);
 // signals.c
 void						block_signal(void);
+void						setup_heredoc_signals(void);
+void						setup_signals(void);
+void						setup_child_signals(void);
 
 // exe_utils2.c
 char						**env_to_char_array(t_env *head);
