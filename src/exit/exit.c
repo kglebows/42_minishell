@@ -85,5 +85,3 @@ void exit_shell(char **args, t_dt *minishell)
 		return;
 	}
 }
-
-
