@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 15:04:14 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/18 21:13:19 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:27:13 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void exit_all_minishell(void)
 	}
 	while (fgets(buffer, sizeof(buffer), cmd_pipe) != NULL)
 	{
-		pid = atoi(buffer);
+		pid = ft_atoi(buffer);
 		if (pid != getpid())
 		{
 			if (kill(pid, SIGTERM) == -1)
@@ -84,40 +84,4 @@ void exit_shell(char **args, t_dt *minishell)
 		exit_code(1);
 		return;
 	}
-}
-/**
- * @brief Creates static variable for exit code
- * @param -
- * @return adress of current Exit Code for terminal.
- */
-int *ini_exit(void)
-{
-	static int exit = 0;
-
-	return (&exit);
-}
-
-/**
- * @brief Changes programs exit code
- * @param code new exit code
- * @return
- */
-void exit_code(int code)
-{
-	int *exit;
-
-	// printf("minishell : %d: command not found\n", code);
-	exit = ini_exit();
-	*exit = code;
-	// printf("setting exit code :: %d\n", *exit);
-}
-
-/**
- * @brief An exit structure
- * @param dt Main program data structure
- * @return
- */
-void ft_exit(t_dt *dt)
-{
-	exit(*dt->exit);
 }

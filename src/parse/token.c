@@ -1,11 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/19 10:47:32 by kglebows          #+#    #+#             */
+/*   Updated: 2024/01/19 17:14:04 by kglebows         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * @brief Tokenization - Turning input into tokens
- * @param dt main data structure
- * @return 
-*/
+int	ft_token_(t_dt *dt, int i)
+{
+	if (dt->input[i] == '\'')
+		i += token_ini(TEXT_SQUOTE,
+				lenght(&dt->input[i], '\'', dt), &dt->input[i], dt);
+	else if (dt->input[i] == '\"')
+		i += token_ini(TEXT_DQUOTE,
+				lenght(&dt->input[i], '\"', dt), &dt->input[i], dt);
+	else
+		i += token_ini(TEXT,
+				lenght(&dt->input[i], ' ', dt), &dt->input[i], dt);
+	return (i);
+}
+
 void	ft_token(t_dt *dt)
 {
 	int			i;
@@ -25,23 +45,24 @@ void	ft_token(t_dt *dt)
 			i += token_ini(REDIRECTION_IN, 1, &dt->input[i], dt);
 		else if (dt->input[i] == '|')
 			i += token_ini(PIPE, 1, &dt->input[i], dt);
-		else if (dt->input[i] == '\'')
-			i += token_ini(TEXT_SQUOTE, lenght(&dt->input[i], '\'', dt), &dt->input[i], dt);
-		else if (dt->input[i] == '\"')
-			i += token_ini(TEXT_DQUOTE, lenght(&dt->input[i], '\"', dt), &dt->input[i], dt);
 		else
-			i += token_ini(TEXT, lenght(&dt->input[i], ' ', dt), &dt->input[i], dt);
-		// printf("i = %d ::\n", i);
+			i = ft_token_(dt, i);
 	}
 }
 
-/**
- * @brief Calculate the lenght of string for token
- * @param str Pointer to first character in input for token
- * @param stop Stop character that closes token
- * @param dt main data structure
- * @return lenght of data
-*/
+int	lenght_(char *str, t_dt *dt, int i)
+{
+	if (str[i] != '\0')
+		i++;
+	if (str[i] == '\'')
+		i += lenght(&str[i], '\'', dt);
+	else if (str[i] == '\"')
+		i += lenght(&str[i], '\"', dt);
+	else if (str[i] != '>' && str[i] != '<' && str[i] != ' ')
+		i += lenght(&str[i], ' ', dt);
+	return (i);
+}
+
 int	lenght(char *str, char stop, t_dt *dt)
 {
 	int		i;
@@ -56,32 +77,14 @@ int	lenght(char *str, char stop, t_dt *dt)
 			stop = '\'';
 		if (stop == ' ' && str[i] == '\"')
 			stop = '\"';
-		if (stop == ' ' && ( str[i] == '<' || str[i] == '>' || str[i] == '|'))
+		if (stop == ' ' && (str[i] == '<' || str[i] == '>' || str[i] == '|'))
 			break ;
 	}
 	if (stop == '\'' || stop == '\"')
-	{
-		if (str[i] != '\0')
-			i++;
-		if (str[i] == '\'')
-			i += lenght(&str[i], '\'', dt);
-		else if (str[i] == '\"')
-			i += lenght(&str[i], '\"', dt);
-		else if (str[i] != '>' && str[i] != '<' && str[i] != ' ')
-			i += lenght(&str[i], ' ', dt);
-	}
-	// printf("len :: %s :: %c :: %d\n", str, stop, i);
+		i = lenght_(str, dt, i);
 	return (i);
 }
 
-/**
- * @brief Create a new token and add it at the end of the token list
- * @param type Type of a token
- * @param lenght lenght of data
- * @param data content of input assosiated with token
- * @param dt main data structure
- * @return lenght of data
-*/
 int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt)
 {
 	t_token	*temp;
@@ -103,25 +106,5 @@ int	token_ini(t_token_type type, int lenght, char *data, t_dt *dt)
 			last = last->next;
 		last->next = temp;
 	}
-	// DEBUG 
-	// write(1, data, lenght);
-	// ft_printf(" type:%d len:%d\n", type, lenght);
-	// DEBUG
 	return (lenght);
-}
-
-void	free_token(t_dt *dt)
-{
-	t_token		*temp;
-	t_token		*f_temp;
-
-	temp = dt->token;
-	while (temp)
-	{
-		f_temp = temp;
-		temp = temp->next;
-		if (f_temp)
-			free(f_temp);
-	}
-	dt->token = NULL;
 }

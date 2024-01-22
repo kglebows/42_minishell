@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_n.c                                      :+:      :+:    :+:   */
+/*   exit_code.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/02 17:19:58 by kglebows          #+#    #+#             */
-/*   Updated: 2023/10/21 10:31:41 by kglebows         ###   ########.fr       */
+/*   Created: 2024/01/19 13:02:26 by kglebows          #+#    #+#             */
+/*   Updated: 2024/01/19 17:08:12 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_countnumbersss(int n)
+int	*ini_exit(void)
 {
-	int	i;
+	static int	exit = 0;
 
-	i = 0;
-	if (n == -2147483648)
-		return (11);
-	if (n <= 0)
-		i++;
-	while (n != 0)
-	{
-		n = n / 10;
-		i++;
-	}
-	return (i);
+	return (&exit);
 }
 
-int	ft_printf_n(int n)
+void	exit_code(int code)
 {
-	int	printed;
+	int	*exit;
 
-	printed = ft_countnumbersss(n);
-	ft_putnbr_fd(n, 1);
-	return (printed);
+	exit = ini_exit();
+	*exit = code;
 }
-//
+
+void	ft_exit(t_dt *dt)
+{
+	exit(*dt->exit);
+}

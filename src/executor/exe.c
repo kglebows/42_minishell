@@ -48,7 +48,7 @@ void	execute(t_cmdtable *table, t_dt *minishell, bool last_cmd)
 
 	if (pipe(fd) == -1)
 		ft_putstr_fd("Pipe Error\n", 2);
-	printf("1: %d 2: %d\n", fd[0], fd[1]);
+	// printf("1: %d 2: %d\n", fd[0], fd[1]);
 	if (table->cmd[0])
 		exe_parent_builtin_cmds(table, minishell);
 	block_signal();

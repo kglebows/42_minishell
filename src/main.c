@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/19 10:23:11 by kglebows          #+#    #+#             */
+/*   Updated: 2024/01/19 17:09:50 by kglebows         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -8,7 +19,7 @@
  * @param envp ENVironment Pointer. String with environment information.
  * @return pointer to main data structure.
 */
-t_dt *ini_dt(int argc, char *argv[], char *envp[])
+t_dt	*ini_dt(int argc, char *argv[], char *envp[])
 {
 	static t_dt		dt;
 
@@ -17,7 +28,7 @@ t_dt *ini_dt(int argc, char *argv[], char *envp[])
 	(void)argv;
 	dt = (t_dt){
 		.exit = ini_exit(),
-	 	.envp = envp,
+		.envp = envp,
 		.envp_lst = init_env_var(envp),
 		.input = NULL,
 		.token = NULL,
@@ -28,7 +39,12 @@ t_dt *ini_dt(int argc, char *argv[], char *envp[])
 	return (&dt);
 }
 
-t_return check_input(t_dt *dt)
+/**
+ * @brief Checks if input has something, skips all spaces and empty signs
+ * @param dt main data structure
+ * @return OK - input has something KO - input is empty
+*/
+t_ok	check_input(t_dt *dt)
 {
 	char		*temp;
 	int			i;
@@ -48,31 +64,12 @@ t_return check_input(t_dt *dt)
  * @param dt main data structure
  * @return
 */
-void ini_minishell(t_dt *dt)
+void	ini_minishell(t_dt *dt)
 {
 	while (42)
 	{
 		setup_signals();
-
-
 		dt->input = readline("Mini$hell ];> ");
-
-
-
-		// if (isatty(fileno(stdin)))
-		// 	dt->input = readline("");
-		// else
-		// {
-		// 	char *line;
-		// 	line = get_next_line(fileno(stdin));
-		// 	if (!line)
-		// 		break ;
-		// 	dt->input = ft_strtrim(line, "\n");
-		// 	free(line);
-		// }
-
-
-
 		if (!dt->input)
 			break ;
 		if (check_input(dt) == OK)
@@ -87,6 +84,37 @@ void ini_minishell(t_dt *dt)
 		free(dt->input);
 	}
 }
+
+// void ini_minishell(t_dt *dt)
+// {
+// 	while (42)
+// 	{
+// 		setup_signals();
+// 		if (isatty(fileno(stdin)))
+// 			dt->input = readline("");
+// 		else
+// 		{
+// 			char *line;
+// 			line = get_next_line(fileno(stdin));
+// 			if (!line)
+// 				break ;
+// 			dt->input = ft_strtrim(line, "\n");
+// 			free(line);
+// 		}
+// 		if (!dt->input)
+// 			break ;
+// 		if (check_input(dt) == OK)
+// 		{
+// 			add_history(dt->input);
+// 			ft_token(dt);
+// 			if (ft_parse(dt) == OK)
+// 				prepare_and_execute(dt);
+// 			free_token(dt);
+// 			free_cmdtable(dt);
+// 		}
+// 		free(dt->input);
+// 	}
+// }
 
 /**
  * @brief Hello World!
