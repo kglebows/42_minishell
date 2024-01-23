@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:23:51 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/20 14:52:49 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/23 10:56:59 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	is_valid_env_name(const char *name)
 		if (ft_isalnum(name[i]) == 0 && name[i] != '=' && name[i] != '_'
 			&& name[i] != ' ')
 			return (0);
+		if (name[i] == '=')
+			return (1);
 		i++;
 	}
 	return (1);

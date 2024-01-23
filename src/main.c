@@ -6,7 +6,7 @@
 /*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:23:11 by kglebows          #+#    #+#             */
-/*   Updated: 2024/01/23 09:38:10 by kglebows         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:57:25 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,43 +64,12 @@ t_ok	check_input(t_dt *dt)
  * @param dt main data structure
  * @return
 */
-void	ini_minishell(t_dt *dt)
-{
-	while (42)
-	{
-		setup_signals();
-		dt->input = readline("Mini$hell ];> ");
-		if (!dt->input)
-			break ;
-		if (check_input(dt) == OK)
-		{
-			add_history(dt->input);
-			ft_token(dt);
-			if (ft_parse(dt) == OK)
-				prepare_and_execute(dt);
-			free_token(dt);
-			free_cmdtable(dt);
-		}
-		free(dt->input);
-	}
-}
-
-// void ini_minishell(t_dt *dt)
+// void	ini_minishell(t_dt *dt)
 // {
 // 	while (42)
 // 	{
 // 		setup_signals();
-// 		if (isatty(fileno(stdin)))
-// 			dt->input = readline("");
-// 		else
-// 		{
-// 			char *line;
-// 			line = get_next_line(fileno(stdin));
-// 			if (!line)
-// 				break ;
-// 			dt->input = ft_strtrim(line, "\n");
-// 			free(line);
-// 		}
+// 		dt->input = readline("Mini$hell ];> ");
 // 		if (!dt->input)
 // 			break ;
 // 		if (check_input(dt) == OK)
@@ -115,6 +84,37 @@ void	ini_minishell(t_dt *dt)
 // 		free(dt->input);
 // 	}
 // }
+
+void ini_minishell(t_dt *dt)
+{
+	while (42)
+	{
+		setup_signals();
+		if (isatty(fileno(stdin)))
+			dt->input = readline("");
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			if (!line)
+				break ;
+			dt->input = ft_strtrim(line, "\n");
+			free(line);
+		}
+		if (!dt->input)
+			break ;
+		if (check_input(dt) == OK)
+		{
+			add_history(dt->input);
+			ft_token(dt);
+			if (ft_parse(dt) == OK)
+				prepare_and_execute(dt);
+			free_token(dt);
+			free_cmdtable(dt);
+		}
+		free(dt->input);
+	}
+}
 
 /**
  * @brief Hello World!
