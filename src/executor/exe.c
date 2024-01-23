@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 18:21:52 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/22 17:40:02 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/23 09:31:31 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	child(t_cmdtable *table, bool last_cmd, t_dt *minishell, int *fd)
 		else
 		{
 			path = find_path(table, env_to_char_array(minishell->envp_lst),
-				last_cmd);
+					last_cmd);
 			execve(path, table->cmd, env_to_char_array(minishell->envp_lst));
 		}
 	}

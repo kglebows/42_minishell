@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirector.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekordi <ekordi@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: kglebows <kglebows@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 14:21:06 by ekordi            #+#    #+#             */
-/*   Updated: 2024/01/22 17:39:53 by ekordi           ###   ########.fr       */
+/*   Updated: 2024/01/23 09:32:06 by kglebows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int	check_redirections(t_cmdtable *table, int *fd_pipe)
 {
 	int	i;
 	int	exit_status;
-	(void)fd_pipe;
 
+	(void)fd_pipe;
 	i = 0;
 	if (table->rdr_nb)
 	{
